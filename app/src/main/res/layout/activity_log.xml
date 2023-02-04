@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO: Update blank fragment layout -->
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,6 +16,7 @@
         android:orientation="vertical">
 
         <ImageButton
+            android:id="@+id/ib_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_close"
@@ -30,10 +30,7 @@
                 android:layout_height="wrap_content">
 
                 <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:buttonTint="#FFFFFF"
-                    android:checked="true"
                     android:text="지출"
                     android:textSize="20dp"
                     android:textColor="@color/white" />
@@ -45,6 +42,7 @@
                     android:textSize="20dp"
                     android:text="수입"
                     android:textColor="@color/white" />
+
             </RadioGroup>
         <TextView
             android:layout_width="match_parent"
