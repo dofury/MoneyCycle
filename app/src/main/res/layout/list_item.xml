@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_root"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:theme="@style/Fragment">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_category"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_change"
+        app:civ_border_overlay="true"
+        app:civ_border_color="@color/siam"
+        app:civ_border_width="2dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="13"
+        android:layout_marginStart="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_sign"
+                android:text="@string/won"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_money"
+                android:text="5000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/item_type"
+                android:text="월급"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:id="@+id/item_date"
+                android:text="date"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</LinearLayout>

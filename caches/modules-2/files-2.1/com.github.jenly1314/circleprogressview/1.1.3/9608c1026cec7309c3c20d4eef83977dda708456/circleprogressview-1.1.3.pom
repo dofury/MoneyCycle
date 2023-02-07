@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.jenly1314</groupId>
+  <artifactId>circleprogressview</artifactId>
+  <version>1.1.3</version>
+  <packaging>aar</packaging>
+  <name>CircleProgressView</name>
+  <description>CircleProgressView for Android</description>
+  <url>https://github.com/jenly1314/CircleProgressView</url>
+  <licenses>
+    <license>
+      <name>The MIT License</name>
+      <url>https://opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>jenly</id>
+      <name>Jenly Yu</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git@github.com:jenly1314/CircleProgressView.git</connection>
+    <developerConnection>scm:git@github.com:jenly1314/CircleProgressView.git</developerConnection>
+    <url>https://github.com/jenly1314/CircleProgressView</url>
+  </scm>
+</project>

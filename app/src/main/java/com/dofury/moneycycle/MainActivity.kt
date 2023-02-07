@@ -1,5 +1,8 @@
 package com.dofury.moneycycle
 
+import android.app.Activity
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -20,10 +23,9 @@ import com.google.android.material.snackbar.Snackbar
 
 private const val TAG_HOME = "home_fragment"
 private const val TAG_SETTING = "setting_fragment"
+private const val TAG_LIST = "list_fragment"
 
 class MainActivity : AppCompatActivity() {
-
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +37,13 @@ class MainActivity : AppCompatActivity() {
         val toolbar : Toolbar = findViewById(R.id.toolbar)
 
 
-
-
         setFragment(TAG_HOME, HomeFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
                 R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
+                R.id.listFragment -> setFragment(TAG_LIST, ListFragment())
             }
             true
         }
@@ -64,12 +65,17 @@ class MainActivity : AppCompatActivity() {
 
         val home = manager.findFragmentByTag(TAG_HOME)
         val setting = manager.findFragmentByTag(TAG_SETTING)
+        val list = manager.findFragmentByTag(TAG_LIST)
 
         if(home != null){
             fragTransaction.hide(home)
         }
         if(setting != null){
             fragTransaction.hide(setting)
+        }
+
+        if(list != null){
+            fragTransaction.hide(list)
         }
 
         if(tag == TAG_HOME){
@@ -80,6 +86,11 @@ class MainActivity : AppCompatActivity() {
         else if(tag == TAG_SETTING){
             if(setting!=null){
                 fragTransaction.show(setting)
+            }
+        }
+        else if(tag == TAG_LIST){
+            if(list!=null){
+                fragTransaction.show(list)
             }
         }
         fragTransaction.commitAllowingStateLoss()
@@ -98,11 +109,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 Log.d("ToolBar_item: ", "뒤로가기 버튼 클릭")
-                finish()
+
+                System.exit(0) // 현재 액티비티를 종료시킨다.
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
