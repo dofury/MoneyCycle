@@ -1,5 +1,6 @@
 package com.dofury.moneycycle
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
@@ -98,7 +99,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 Log.d("ToolBar_item: ", "뒤로가기 버튼 클릭")
-                finish()
+
+                System.exit(0) // 현재 액티비티를 종료시킨다.
                 true
             }
             else -> super.onOptionsItemSelected(item)
