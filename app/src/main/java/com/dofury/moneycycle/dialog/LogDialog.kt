@@ -7,8 +7,8 @@ import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.ListAdapter
-import com.dofury.moneycycle.MoneyLog
-import com.dofury.moneycycle.MoneyLogList
+import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
 import java.text.SimpleDateFormat
@@ -39,7 +39,7 @@ class LogDialog(private val context: AppCompatActivity) {
             adapter.notifyItemRemoved(position)
             adapter.notifyDataSetChanged()
             MoneyLogList.list.removeAt(position)
-            MyApplication.prefs.setList("moneyLogList",MoneyLogList.list)
+            MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
             dialog.dismiss()
 
         })

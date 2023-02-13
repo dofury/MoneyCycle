@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dofury.moneycycle.databinding.FragmentCategoryOutBinding
 import com.dofury.moneycycle.databinding.FragmentListBinding
+import com.dofury.moneycycle.dto.MoneyLog
 
 
 class ListFragment : Fragment() {

@@ -1,6 +1,7 @@
 package com.dofury.moneycycle
 
 import android.app.Application
+import com.dofury.moneycycle.dto.MoneyLogList
 
 class MyApplication : Application() {
     companion object {

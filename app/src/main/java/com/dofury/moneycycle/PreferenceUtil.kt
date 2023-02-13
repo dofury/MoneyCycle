@@ -2,6 +2,7 @@ package com.dofury.moneycycle
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.dofury.moneycycle.dto.MoneyLog
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 

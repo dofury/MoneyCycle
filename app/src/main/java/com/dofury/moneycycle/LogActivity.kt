@@ -1,25 +1,17 @@
 package com.dofury.moneycycle
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import com.dofury.moneycycle.databinding.ActivityLogBinding
-import com.dofury.moneycycle.databinding.ActivityMainBinding
+import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.dto.MoneyLogList
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -159,7 +151,7 @@ class LogActivity : AppCompatActivity() {
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
         MoneyLogList.list.add(moneyLog)
-        MyApplication.prefs.setList("moneyLogList",MoneyLogList.list)
+        MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)

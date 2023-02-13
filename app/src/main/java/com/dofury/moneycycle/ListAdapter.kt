@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogDialog
-import de.hdodenhof.circleimageview.CircleImageView
+import com.dofury.moneycycle.dto.MoneyLogList
 import java.text.SimpleDateFormat
 
 class ListAdapter() :
