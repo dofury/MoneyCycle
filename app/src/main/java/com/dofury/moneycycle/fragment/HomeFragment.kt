@@ -83,11 +83,15 @@ class HomeFragment : Fragment() {
         binding.cpvGoalPercent.progress = getPercent(goalValue, moneyValue)
         if(binding.cpvGoalPercent.progress<30){
             binding.cpvGoalPercent.setProgressColor(ContextCompat.getColor(binding.root.context, R.color.red))
+        }else{
+            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.white_sky)
         }
 
         binding.npbBudgetPercent.progress = getPercent(budgetValue, remainBudgetValue)
         if(binding.npbBudgetPercent.progress<30){
             binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.red)
+        }else{
+            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.white_sky)
         }
 
         val brvdv = remainBudgetValue.toLong()/ remainDayValue.toLong()

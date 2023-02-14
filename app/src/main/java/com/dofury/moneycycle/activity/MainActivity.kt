@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity() {
 
         if(tag == TAG_HOME){
             if(home!=null){
-                fragTransaction.show(home)
                 HomeFragment().init()
+                fragTransaction.show(home)
             }
         }
         else if(tag == TAG_SETTING){
