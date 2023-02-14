@@ -1,9 +1,11 @@
 package com.dofury.moneycycle.activity
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -21,6 +23,7 @@ private const val TAG_LIST = "list_fragment"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
@@ -74,6 +78,7 @@ class MainActivity : AppCompatActivity() {
         if(tag == TAG_HOME){
             if(home!=null){
                 fragTransaction.show(home)
+                HomeFragment().init()
             }
         }
         else if(tag == TAG_SETTING){
@@ -101,7 +106,6 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> {
-                Log.d("ToolBar_item: ", "뒤로가기 버튼 클릭")
 
                 System.exit(0) // 현재 액티비티를 종료시킨다.
                 true

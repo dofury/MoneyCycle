@@ -6,6 +6,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.ActivityInitBinding
+import com.dofury.moneycycle.util.DataUtil
+import com.google.android.material.snackbar.Snackbar
 
 
 class InitActivity : AppCompatActivity() {
@@ -23,15 +25,24 @@ class InitActivity : AppCompatActivity() {
 
     private fun buttonEvent() {
         binding.btnInitSubmit.setOnClickListener(View.OnClickListener {
-            MyApplication.prefs.setString("goal",binding.tvInitGoalValue.text.toString())
-            MyApplication.prefs.setString("budget",binding.tvInitBudgetValue.text.toString())
-            MyApplication.prefs.setString("money",binding.tvInitMoneyValue.text.toString())
+            if(DataUtil().isNumber(binding.evInitGoalValue.toString()) &&
+                DataUtil().isNumber(binding.evInitBudgetValue.toString()) &&
+                DataUtil().isNumber(binding.evInitMoneyValue.toString())){
 
-            MyApplication.prefs.setString("remain_budget",binding.tvInitBudgetValue.text.toString())
-            MyApplication.prefs.setBoolean("is_init",false)
+                MyApplication.prefs.setString("goal",binding.evInitGoalValue.text.toString())
+                MyApplication.prefs.setString("budget",binding.evInitBudgetValue.text.toString())
+                MyApplication.prefs.setString("money",binding.evInitMoneyValue.text.toString())
 
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+                MyApplication.prefs.setString("remain_budget",binding.evInitBudgetValue.text.toString())
+                MyApplication.prefs.setBoolean("is_init",false)
+
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+                }else{
+                    Snackbar.make(binding.root,"제대로 입력해주세요",Snackbar.LENGTH_SHORT).show()
+            }
+
         })
 
     }

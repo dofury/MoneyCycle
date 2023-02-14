@@ -48,7 +48,7 @@ class HomeFragment : Fragment() {
         binding.fab.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, LogActivity::class.java)
             startActivity(intent)
-
+            mainActivity.finish()
 
         })
         return binding.root
@@ -65,7 +65,7 @@ class HomeFragment : Fragment() {
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun init(){
+    fun init(){
         val cal = Calendar.getInstance()
         cal.set(LocalDate.now().year,LocalDate.now().monthValue-1,LocalDate.now().dayOfMonth)
         val goalValue = MyApplication.prefs.getString("goal","0")
@@ -73,10 +73,10 @@ class HomeFragment : Fragment() {
         val moneyValue = MyApplication.prefs.getString("money","0")
         val remainBudgetValue = MyApplication.prefs.getString("remain_budget","0")
         val remainDayValue = (cal.getActualMaximum(Calendar.DAY_OF_MONTH)-LocalDate.now().dayOfMonth+1).toString()
-        binding.tvGoalValue.text= DataUtil().parseMoney(goalValue.toInt())
-        binding.tvBudgetValue.text= DataUtil().parseMoney(budgetValue.toInt())
-        binding.tvMoneyValue.text= DataUtil().parseMoney(moneyValue.toInt())
-        binding.tvBudgetRemainValue.text= DataUtil().parseMoney(remainBudgetValue.toInt())
+        binding.tvGoalValue.text= DataUtil().parseMoney(goalValue.toLong())
+        binding.tvBudgetValue.text= DataUtil().parseMoney(budgetValue.toLong())
+        binding.tvMoneyValue.text= DataUtil().parseMoney(moneyValue.toLong())
+        binding.tvBudgetRemainValue.text= DataUtil().parseMoney(remainBudgetValue.toLong())
         //이번 달에 마지막 날을 가져와서 남은 일수를 계산
         binding.tvRemainDayValue.text = remainDayValue
 
@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
             binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.red)
         }
 
-        val brvdv = remainBudgetValue.toInt()/ remainDayValue.toInt()
+        val brvdv = remainBudgetValue.toLong()/ remainDayValue.toLong()
         if(brvdv>=0){
             binding.tvBudgetRemainValueDivideValue.text = DataUtil().parseMoney(brvdv)
         }else{

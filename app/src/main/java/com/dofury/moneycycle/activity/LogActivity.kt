@@ -87,6 +87,7 @@ class LogActivity : AppCompatActivity() {
         binding.ibClose.setOnClickListener(View.OnClickListener {//메인 화면 전환
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
+            finish()
         })
 
         binding.rbOne.setOnClickListener(View.OnClickListener { //지출을 클릭시
@@ -172,5 +173,6 @@ class LogActivity : AppCompatActivity() {
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }

@@ -21,7 +21,7 @@
         android:textSize="20dp"
         android:text="@string/goal_value"/>
     <EditText
-        android:id="@+id/tv_init_goal_value"
+        android:id="@+id/ev_init_goal_value"
         android:layout_width="match_parent"
         android:hint="0"
         android:textSize="20dp"
@@ -39,7 +39,7 @@
         android:textSize="20dp"
         android:text="@string/budget_value"/>
     <EditText
-        android:id="@+id/tv_init_budget_value"
+        android:id="@+id/ev_init_budget_value"
         android:layout_width="match_parent"
         android:hint="0"
         android:textSize="20dp"
@@ -57,7 +57,7 @@
         android:textSize="20dp"
         android:text="현재 금액"/>
     <EditText
-        android:id="@+id/tv_init_money_value"
+        android:id="@+id/ev_init_money_value"
         android:layout_width="match_parent"
         android:hint="0"
         android:textSize="20dp"
