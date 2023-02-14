@@ -37,6 +37,9 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
         binding.btnYes.setOnClickListener(View.OnClickListener {
             if(DataUtil().isNumber(binding.etMoney.text.toString())){
                 MyApplication.prefs.setString(tag,binding.etMoney.text.toString())
+                if(tag =="budget"){
+                    MyApplication.prefs.setString("remain_budget",binding.etMoney.text.toString())
+                }
                 Toast.makeText(context,"설정 완료",Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }else{

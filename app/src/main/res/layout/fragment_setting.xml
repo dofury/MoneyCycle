@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
+                android:textStyle="bold"
                 android:textSize="20dp"
                 android:padding="5dp"
                 android:text="자산 설정"/>
@@ -39,7 +40,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -70,6 +70,7 @@
                 android:textColor="@color/gray"
                 android:textSize="20dp"
                 android:padding="5dp"
+                android:textStyle="bold"
                 android:text="목표 설정"/>
             <View
                 android:layout_width="match_parent"
@@ -84,7 +85,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -114,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 android:padding="5dp"
                 android:text="예산 설정"/>
             <View
@@ -129,7 +130,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
