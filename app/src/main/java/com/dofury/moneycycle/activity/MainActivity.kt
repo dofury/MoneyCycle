@@ -45,9 +45,6 @@ class MainActivity : AppCompatActivity() {
         }
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)//기본 타이틀 삭제
-/*        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)*/
 
     }
 

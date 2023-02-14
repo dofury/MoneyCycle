@@ -12,9 +12,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
+        android:padding="5dp"
         android:orientation="vertical">
         <LinearLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -23,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
                 android:textSize="20dp"
+                android:padding="5dp"
                 android:text="자산 설정"/>
             <View
                 android:layout_width="match_parent"
@@ -58,6 +60,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -66,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
                 android:textSize="20dp"
+                android:padding="5dp"
                 android:text="목표 설정"/>
             <View
                 android:layout_width="match_parent"
@@ -101,6 +105,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -109,6 +114,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
                 android:textSize="20dp"
+                android:padding="5dp"
                 android:text="예산 설정"/>
             <View
                 android:layout_width="match_parent"

@@ -25,9 +25,9 @@ class InitActivity : AppCompatActivity() {
 
     private fun buttonEvent() {
         binding.btnInitSubmit.setOnClickListener(View.OnClickListener {
-            if(DataUtil().isNumber(binding.evInitGoalValue.toString()) &&
-                DataUtil().isNumber(binding.evInitBudgetValue.toString()) &&
-                DataUtil().isNumber(binding.evInitMoneyValue.toString())){
+            if(DataUtil().isNumber(binding.evInitGoalValue.text.toString()) &&
+                DataUtil().isNumber(binding.evInitBudgetValue.text.toString()) &&
+                DataUtil().isNumber(binding.evInitMoneyValue.text.toString())){
 
                 MyApplication.prefs.setString("goal",binding.evInitGoalValue.text.toString())
                 MyApplication.prefs.setString("budget",binding.evInitBudgetValue.text.toString())
