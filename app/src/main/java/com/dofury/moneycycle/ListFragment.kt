@@ -24,14 +24,15 @@ class ListFragment : Fragment() {
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
 
-        val manger = LinearLayoutManager(context)
-        manger.reverseLayout = true
-        manger.stackFromEnd = true
-
-        binding.rcvList.layoutManager = manger
+        binding.rcvList.layoutManager = createLayoutManager()
         binding.rcvList.adapter = ListAdapter()
         binding.rcvList.addItemDecoration(DividerItemDecoration(context,LinearLayoutManager.VERTICAL))
         return binding.root
     }
-
+    private fun createLayoutManager(): LinearLayoutManager {
+        val manager = LinearLayoutManager(context)
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
+        return manager
+    }
 }

@@ -26,36 +26,36 @@ class NumPadFragment : Fragment() {
         return binding.root
     }
     private fun buttonEvent() {
-        binding.btnOne.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("1")
-        })
-        binding.btnTwo.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("2")
-        })
-        binding.btnThree.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("3")
-        })
-        binding.btnFour.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("4")
-        })
-        binding.btnFive.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("5")
-        })
-        binding.btnSix.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("6")
-        })
-        binding.btnSeven.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("7")
-        })
-        binding.btnEight.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("8")
-        })
-        binding.btnNine.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("9")
-        })
-        binding.btnZero.setOnClickListener(View.OnClickListener {
-            activity.inputNumber("0")
-        })
+        val buttons = arrayListOf(
+            binding.btnOne,
+            binding.btnTwo,
+            binding.btnThree,
+            binding.btnFour,
+            binding.btnFive,
+            binding.btnSix,
+            binding.btnSeven,
+            binding.btnEight,
+            binding.btnNine,
+            binding.btnZero
+        )
+
+        buttons.forEach {
+            it.setOnClickListener {
+                val number = when(it.id) {
+                    R.id.btn_one -> "1"
+                    R.id.btn_two -> "2"
+                    R.id.btn_three -> "3"
+                    R.id.btn_four -> "4"
+                    R.id.btn_five -> "5"
+                    R.id.btn_six -> "6"
+                    R.id.btn_seven -> "7"
+                    R.id.btn_eight -> "8"
+                    R.id.btn_nine -> "9"
+                    else -> "0"
+                }
+                activity.inputNumber(number)
+            }
+        }
 
         binding.btnRemove.setOnClickListener(View.OnClickListener {//숫자 지우기
             activity.removeNumber()

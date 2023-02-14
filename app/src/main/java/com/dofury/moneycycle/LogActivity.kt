@@ -29,7 +29,7 @@ class LogActivity : AppCompatActivity() {
 
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        moneyLog = MoneyLog(0, false,"null","null")
+        moneyLog = MoneyLog(0, 0,false,"null","null",false)
 
         buttonEvent()
         setFragment(TAG_NUM,NumPadFragment())
