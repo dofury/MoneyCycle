@@ -1,9 +1,10 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.ActivityInitBinding
 
 

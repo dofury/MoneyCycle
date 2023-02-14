@@ -1,4 +1,4 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.dofury.moneycycle.activity.LogActivity
+import com.dofury.moneycycle.activity.MainActivity
+import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.R
+import com.dofury.moneycycle.activity.InitActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
+import com.dofury.moneycycle.util.DataUtil
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.util.*
@@ -76,7 +82,7 @@ class HomeFragment : Fragment() {
 
         binding.cpvGoalPercent.progress = getPercent(goalValue, moneyValue)
         if(binding.cpvGoalPercent.progress<30){
-            binding.cpvGoalPercent.setProgressColor(ContextCompat.getColor(binding.root.context,R.color.red))
+            binding.cpvGoalPercent.setProgressColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
 
         binding.npbBudgetPercent.progress = getPercent(budgetValue, remainBudgetValue)

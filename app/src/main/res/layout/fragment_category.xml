@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="TAG_PAD"
-        tools:context=".LogActivity"
+        tools:context=".activity.LogActivity"
         android:padding="10dp"
         android:background="@color/white"
         android:theme="@style/numberPad"

@@ -1,4 +1,4 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.util
 
 import java.text.DecimalFormat
 

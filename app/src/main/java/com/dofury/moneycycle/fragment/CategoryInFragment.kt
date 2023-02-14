@@ -1,4 +1,4 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.fragment
 
 import android.os.Build
 import android.os.Bundle
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.dofury.moneycycle.activity.LogActivity
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.FragmentCategoryInBinding
-import com.dofury.moneycycle.databinding.FragmentCategoryOutBinding
 
 class CategoryInFragment : Fragment() {
     private lateinit var binding: FragmentCategoryInBinding
@@ -31,8 +32,7 @@ class CategoryInFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
         binding.btnPrev.setOnClickListener(View.OnClickListener {//
-            activity.setFragment("numPad_fragment",NumPadFragment())
-            activity.radioOn()
+            activity.setFragment("numPad_fragment", NumPadFragment())
         })
 
         binding.civIncome.setOnClickListener(View.OnClickListener {

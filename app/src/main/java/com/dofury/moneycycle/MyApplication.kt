@@ -3,6 +3,7 @@ package com.dofury.moneycycle
 import android.app.Application
 import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.dto.MoneyLogList
+import com.dofury.moneycycle.util.PreferenceUtil
 
 class MyApplication : Application() {
     companion object {

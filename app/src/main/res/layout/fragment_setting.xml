@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:tag="TAG_SETTING"
     android:theme="@style/Fragment"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout

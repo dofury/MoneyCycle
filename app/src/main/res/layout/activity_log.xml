@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Activity"
-    tools:context=".LogActivity"
+    tools:context=".activity.LogActivity"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"

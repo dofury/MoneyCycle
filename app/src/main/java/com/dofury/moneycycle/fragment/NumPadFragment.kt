@@ -1,10 +1,12 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dofury.moneycycle.activity.LogActivity
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.FragmentPadBinding
 import com.google.android.material.snackbar.Snackbar
 
@@ -67,12 +69,11 @@ class NumPadFragment : Fragment() {
                     .show()
             }
             else{
-                activity.radioOff()
                 if(activity.moneyLog.sign){
-                    activity.setFragment("category_in_fragment",CategoryInFragment())
+                    activity.setFragment("category_in_fragment", CategoryInFragment())
                 }
                 else{
-                    activity.setFragment("category_out_fragment",CategoryOutFragment())
+                    activity.setFragment("category_out_fragment", CategoryOutFragment())
                 }
             }
         })

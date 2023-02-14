@@ -6,7 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.dofury.moneycycle.ListAdapter
+import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication

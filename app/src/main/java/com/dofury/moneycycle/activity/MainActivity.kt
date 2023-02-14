@@ -1,11 +1,5 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.activity
 
-import android.app.Activity
-import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -14,12 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
-
+import com.dofury.moneycycle.fragment.HomeFragment
+import com.dofury.moneycycle.fragment.ListFragment
+import com.dofury.moneycycle.fragment.SettingFragment
 
 private const val TAG_HOME = "home_fragment"
 private const val TAG_SETTING = "setting_fragment"

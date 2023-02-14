@@ -1,6 +1,5 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.activity
 
-import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -10,42 +9,51 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.dofury.moneycycle.*
 import com.dofury.moneycycle.databinding.ActivityLogBinding
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
+import com.dofury.moneycycle.fragment.CategoryInFragment
+import com.dofury.moneycycle.fragment.CategoryOutFragment
+import com.dofury.moneycycle.fragment.NumPadFragment
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 private const val TAG_NUM = "numPad_fragment"
 private const val TAG_CATEGORY_IN = "category_in_fragment"
 private const val TAG_CATEGORY_OUT = "category_out_fragment"
+
 class LogActivity : AppCompatActivity() {
 
     lateinit var moneyLog: MoneyLog
     private lateinit var binding: ActivityLogBinding
+    private var tag = TAG_NUM
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        moneyLog = MoneyLog(0, 0,false,"null","null",false)
 
+        moneyLog = MoneyLog(0, 0, false, "null", "null", false)
+        setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
-        setFragment(TAG_NUM,NumPadFragment())
     }
-    public fun setFragment(tag: String, fragment: Fragment) {
+    public fun setFragment(tag :String,fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
+
+        val numPad = manager.findFragmentByTag(TAG_NUM)
+        val categoryIn = manager.findFragmentByTag(TAG_CATEGORY_IN)
+        val categoryOut = manager.findFragmentByTag(TAG_CATEGORY_OUT)
+
+        this.tag = tag
 
         if(manager.findFragmentByTag(tag)==null){
             fragTransaction.add(R.id.view,fragment,tag)
         }
 
-        val numPad = manager.findFragmentByTag(TAG_NUM)
-        val categoryIn = manager.findFragmentByTag(TAG_CATEGORY_IN)
-        val categoryOut = manager.findFragmentByTag(TAG_CATEGORY_OUT)
 
         if(numPad != null){
             fragTransaction.hide(numPad)
@@ -84,10 +92,16 @@ class LogActivity : AppCompatActivity() {
         binding.rbOne.setOnClickListener(View.OnClickListener { //지출을 클릭시
             moneyLog.sign = false
             binding.tvSign.text = "-"
+            if(tag != TAG_NUM){
+                setFragment(TAG_CATEGORY_OUT, CategoryOutFragment())
+            }
         })
         binding.rbTwo.setOnClickListener(View.OnClickListener { //수입을 클릭시
             moneyLog.sign = true
             binding.tvSign.text = "+"
+            if(tag != TAG_NUM){
+                setFragment(TAG_CATEGORY_IN, CategoryInFragment())
+            }
 
         })
 
@@ -102,7 +116,7 @@ class LogActivity : AppCompatActivity() {
             binding.tvNumber.text = binding.tvNumber.text.toString()+number
         }
         else{
-            Snackbar.make(binding.root,"10자를 넘을 수 없습니다",Snackbar.LENGTH_LONG)
+            Snackbar.make(binding.root, "10자를 넘을 수 없습니다", Snackbar.LENGTH_LONG)
                 .setAction("action",null)
                 .show()
         }
@@ -118,7 +132,7 @@ class LogActivity : AppCompatActivity() {
         if(binding.tvNumber.text != "0"){
             binding.tvNumber.text = binding.tvNumber.text.toString().subSequence(0,binding.tvNumber.length()-1)
         }
-        Log.d("text",binding.tvNumber.text.toString())
+        Log.d("text", binding.tvNumber.text.toString())
         if(binding.tvNumber.text == ""){
             binding.tvNumber.text = "0"
         }
@@ -158,13 +172,5 @@ class LogActivity : AppCompatActivity() {
 
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-    }
-    public fun radioOff(){
-        binding.rbOne.isEnabled=false
-        binding.rbTwo.isEnabled=false
-    }
-    public fun radioOn(){
-        binding.rbOne.isEnabled=true
-        binding.rbTwo.isEnabled=true
     }
 }

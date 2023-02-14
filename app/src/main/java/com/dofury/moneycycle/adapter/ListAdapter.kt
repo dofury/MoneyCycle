@@ -1,4 +1,4 @@
-package com.dofury.moneycycle
+package com.dofury.moneycycle.adapter
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.dofury.moneycycle.ListViewHolder
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogDialog
 import com.dofury.moneycycle.dto.MoneyLogList
+import com.dofury.moneycycle.fragment.mainActivity
 import java.text.SimpleDateFormat
 
 class ListAdapter() :
@@ -25,11 +28,13 @@ class ListAdapter() :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
         if(MoneyLogList.list[position].sign){//지출,수입 검사하여 색칠
-            binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,R.color.blue))
-            binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context,R.color.blue))
+            binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,
+                R.color.blue
+            ))
+            binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue))
         }else{
-            binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,R.color.red))
-            binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context,R.color.red))
+            binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
+            binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
         binding.itemMoney.text = MoneyLogList.list[position].charge.toString()
         binding.itemDate.text = parseDate(MoneyLogList.list[position].date)
