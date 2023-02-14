@@ -26,7 +26,7 @@ class DBHelper(
     override fun onCreate(db: SQLiteDatabase) {
         var sql: String = "CREATE TABLE if not exists " +
                 "$TABLE_NAME ($UID integer primary key autoincrement, " +
-                "$$COL_CHARGE integer, $COL_SIGN integer, $COL_CATEGORY text, $COL_DATE text, $COL_IS_SERVER integer);"
+                "$COL_CHARGE integer, $COL_SIGN integer, $COL_CATEGORY text, $COL_DATE text, $COL_IS_SERVER integer);"
         db.execSQL(sql)
     }
 
@@ -36,7 +36,7 @@ class DBHelper(
         onCreate(db)
     }
 
-    val allLogs:List<MoneyLog>
+    val allLogs:MutableList<MoneyLog>
         @SuppressLint("Range")
         get() {
             val logs = ArrayList<MoneyLog>()

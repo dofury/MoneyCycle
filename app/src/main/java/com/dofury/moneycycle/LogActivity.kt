@@ -1,5 +1,6 @@
 package com.dofury.moneycycle
 
+import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -151,6 +152,8 @@ class LogActivity : AppCompatActivity() {
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
         MoneyLogList.list.add(moneyLog)
+        MyApplication.db.addLog(moneyLog)
+
         MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
 
         val intent = Intent(this, MainActivity::class.java)
