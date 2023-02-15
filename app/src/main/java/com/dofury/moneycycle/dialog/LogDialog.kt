@@ -11,6 +11,7 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
+import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
 class LogDialog(private val context: AppCompatActivity) {
@@ -28,7 +29,7 @@ class LogDialog(private val context: AppCompatActivity) {
         }else{
             binding.tvMoneySign.text="-"
         }
-        binding.tvMoneyValue.text = moneyLog.charge.toString()
+        binding.tvMoneyValue.text = DataUtil().parseMoney(moneyLog.charge)
         binding.tvCategory.text = moneyLog.category
         binding.tvDate.text = parseDate(moneyLog.date)
 

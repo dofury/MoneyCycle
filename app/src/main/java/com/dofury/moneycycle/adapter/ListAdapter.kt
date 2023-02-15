@@ -13,6 +13,7 @@ import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogDialog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.mainActivity
+import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
 class ListAdapter() :
@@ -36,7 +37,7 @@ class ListAdapter() :
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = MoneyLogList.list[position].charge.toString()
+        binding.itemMoney.text = DataUtil().parseMoney(MoneyLogList.list[position].charge)
         binding.itemDate.text = parseDate(MoneyLogList.list[position].date)
         binding.itemType.text = MoneyLogList.list[position].category
         parseCategoryImage(binding,position)

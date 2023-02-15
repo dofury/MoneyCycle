@@ -47,7 +47,7 @@ class DBHelper(
                 do{
                     val log = MoneyLog(
                         cursor.getInt(cursor.getColumnIndex(UID)),
-                        cursor.getInt(cursor.getColumnIndex(COL_CHARGE)),
+                        cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                         intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                         cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),

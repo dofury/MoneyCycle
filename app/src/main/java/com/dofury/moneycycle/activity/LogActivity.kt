@@ -16,6 +16,7 @@ import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
 import com.dofury.moneycycle.fragment.CategoryOutFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
+import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,6 +30,7 @@ class LogActivity : AppCompatActivity() {
     lateinit var moneyLog: MoneyLog
     private lateinit var binding: ActivityLogBinding
     private var tag = TAG_NUM
+    private var moneyBuffer: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,10 +113,12 @@ class LogActivity : AppCompatActivity() {
     fun inputNumber(number: String){
 
         if(binding.tvNumber.text == "0"){
+            moneyBuffer = ""
             binding.tvNumber.text = ""
         }
         if(binding.tvNumber.text.length <=10){
-            binding.tvNumber.text = binding.tvNumber.text.toString()+number
+            moneyBuffer += number
+            binding.tvNumber.text = DataUtil().parseMoney(moneyBuffer.toLong())
         }
         else{
             Snackbar.make(binding.root, "10자를 넘을 수 없습니다", Snackbar.LENGTH_LONG)
@@ -124,18 +128,15 @@ class LogActivity : AppCompatActivity() {
     }
     fun isBlank(): Boolean {
 
-        if(binding.tvNumber.text == "0"){
+        if(moneyBuffer == ""){
             return true
         }
         return false
     }
     fun removeNumber() {
-        if(binding.tvNumber.text != "0"){
-            binding.tvNumber.text = binding.tvNumber.text.toString().subSequence(0,binding.tvNumber.length()-1)
-        }
-        Log.d("text", binding.tvNumber.text.toString())
-        if(binding.tvNumber.text == ""){
-            binding.tvNumber.text = "0"
+        if(moneyBuffer != ""){
+            moneyBuffer = moneyBuffer.subSequence(0,moneyBuffer.length-1) as String
+            binding.tvNumber.text = if(moneyBuffer!="") DataUtil().parseMoney(moneyBuffer.toLong())else "0"
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -148,10 +149,10 @@ class LogActivity : AppCompatActivity() {
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         val formatted = current.format(formatter)
-        var money = MyApplication.prefs.getString("money","0").toInt()
-        var remain = MyApplication.prefs.getString("remain_budget","0").toInt()
+        var money = MyApplication.prefs.getString("money","0").toLong()
+        var remain = MyApplication.prefs.getString("remain_budget","0").toLong()
 
-        moneyLog.charge = binding.tvNumber.text.toString().toInt()
+        moneyLog.charge = moneyBuffer.toLong()
         moneyLog.date = formatted
 
 
