@@ -38,10 +38,6 @@ class SettingFragment : Fragment() {
             val dialog = MoneySetDialog(mainActivity,"budget")
             dialog.show()
         })
-        binding.clMoney.setOnClickListener(View.OnClickListener {
-            val dialog = MoneySetDialog(mainActivity,"money")
-            dialog.show()
-        })
     }
 
 }

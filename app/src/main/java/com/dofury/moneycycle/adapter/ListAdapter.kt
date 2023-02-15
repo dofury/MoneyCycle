@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
-import com.dofury.moneycycle.dialog.LogDialog
+import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
@@ -46,7 +46,7 @@ class ListAdapter() :
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogDialog(mainActivity)
+            val dialog = LogPageDialog(mainActivity)
             dialog.show(MoneyLogList.list[position],this,position)
         })
     }

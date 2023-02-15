@@ -5,7 +5,9 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.view.View
 import android.widget.Toast
+import java.io.File
 
 class DBHelper(
     val context: Context?,
@@ -21,12 +23,14 @@ class DBHelper(
         const val COL_SIGN = "SIGN"
         const val COL_CATEGORY = "CATEGORY"
         const val COL_DATE = "DATE"
+        const val COL_MEMO = "MEMO"
+        const val COL_IS_BUDGET = "IS_BUDGET"
         const val COL_IS_SERVER = "IS_SERVER"
     }
     override fun onCreate(db: SQLiteDatabase) {
         var sql: String = "CREATE TABLE if not exists " +
                 "$TABLE_NAME ($UID integer primary key autoincrement, " +
-                "$COL_CHARGE integer, $COL_SIGN integer, $COL_CATEGORY text, $COL_DATE text, $COL_IS_SERVER integer);"
+                "$COL_CHARGE integer, $COL_SIGN integer, $COL_CATEGORY text, $COL_DATE text, $COL_MEMO text, $COL_IS_BUDGET integer, $COL_IS_SERVER integer);"
         db.execSQL(sql)
     }
 
@@ -51,7 +55,9 @@ class DBHelper(
                         intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                         cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
                         cursor.getString(cursor.getColumnIndex(COL_DATE)),
-                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER)))
+                        cursor.getString(cursor.getColumnIndex(COL_MEMO)),
+                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
+                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER))),
                     )
                     logs.add(log)
                 }while(cursor.moveToNext())
@@ -67,6 +73,8 @@ class DBHelper(
         values.put(COL_SIGN, log.sign)
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
+        values.put(COL_MEMO, log.memo)
+        values.put(COL_IS_BUDGET, log.is_budget)
         values.put(COL_IS_SERVER, log.is_server)
 
         db.insert(TABLE_NAME, null, values)
@@ -85,6 +93,8 @@ class DBHelper(
         values.put(COL_SIGN, log.sign)
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
+        values.put(COL_MEMO, log.memo)
+        values.put(COL_IS_BUDGET, log.is_budget)
         values.put(COL_IS_SERVER, log.is_server)
 
         return db.update(TABLE_NAME, values, "$UID=?", arrayOf(log.uid.toString()))
@@ -98,5 +108,17 @@ class DBHelper(
         db.close()
     }
 
+
+    fun drop() {
+        val DB_PATH = "/data/data/" + (context?.packageName ?: String)
+        val DB_NAME = "$DATABASE_NAME.db"
+        val DB_FULLPATH = "$DB_PATH/databases/$DB_NAME"
+        val dbFile = File(DB_FULLPATH)
+        if (dbFile.delete()) {
+            println(" 삭제 성공")
+        } else {
+            println(" 삭제 실패")
+        }
+    }
 
 }

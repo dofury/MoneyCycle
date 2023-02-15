@@ -10,11 +10,13 @@ import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
+import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
-class LogDialog(private val context: AppCompatActivity) {
+class LogPageDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogLogPageBinding
@@ -32,6 +34,14 @@ class LogDialog(private val context: AppCompatActivity) {
         binding.tvMoneyValue.text = DataUtil().parseMoney(moneyLog.charge)
         binding.tvCategory.text = moneyLog.category
         binding.tvDate.text = parseDate(moneyLog.date)
+        binding.evMemo.setText(moneyLog.memo)
+        if(moneyLog.sign){//예산 포함
+            binding.isBudget.text=context.getString(R.string.yes_budget)
+            binding.isBudget.isChecked = moneyLog.is_budget
+        }else{//예산 제외
+            binding.isBudget.text=context.getString(R.string.no_budget)
+            binding.isBudget.isChecked = !moneyLog.is_budget
+        }
 
         binding.ibClose.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
@@ -40,7 +50,10 @@ class LogDialog(private val context: AppCompatActivity) {
             adapter.notifyItemRemoved(position)
             adapter.notifyDataSetChanged()
             MoneyLogList.list.removeAt(position)
-            MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
+            MyApplication.db.deleteLog(moneyLog)
+
+            DataUtil().updateValue()//자산, 예산 최신화
+
             dialog.dismiss()
 
         })

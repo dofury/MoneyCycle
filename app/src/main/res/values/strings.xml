@@ -39,8 +39,12 @@
     <string name ="extra_income">부수입</string>
     <string name ="finance">금융 소득</string>
     <string name ="refund">환급</string>
+
     <string name="no">취소</string>
     <string name="yes">확인</string>
+    <string name="memo">메모</string>
+    <string name="no_budget">예산 제외</string>
+    <string name="yes_budget">예산 포함</string>
     <!--ㅇ-->
 
 </resources>

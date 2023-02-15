@@ -107,4 +107,45 @@
             android:textSize="15dp"
             android:text="null"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/is_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/no_budget"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/siam"
+            android:layout_height="2px"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:paddingBottom="15dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ev_memo"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="@string/memo"/>
+
+    </LinearLayout>
 </LinearLayout>

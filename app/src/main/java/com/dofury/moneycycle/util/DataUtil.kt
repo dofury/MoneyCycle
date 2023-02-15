@@ -1,5 +1,8 @@
 package com.dofury.moneycycle.util
 
+import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.dto.MoneyLogList
 import java.text.DecimalFormat
 
 class DataUtil {
@@ -16,6 +19,43 @@ class DataUtil {
         } catch (e: NumberFormatException) {
             false
         }
+    }
+
+    private fun getRemainBudget(): Long{//실험실
+        var sum: Long = 0
+        for(log in MoneyLogList.list){
+            if(log.is_budget)
+                sum += if(!log.sign){
+                    (0-log.charge)
+                }else{
+                    log.charge
+                }
+        }
+        return MyApplication.prefs.getString("budget","0").toLong() + sum
+    }
+    private fun getMoney(): Long{//실험실
+        var sum: Long = 0
+        for(log in MoneyLogList.list){
+                sum += if(!log.sign){
+                    (0-log.charge)
+                }else{
+                    log.charge
+                }
+        }
+        return sum
+    }
+
+
+    private fun updateRemainBudget(){
+        MyApplication.prefs.setString("remain_budget",getRemainBudget().toString())
+    }
+    private fun updateMoney(){
+        MyApplication.prefs.setString("money",getMoney().toString())
+    }
+
+    fun updateValue(){
+        updateRemainBudget()
+        updateMoney()
     }
 
 

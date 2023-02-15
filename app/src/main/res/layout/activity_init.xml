@@ -47,25 +47,6 @@
         android:textColor="@color/siam"
         android:inputType="number"
         android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="40dp"
-        android:textStyle="bold"
-        android:text="자산 설정"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="현재 금액"/>
-    <EditText
-        android:id="@+id/ev_init_money_value"
-        android:layout_width="match_parent"
-        android:hint="0"
-        android:textSize="20dp"
-        android:inputType="number"
-        android:textColor="@color/siam"
-        android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/btn_init_submit"
         android:layout_width="match_parent"

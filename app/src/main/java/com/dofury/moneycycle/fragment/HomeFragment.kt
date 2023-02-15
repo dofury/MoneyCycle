@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract.Data
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.InitActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
+import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.util.DataUtil
 import java.text.DecimalFormat
 import java.time.LocalDate
@@ -66,6 +68,7 @@ class HomeFragment : Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun init(){
+        DataUtil().updateValue()//자산, 예산 최신화
         val cal = Calendar.getInstance()
         cal.set(LocalDate.now().year,LocalDate.now().monthValue-1,LocalDate.now().dayOfMonth)
         val goalValue = MyApplication.prefs.getString("goal","0")

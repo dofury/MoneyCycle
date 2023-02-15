@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.dofury.moneycycle.*
 import com.dofury.moneycycle.databinding.ActivityLogBinding
+import com.dofury.moneycycle.dialog.LogSetDialog
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
@@ -38,7 +39,7 @@ class LogActivity : AppCompatActivity() {
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        moneyLog = MoneyLog(0, 0, false, "null", "null", false)
+        moneyLog = MoneyLog(0, 0, false, "", "", "",true,false)
         setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
     }
@@ -142,7 +143,9 @@ class LogActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun setCategory(category : String) {
         moneyLog.category = category
-        submitLog()
+        val dialog = LogSetDialog(this)
+        this.layoutInflater
+        dialog.show(moneyLog)
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun submitLog(){
@@ -164,11 +167,12 @@ class LogActivity : AppCompatActivity() {
             remain -= moneyLog.charge
         }
 
-        MyApplication.prefs.setString("remain_budget",remain.toString())//예산 돈 반영
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
         MoneyLogList.list.add(moneyLog)
         MyApplication.db.addLog(moneyLog)
+
+        DataUtil().updateValue()//자산, 예산 최신화
 
         MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
 

@@ -23,51 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/gray"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:padding="5dp"
-                android:text="자산 설정"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="@color/white_gray"/>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="자산 금액"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_right"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:tint="@color/siam" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="5px"
-                android:background="@color/white_gray"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray"
                 android:textSize="20dp"
                 android:padding="5dp"
                 android:textStyle="bold"
