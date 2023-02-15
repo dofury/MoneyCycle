@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.widget.ViewPager2
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.adapter.MainPagerAdapter
 import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
@@ -33,16 +35,25 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar : Toolbar = findViewById(R.id.toolbar)
 
-        setFragment(TAG_HOME, HomeFragment())
-
+        binding.navHostFragmentContentMain.adapter = MainPagerAdapter(this)
+        binding.navHostFragmentContentMain.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.navigationView.menu.getItem(position).isChecked = true
+                }
+            }
+        )
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
-                R.id.listFragment -> setFragment(TAG_LIST, ListFragment())
+                R.id.homeFragment -> binding.navHostFragmentContentMain.currentItem = 0
+                R.id.settingFragment -> binding.navHostFragmentContentMain.currentItem = 1
+                R.id.listFragment -> binding.navHostFragmentContentMain.currentItem = 2
             }
             true
         }
+        //setFragment(TAG_HOME, HomeFragment())
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)//기본 타이틀 삭제
 
