@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar : Toolbar = findViewById(R.id.toolbar)
 
-
         setFragment(TAG_HOME, HomeFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->

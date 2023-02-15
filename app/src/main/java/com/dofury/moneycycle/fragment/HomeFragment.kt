@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
         binding.fab.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, LogActivity::class.java)
             startActivity(intent)
-            mainActivity.finish()
 
         })
         return binding.root

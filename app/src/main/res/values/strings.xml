@@ -45,6 +45,10 @@
     <string name="memo">메모</string>
     <string name="no_budget">예산 제외</string>
     <string name="yes_budget">예산 포함</string>
+    <string name="budget_charge">예산 금액</string>
+    <string name="goal_charge">목표 금액</string>
+    <string name="budget_plus">예산 PLUS</string>
+
     <!--ㅇ-->
 
 </resources>
