@@ -42,6 +42,19 @@ class LogPageDialog(private val context: AppCompatActivity) {
             binding.isBudget.text=context.getString(R.string.no_budget)
             binding.isBudget.isChecked = !moneyLog.is_budget
         }
+        binding.isBudget.setOnClickListener(View.OnClickListener {
+            if(moneyLog.sign){//예산 포함
+                when(binding.isBudget.isChecked){
+                    true -> moneyLog.is_budget = true
+                    false -> moneyLog.is_budget = false
+                }
+            }else{//예산 제외
+                when(binding.isBudget.isChecked){
+                    true -> moneyLog.is_budget = false
+                    false -> moneyLog.is_budget = true
+                }
+            }
+        })
 
         binding.ibClose.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
