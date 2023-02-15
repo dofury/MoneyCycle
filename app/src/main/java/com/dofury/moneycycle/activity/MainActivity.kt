@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar : Toolbar = findViewById(R.id.toolbar)
 
         setFragment(TAG_HOME, HomeFragment())
+
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())

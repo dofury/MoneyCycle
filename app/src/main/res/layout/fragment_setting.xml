@@ -105,7 +105,7 @@
                 android:layout_height="5px"
                 android:background="@color/white_gray"/>
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_budget"
+                android:id="@+id/cl_budget_plus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
