@@ -54,6 +54,7 @@ class LogPageDialog(private val context: AppCompatActivity) {
                     false -> moneyLog.is_budget = true
                 }
             }
+            MyApplication.db.updateLog(moneyLog)//db 반영
         })
 
         binding.ibClose.setOnClickListener(View.OnClickListener {

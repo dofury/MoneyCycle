@@ -21,6 +21,15 @@ class DataUtil {
         }
     }
 
+
+    private fun getBudgetPlus(): Long{//실험실
+        var sum: Long = 0
+        for(log in MoneyLogList.list){
+            if(log.is_budget && log.sign)
+                sum += log.charge
+        }
+        return sum
+    }
     private fun getRemainBudget(): Long{//실험실
         var sum: Long = 0
         for(log in MoneyLogList.list){
@@ -45,7 +54,9 @@ class DataUtil {
         return sum
     }
 
-
+    private fun updateBudgetPlus(){
+        MyApplication.prefs.setString("budget_plus",getBudgetPlus().toString())
+    }
     private fun updateRemainBudget(){
         MyApplication.prefs.setString("remain_budget",getRemainBudget().toString())
     }
@@ -55,6 +66,7 @@ class DataUtil {
 
     fun updateValue(){
         updateRemainBudget()
+        updateBudgetPlus()
         updateMoney()
     }
 

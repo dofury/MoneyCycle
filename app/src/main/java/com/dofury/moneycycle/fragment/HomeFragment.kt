@@ -72,10 +72,15 @@ class HomeFragment : Fragment() {
         val cal = Calendar.getInstance()
         cal.set(LocalDate.now().year,LocalDate.now().monthValue-1,LocalDate.now().dayOfMonth)
         val goalValue = MyApplication.prefs.getString("goal","0")
-        val budgetValue = MyApplication.prefs.getString("budget","0")
+
+        val budget = MyApplication.prefs.getString("budget","0")
+        val budgetPlus = MyApplication.prefs.getString("budget_plus","0")
+        val budgetValue = (budget.toLong() + budgetPlus.toLong()).toString()
         val moneyValue = MyApplication.prefs.getString("money","0")
         val remainBudgetValue = MyApplication.prefs.getString("remain_budget","0")
         val remainDayValue = (cal.getActualMaximum(Calendar.DAY_OF_MONTH)-LocalDate.now().dayOfMonth+1).toString()
+
+        binding.tvPlusBudgetValue.text = if(budgetPlus == "0") "" else "+(${DataUtil().parseMoney(budgetPlus.toLong())})"
         binding.tvGoalValue.text= DataUtil().parseMoney(goalValue.toLong())
         binding.tvBudgetValue.text= DataUtil().parseMoney(budgetValue.toLong())
         binding.tvMoneyValue.text= DataUtil().parseMoney(moneyValue.toLong())
