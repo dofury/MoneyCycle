@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.DialoglMoneySetBinding
 import com.dofury.moneycycle.util.DataUtil
 
@@ -21,6 +22,7 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
 
         dialog.setContentView(binding.root)
 
+        init()
         buttonEvent()
 
         //크기 설정
@@ -32,7 +34,6 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
         dialog.show()
     }
     private fun buttonEvent(){
-        binding.etMoney.hint = MyApplication.prefs.getString(tag,"0")
 
         binding.btnYes.setOnClickListener(View.OnClickListener {
             if(DataUtil().isNumber(binding.etMoney.text.toString())){
@@ -47,5 +48,11 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
             dialog.dismiss()
         })
     }
-
+    private fun init(){
+        binding.etMoney.hint = DataUtil().parseMoney(MyApplication.prefs.getString(tag,"0").toLong())
+        when(tag){
+            "budget" -> binding.tvName.text = context.getString(R.string.budget_charge)
+            "goal" -> binding.tvName.text = context.getString(R.string.goal_charge)
+        }
+    }
 }

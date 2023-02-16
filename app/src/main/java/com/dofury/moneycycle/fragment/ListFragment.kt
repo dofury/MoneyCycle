@@ -14,7 +14,6 @@ import com.dofury.moneycycle.dto.MoneyLog
 
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
-    private lateinit var moneyLogList: List<MoneyLog>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

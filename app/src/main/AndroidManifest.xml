@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.dofury.moneycycle">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name="com.dofury.moneycycle.MyApplication"
         android:allowBackup="true"
@@ -17,6 +18,9 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
 
         <activity
             android:name=".activity.MainActivity"
@@ -34,7 +38,10 @@
             android:name=".activity.InitActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activity.BudgetPlusActivity"
+            android:exported="true">
+        </activity>
     </application>
-
 
 </manifest>
