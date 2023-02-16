@@ -15,6 +15,8 @@ import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 
 private const val TAG_HOME = "home_fragment"
 private const val TAG_SETTING = "setting_fragment"
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
         Log.d("test","hi")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
 
         val toolbar : Toolbar = findViewById(R.id.toolbar)
 

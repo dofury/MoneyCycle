@@ -49,6 +49,9 @@
     <string name="goal_charge">목표 금액</string>
     <string name="budget_plus">예산 PLUS</string>
 
-    <!--ㅇ-->
+    <string name="admob_app_id">ca-app-pub-5800467535204514~5224977721</string>
+    <string name="banner_ad_unit_id">ca-app-pub-5800467535204514/8868160522</string>
+    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <!--<string name="banner_ad_unit_id">ca-app-pub-5800467535204514/8868160522</string>-->
 
 </resources>
