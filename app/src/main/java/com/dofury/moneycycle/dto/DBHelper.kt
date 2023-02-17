@@ -104,7 +104,7 @@ class DBHelper(
     fun deleteLog(log: MoneyLog){
         val db = this.writableDatabase
 
-        db.delete(TABLE_NAME, "$UID=?", arrayOf(log.uid.toString()))
+        db.delete(TABLE_NAME,"$UID=?", arrayOf(log.uid.toString()))
         db.close()
     }
 

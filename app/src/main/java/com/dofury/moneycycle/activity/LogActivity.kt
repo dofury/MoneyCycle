@@ -3,7 +3,6 @@ package com.dofury.moneycycle.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -28,11 +27,12 @@ private const val TAG_CATEGORY_OUT = "category_out_fragment"
 
 class LogActivity : AppCompatActivity() {
 
-    lateinit var moneyLog: MoneyLog
     private lateinit var binding: ActivityLogBinding
+    lateinit var moneyLog: MoneyLog
     private var tag = TAG_NUM
     private var moneyBuffer: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -169,13 +169,19 @@ class LogActivity : AppCompatActivity() {
 
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
-        MoneyLogList.list.add(moneyLog)
-        MyApplication.db.addLog(moneyLog)
+        MyApplication.db.addLog(moneyLog)//db 추가
+        MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
         DataUtil().updateValue()//자산, 예산 최신화
 
-        MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
 
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun logToMain(){//실험
+        submitLog()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

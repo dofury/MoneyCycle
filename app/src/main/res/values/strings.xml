@@ -20,7 +20,10 @@
     <string name="budget_value">예산 금액</string>
     <string name="goal_setting">목표 설정</string>
     <string name="goal_value">목표 금액</string>
+    <string name="money_setting">자산 설정</string>
+    <string name="money_value">자산 금액</string>
 
+    <string name="end">완료</string>
     <string name="date">날짜</string>
 
     <string name="category">카테고리</string>
@@ -48,6 +51,7 @@
     <string name="budget_charge">예산 금액</string>
     <string name="goal_charge">목표 금액</string>
     <string name="budget_plus">예산 PLUS</string>
+    <string name="start_init">초기 설정</string>
 
     <string name="admob_app_id">ca-app-pub-5800467535204514~5224977721</string>
     <string name="banner_ad_unit_id">ca-app-pub-5800467535204514/8868160522</string>

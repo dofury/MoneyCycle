@@ -16,6 +16,10 @@
     <style name ="Activity" parent="Theme.MoneyCycle">
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name ="Button" parent="Theme.AppCompat.Light">
+        <item name="android:background">@drawable/btn_siam</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
     <style name="numberPad" parent="Theme.MoneyCycle">
         <item name="android:textSize">30dp</item>
