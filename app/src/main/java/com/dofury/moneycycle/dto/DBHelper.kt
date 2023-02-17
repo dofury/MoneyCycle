@@ -104,14 +104,14 @@ class DBHelper(
     fun deleteLog(log: MoneyLog){
         val db = this.writableDatabase
 
-        db.delete(TABLE_NAME, "$UID=?", arrayOf(log.uid.toString()))
+        db.delete(TABLE_NAME,"$UID=?", arrayOf(log.uid.toString()))
         db.close()
     }
 
 
     fun drop() {
         val DB_PATH = "/data/data/" + (context?.packageName ?: String)
-        val DB_NAME = "$DATABASE_NAME.db"
+        val DB_NAME = "$DATABASE_NAME"
         val DB_FULLPATH = "$DB_PATH/databases/$DB_NAME"
         val dbFile = File(DB_FULLPATH)
         if (dbFile.delete()) {
