@@ -7,11 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
 import com.dofury.moneycycle.activity.LogActivity
+import com.dofury.moneycycle.activity.MainActivity
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.MoneySetDialog
+import com.dofury.moneycycle.dialog.ResetDialog
+import com.google.android.material.snackbar.Snackbar
+import kotlin.system.exitProcess
 
 
 class SettingFragment : Fragment() {
@@ -44,6 +50,10 @@ class SettingFragment : Fragment() {
         binding.clBudgetPlus.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, BudgetPlusActivity::class.java)
             startActivity(intent)
+        })
+        binding.clReset.setOnClickListener(View.OnClickListener {
+            val dialog = ResetDialog(mainActivity)
+            dialog.show()
         })
     }
 

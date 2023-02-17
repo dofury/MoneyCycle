@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 
 class PreferenceUtil(context: Context) {
     private val prefs: SharedPreferences =
-        context.getSharedPreferences("prefs_name",Context.MODE_PRIVATE)
+        context.getSharedPreferences("app_data",Context.MODE_PRIVATE)
     private val makeGson = GsonBuilder().create()
 
     private var list : MutableList<MoneyLog> = mutableListOf()
@@ -34,5 +34,11 @@ class PreferenceUtil(context: Context) {
     }
     fun setBoolean(key: String, bool: Boolean) {
         prefs.edit().putBoolean(key, bool).apply()
+    }
+    fun remove(key: String){
+        prefs.edit().remove(key).commit()
+    }
+    fun clear(){
+        prefs.edit().clear().commit()
     }
 }
