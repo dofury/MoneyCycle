@@ -6,20 +6,14 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
-import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.adapter.BudgetPlusAdapter
-import com.dofury.moneycycle.databinding.DialogLogPageBinding
-import com.dofury.moneycycle.databinding.DialogLogSetBinding
 import com.dofury.moneycycle.databinding.DialogYesNoBinding
-import com.dofury.moneycycle.util.DataUtil
-import java.text.SimpleDateFormat
+import com.dofury.moneycycle.dto.MoneyLogList
 
-class YesNoDialog(private val context: AppCompatActivity) {
+class BudgetPlusDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogYesNoBinding
@@ -50,6 +44,9 @@ class YesNoDialog(private val context: AppCompatActivity) {
             list[position].is_budget = false
             MyApplication.db.updateLog( list[position])//db 반영
             list.removeAt(position)
+
+            MoneyLogList.list = MyApplication.db.allLogs
+
             adapter.notifyItemRemoved(position)
             adapter.notifyDataSetChanged()
 
