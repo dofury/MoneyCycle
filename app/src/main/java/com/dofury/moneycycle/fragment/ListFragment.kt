@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
+    lateinit var moneyLogList: MutableList<MoneyLog>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -54,7 +55,8 @@ class ListFragment : Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun init(){
-        binding.rcvList.adapter = ListAdapter(MyApplication.db.getDateLog(date))
+        moneyLogList = MyApplication.db.getDateLog(date)
+        binding.rcvList.adapter = ListAdapter(moneyLogList)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -49,7 +49,7 @@ class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
             val dialog = LogPageDialog(mainActivity)
-            dialog.show(moneyLogList[position],this,position)
+            dialog.show(moneyLogList,this,position)
         })
     }
 
