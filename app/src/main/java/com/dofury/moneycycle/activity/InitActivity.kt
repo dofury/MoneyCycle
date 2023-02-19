@@ -115,8 +115,6 @@ class InitActivity : AppCompatActivity() {
 
         DataUtil().updateValue()//자산, 예산 최신화
 
-        MyApplication.prefs.setList("moneyLogList", MoneyLogList.list)
-
     }
 
 }

@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
-        val toolbar : Toolbar = findViewById(R.id.toolbar)
 
         setFragment(TAG_HOME, HomeFragment())
 
@@ -54,9 +53,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)//기본 타이틀 삭제
 
     }
 
@@ -103,25 +99,6 @@ class MainActivity : AppCompatActivity() {
         fragTransaction.commitAllowingStateLoss()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> {
-
-                System.exit(0) // 현재 액티비티를 종료시킨다.
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     fun restart(){
         ActivityCompat.finishAffinity(this)

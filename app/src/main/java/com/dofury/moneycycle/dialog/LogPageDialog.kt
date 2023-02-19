@@ -63,7 +63,7 @@ class LogPageDialog(private val context: AppCompatActivity) {
         binding.ibDelete.setOnClickListener(View.OnClickListener {
             adapter.notifyItemRemoved(position)
             adapter.notifyDataSetChanged()
-            MoneyLogList.list.removeAt(position)
+            MoneyLogList.list.removeAt(position)//지워도 됨
             MyApplication.db.deleteLog(moneyLog)
 
             DataUtil().updateValue()//자산, 예산 최신화

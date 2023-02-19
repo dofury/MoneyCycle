@@ -8,6 +8,7 @@
 
     <style name="appbar" parent="Theme.MoneyCycle">
         <item name="colorPrimary">@color/siam</item>
+        <item name="android:backgroundTint">@color/siam</item>
     </style>
     <style name ="Fragment" parent="Theme.MoneyCycle">
         <item name="android:textColor">@color/siam</item>

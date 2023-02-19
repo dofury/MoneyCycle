@@ -11,16 +11,17 @@ import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
+import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 
-class ListAdapter() :
+class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
-        return MoneyLogList.list.size
+        return moneyLogList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ListViewHolder(
@@ -29,7 +30,7 @@ class ListAdapter() :
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
-        if(MoneyLogList.list[position].sign){//지출,수입 검사하여 색칠
+        if(moneyLogList[position].sign){//지출,수입 검사하여 색칠
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,
                 R.color.blue
             ))
@@ -38,9 +39,9 @@ class ListAdapter() :
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = DataUtil().parseMoney(MoneyLogList.list[position].charge)
-        binding.itemDate.text = parseDate(MoneyLogList.list[position].date)
-        binding.itemType.text = MoneyLogList.list[position].category
+        binding.itemMoney.text = DataUtil().parseMoney(moneyLogList[position].charge)
+        binding.itemDate.text = parseDate(moneyLogList[position].date)
+        binding.itemType.text = moneyLogList[position].category
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
@@ -48,7 +49,7 @@ class ListAdapter() :
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
             val dialog = LogPageDialog(mainActivity)
-            dialog.show(MoneyLogList.list[position],this,position)
+            dialog.show(moneyLogList[position],this,position)
         })
     }
 
@@ -60,7 +61,7 @@ class ListAdapter() :
     }
 
     private fun parseCategoryImage(binding: ListItemBinding,position: Int){
-        when(MoneyLogList.list[position].category){
+        when(moneyLogList[position].category){
 
             binding.root.context.getString(R.string.house) ->
                 binding.civCategory.setImageResource(R.drawable.house_icon)

@@ -5,9 +5,14 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Build
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import java.io.File
+import java.time.LocalDateTime
+import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 class DBHelper(
     val context: Context?,
@@ -70,6 +75,34 @@ class DBHelper(
     get() {
         val logs = ArrayList<MoneyLog>()
         val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $COL_IS_BUDGET = TRUE AND $COL_SIGN = TRUE"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQueryHandler,null)
+        if(cursor.moveToFirst()){
+            do{
+                val log = MoneyLog(
+                    cursor.getInt(cursor.getColumnIndex(UID)),
+                    cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_MEMO)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER))),
+                )
+                logs.add(log)
+            }while(cursor.moveToNext())
+        }
+        db.close()
+        return logs
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("Range")
+    fun getDateLog(localDateTime: LocalDateTime): MutableList<MoneyLog>{
+        val month = YearMonth.from(localDateTime)
+        val firstDate = month.atDay(1)
+        val lastDate = month.atEndOfMonth()
+        val logs = ArrayList<MoneyLog>()
+        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE strftime('%Y-%m-%d', $COL_DATE) BETWEEN '$firstDate' AND '$lastDate'"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQueryHandler,null)
         if(cursor.moveToFirst()){
