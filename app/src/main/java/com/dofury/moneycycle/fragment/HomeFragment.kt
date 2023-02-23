@@ -1,11 +1,8 @@
 package com.dofury.moneycycle.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.Data
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +15,12 @@ import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.InitActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
-import com.dofury.moneycycle.dto.MoneyLogList
+import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import java.io.File
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.util.*
@@ -28,7 +29,7 @@ import java.util.*
 
 lateinit var mainActivity: MainActivity
 private lateinit var binding: FragmentHomeBinding
-object HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -45,6 +46,23 @@ object HomeFragment : Fragment() {
             startActivity(intent)
 
         })
+
+/*        val objectMapper = ObjectMapper()
+        val jsonArray = objectMapper.readValue(DataUtil.logToJson(),Array<MoneyLog>::class.java)
+
+        val csvMapper = CsvMapper()
+        val csvSchema = CsvSchema.builder()
+            .addColumn("name")
+            .addColumn("age")
+            .addColumn("city")
+            .build()
+            .withHeader()
+
+        val csvString = csvMapper.writeValueAsString(jsonArray)
+        File("output.csv").writeText(csvString)*/
+
+
+
         return binding.root
     }
     @RequiresApi(Build.VERSION_CODES.O)

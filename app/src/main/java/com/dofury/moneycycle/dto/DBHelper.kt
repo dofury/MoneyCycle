@@ -131,8 +131,8 @@ class DBHelper(
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
         values.put(COL_MEMO, log.memo)
-        values.put(COL_IS_BUDGET, log.is_budget)
-        values.put(COL_IS_SERVER, log.is_server)
+        values.put(COL_IS_BUDGET, log.isBudget)
+        values.put(COL_IS_SERVER, log.isServer)
 
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -151,8 +151,8 @@ class DBHelper(
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
         values.put(COL_MEMO, log.memo)
-        values.put(COL_IS_BUDGET, log.is_budget)
-        values.put(COL_IS_SERVER, log.is_server)
+        values.put(COL_IS_BUDGET, log.isBudget)
+        values.put(COL_IS_SERVER, log.isServer)
 
         return db.update(TABLE_NAME, values, "$UID=?", arrayOf(log.uid.toString()))
     }

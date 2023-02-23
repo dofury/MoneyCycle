@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.system.exitProcess
 
 
-object SettingFragment : Fragment() {
+class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

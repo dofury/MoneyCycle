@@ -51,5 +51,9 @@ dependencies {
     implementation 'com.github.jenly1314:circleprogressview:1.1.3'
 
     implementation 'com.google.android.gms:play-services-ads:19.2.0'//구글 광고
+    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    implementation 'com.google.firebase:firebase-analytics:18.0.2'
     implementation 'com.opencsv:opencsv:4.4'//csv
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'//json
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: '2.2.3'//csv
 }

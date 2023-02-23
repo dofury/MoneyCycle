@@ -3,14 +3,9 @@ package com.dofury.moneycycle.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.dofury.moneycycle.R
@@ -18,7 +13,6 @@ import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
-import com.dofury.moneycycle.fragment.mainActivity
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlin.system.exitProcess
@@ -34,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("test","hi")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,13 +36,13 @@ class MainActivity : AppCompatActivity() {
         binding.adView.loadAd(adRequest)
 
 
-        setFragment(TAG_HOME, HomeFragment)
+        setFragment(TAG_HOME, HomeFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment)
+                R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
                 R.id.listFragment -> setFragment(TAG_LIST, ListFragment)
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment)
+                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
             }
             true
         }
@@ -82,7 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         if(tag == TAG_HOME){
             if(home!=null){
-                HomeFragment.init()
+                HomeFragment().init()
                 fragTransaction.show(home)
             }
         }

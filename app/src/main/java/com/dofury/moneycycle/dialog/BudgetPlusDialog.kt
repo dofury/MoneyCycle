@@ -41,7 +41,7 @@ class BudgetPlusDialog(private val context: AppCompatActivity) {
         })
         binding.btnYes.setOnClickListener(View.OnClickListener {
 
-            list[position].is_budget = false
+            list[position].isBudget = false
             MyApplication.db.updateLog( list[position])//db 반영
             list.removeAt(position)
 

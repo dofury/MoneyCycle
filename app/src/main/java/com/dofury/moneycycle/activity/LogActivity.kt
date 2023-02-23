@@ -15,6 +15,7 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
 import com.dofury.moneycycle.fragment.CategoryOutFragment
+import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
@@ -171,6 +172,8 @@ class LogActivity : AppCompatActivity() {
         MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
         DataUtil.updateValue()//자산, 예산 최신화
+
+        HomeFragment().init()
 
         finish()
 

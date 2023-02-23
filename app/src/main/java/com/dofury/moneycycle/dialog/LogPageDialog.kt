@@ -38,21 +38,21 @@ class LogPageDialog(private val context: AppCompatActivity) {
         binding.evMemo.setText(moneyLogList[position].memo)
         if(moneyLogList[position].sign){//예산 포함
             binding.isBudget.text=context.getString(R.string.yes_budget)
-            binding.isBudget.isChecked = moneyLogList[position].is_budget
+            binding.isBudget.isChecked = moneyLogList[position].isBudget
         }else{//예산 제외
             binding.isBudget.text=context.getString(R.string.no_budget)
-            binding.isBudget.isChecked = !moneyLogList[position].is_budget
+            binding.isBudget.isChecked = !moneyLogList[position].isBudget
         }
         binding.isBudget.setOnClickListener(View.OnClickListener {
             if(moneyLogList[position].sign){//예산 포함
                 when(binding.isBudget.isChecked){
-                    true -> moneyLogList[position].is_budget = true
-                    false -> moneyLogList[position].is_budget = false
+                    true -> moneyLogList[position].isBudget = true
+                    false -> moneyLogList[position].isBudget = false
                 }
             }else{//예산 제외
                 when(binding.isBudget.isChecked){
-                    true -> moneyLogList[position].is_budget = false
-                    false -> moneyLogList[position].is_budget = true
+                    true -> moneyLogList[position].isBudget = false
+                    false -> moneyLogList[position].isBudget = true
                 }
             }
             MyApplication.db.updateLog(moneyLogList[position])//db 반영

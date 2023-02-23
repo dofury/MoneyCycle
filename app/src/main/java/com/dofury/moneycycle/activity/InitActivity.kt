@@ -56,7 +56,7 @@ class InitActivity : AppCompatActivity() {
 
                 createLog()//자산 로그 설정
 
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this,MainActivity::class.java)
                 startActivity(intent)
                 finish()
 
@@ -98,8 +98,8 @@ class InitActivity : AppCompatActivity() {
             category = getString(R.string.change),
             date = "",
             memo = "기본 자산",
-            is_budget = false,
-            is_server = false
+            isBudget = false,
+            isServer = false
         )
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -111,7 +111,6 @@ class InitActivity : AppCompatActivity() {
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
         MyApplication.db.addLog(moneyLog)//db 추가
-        MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
         DataUtil.updateValue()//자산, 예산 최신화
 

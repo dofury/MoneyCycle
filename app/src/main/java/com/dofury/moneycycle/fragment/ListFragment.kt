@@ -22,9 +22,6 @@ object ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
     lateinit var moneyLogList: MutableList<MoneyLog>
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(

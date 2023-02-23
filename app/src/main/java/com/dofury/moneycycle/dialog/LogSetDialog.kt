@@ -50,9 +50,9 @@ class LogSetDialog(private val context: LogActivity) {
         binding.btnOk.setOnClickListener(View.OnClickListener {
 
             if(moneyLog.sign){//예산 포함
-                moneyLog.is_budget = binding.isBudget.isChecked
+                moneyLog.isBudget = binding.isBudget.isChecked
             }else{//예산 제외
-                moneyLog.is_budget = !binding.isBudget.isChecked
+                moneyLog.isBudget = !binding.isBudget.isChecked
             }
             moneyLog.memo = binding.etMemo.text.toString()
             context.submitLog()
