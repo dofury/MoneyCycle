@@ -2,6 +2,7 @@ package com.dofury.moneycycle.fragment
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class ListFragment : Fragment() {
+object ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
     lateinit var moneyLogList: MutableList<MoneyLog>
@@ -54,7 +55,7 @@ class ListFragment : Fragment() {
         dateEvent(formatter)
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun init(){
+    fun init(){
         moneyLogList = MyApplication.db.getDateLog(date)
         binding.rcvList.adapter = ListAdapter(moneyLogList)
     }

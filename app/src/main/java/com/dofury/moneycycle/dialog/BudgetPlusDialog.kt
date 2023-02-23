@@ -45,7 +45,7 @@ class BudgetPlusDialog(private val context: AppCompatActivity) {
             MyApplication.db.updateLog( list[position])//db 반영
             list.removeAt(position)
 
-            MoneyLogList.list = MyApplication.db.allLogs
+            //MoneyLogList.list = MyApplication.db.allLogs
 
             adapter.notifyItemRemoved(position)
             adapter.notifyDataSetChanged()

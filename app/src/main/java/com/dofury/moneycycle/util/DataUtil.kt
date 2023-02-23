@@ -24,7 +24,7 @@ class DataUtil {
 
     private fun getBudgetPlus(): Long{//실험실
         var sum: Long = 0
-        for(log in MoneyLogList.list){
+        for(log in MyApplication.db.allLogs){
             if(log.is_budget && log.sign)
                 sum += log.charge
         }
@@ -32,7 +32,7 @@ class DataUtil {
     }
     private fun getRemainBudget(): Long{//실험실
         var sum: Long = 0
-        for(log in MoneyLogList.list){
+        for(log in MyApplication.db.allLogs){
             if(log.is_budget)
                 sum += if(!log.sign){
                     (0-log.charge)
@@ -44,7 +44,7 @@ class DataUtil {
     }
     private fun getMoney(): Long{//실험실
         var sum: Long = 0
-        for(log in MoneyLogList.list){
+        for(log in MyApplication.db.allLogs){
                 sum += if(!log.sign){
                     (0-log.charge)
                 }else{

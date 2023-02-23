@@ -43,13 +43,13 @@ class MainActivity : AppCompatActivity() {
         binding.adView.loadAd(adRequest)
 
 
-        setFragment(TAG_HOME, HomeFragment())
+        setFragment(TAG_HOME, HomeFragment)
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
-                R.id.listFragment -> setFragment(TAG_LIST, ListFragment())
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
+                R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment)
+                R.id.listFragment -> setFragment(TAG_LIST, ListFragment)
+                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment)
             }
             true
         }
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
         if(tag == TAG_HOME){
             if(home!=null){
-                HomeFragment().init()
+                HomeFragment.init()
                 fragTransaction.show(home)
             }
         }
@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
         else if(tag == TAG_LIST){
             if(list!=null){
+                ListFragment.init()
                 fragTransaction.show(list)
             }
         }
