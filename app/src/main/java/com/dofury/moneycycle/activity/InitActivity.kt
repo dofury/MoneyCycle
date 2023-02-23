@@ -3,21 +3,15 @@ package com.dofury.moneycycle.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Input
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityInitBinding
 import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
@@ -98,8 +92,8 @@ class InitActivity : AppCompatActivity() {
             category = getString(R.string.change),
             date = "",
             memo = "기본 자산",
-            isBudget = false,
-            isServer = false
+            budget = false,
+            server = false
         )
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")

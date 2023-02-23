@@ -11,7 +11,6 @@ import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.adapter.BudgetPlusAdapter
 import com.dofury.moneycycle.databinding.DialogYesNoBinding
-import com.dofury.moneycycle.dto.MoneyLogList
 
 class BudgetPlusDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
@@ -41,7 +40,7 @@ class BudgetPlusDialog(private val context: AppCompatActivity) {
         })
         binding.btnYes.setOnClickListener(View.OnClickListener {
 
-            list[position].isBudget = false
+            list[position].budget = false
             MyApplication.db.updateLog( list[position])//db 반영
             list.removeAt(position)
 

@@ -12,8 +12,6 @@ import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
-import com.dofury.moneycycle.dto.DBHelper
-import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
@@ -38,21 +36,21 @@ class LogPageDialog(private val context: AppCompatActivity) {
         binding.evMemo.setText(moneyLogList[position].memo)
         if(moneyLogList[position].sign){//예산 포함
             binding.isBudget.text=context.getString(R.string.yes_budget)
-            binding.isBudget.isChecked = moneyLogList[position].isBudget
+            binding.isBudget.isChecked = moneyLogList[position].budget
         }else{//예산 제외
             binding.isBudget.text=context.getString(R.string.no_budget)
-            binding.isBudget.isChecked = !moneyLogList[position].isBudget
+            binding.isBudget.isChecked = !moneyLogList[position].budget
         }
         binding.isBudget.setOnClickListener(View.OnClickListener {
             if(moneyLogList[position].sign){//예산 포함
                 when(binding.isBudget.isChecked){
-                    true -> moneyLogList[position].isBudget = true
-                    false -> moneyLogList[position].isBudget = false
+                    true -> moneyLogList[position].budget = true
+                    false -> moneyLogList[position].budget = false
                 }
             }else{//예산 제외
                 when(binding.isBudget.isChecked){
-                    true -> moneyLogList[position].isBudget = false
-                    false -> moneyLogList[position].isBudget = true
+                    true -> moneyLogList[position].budget = false
+                    false -> moneyLogList[position].budget = true
                 }
             }
             MyApplication.db.updateLog(moneyLogList[position])//db 반영

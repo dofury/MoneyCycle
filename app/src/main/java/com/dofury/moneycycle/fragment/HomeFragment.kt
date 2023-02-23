@@ -16,7 +16,9 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.InitActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.util.CsvWriter
 import com.dofury.moneycycle.util.DataUtil
+import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
@@ -36,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         mainActivity = context as MainActivity
 
@@ -47,19 +49,6 @@ class HomeFragment : Fragment() {
 
         })
 
-/*        val objectMapper = ObjectMapper()
-        val jsonArray = objectMapper.readValue(DataUtil.logToJson(),Array<MoneyLog>::class.java)
-
-        val csvMapper = CsvMapper()
-        val csvSchema = CsvSchema.builder()
-            .addColumn("name")
-            .addColumn("age")
-            .addColumn("city")
-            .build()
-            .withHeader()
-
-        val csvString = csvMapper.writeValueAsString(jsonArray)
-        File("output.csv").writeText(csvString)*/
 
 
 
@@ -67,9 +56,8 @@ class HomeFragment : Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startInit(){
-        var is_init = false
-        is_init = MyApplication.prefs.getBoolean("is_init",true)
-        if(is_init){
+        val isInit: Boolean = MyApplication.prefs.getBoolean("is_init",true)
+        if(isInit){
             val intent = Intent(mainActivity, InitActivity::class.java)
             startActivity(intent)
         }else{
@@ -121,9 +109,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun getPercent(all: String, now: String): Int {
-        val df = DecimalFormat("#.##")
+        //val df = DecimalFormat("#.##")
         var percent : Int = 0
-        var value = now.toDouble()/all.toDouble() *100
+        val value = now.toDouble()/all.toDouble() *100
         percent = value.toInt()
 
         return percent
