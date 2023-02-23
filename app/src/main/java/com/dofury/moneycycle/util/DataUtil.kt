@@ -2,11 +2,14 @@ package com.dofury.moneycycle.util
 
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import java.text.DecimalFormat
 
-class DataUtil {
+object DataUtil {
 
+    private val makeGson = GsonBuilder().create()
+    private var listType : TypeToken<MutableList<MoneyLog>> = object : TypeToken<MutableList<MoneyLog>>() {}
     fun parseMoney(money: Long): String {
         val dec = DecimalFormat("#,###")
         return dec.format(money)
@@ -68,6 +71,15 @@ class DataUtil {
         updateRemainBudget()
         updateBudgetPlus()
         updateMoney()
+    }
+
+    fun logToJson(): String {
+        val log = MyApplication.db.allLogs
+        return makeGson.toJson(log, listType.type)
+    }
+
+    fun logToCSV(){
+
     }
 
 

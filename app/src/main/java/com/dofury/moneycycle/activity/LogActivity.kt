@@ -117,7 +117,7 @@ class LogActivity : AppCompatActivity() {
         }
         if(binding.tvNumber.text.length <=10){
             moneyBuffer += number
-            binding.tvNumber.text = DataUtil().parseMoney(moneyBuffer.toLong())
+            binding.tvNumber.text = DataUtil.parseMoney(moneyBuffer.toLong())
         }
         else{
             Snackbar.make(binding.root, "10자를 넘을 수 없습니다", Snackbar.LENGTH_LONG)
@@ -135,7 +135,7 @@ class LogActivity : AppCompatActivity() {
     fun removeNumber() {
         if(moneyBuffer != ""){
             moneyBuffer = moneyBuffer.subSequence(0,moneyBuffer.length-1) as String
-            binding.tvNumber.text = if(moneyBuffer!="") DataUtil().parseMoney(moneyBuffer.toLong())else "0"
+            binding.tvNumber.text = if(moneyBuffer!="") DataUtil.parseMoney(moneyBuffer.toLong())else "0"
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -170,7 +170,7 @@ class LogActivity : AppCompatActivity() {
         MyApplication.db.addLog(moneyLog)//db 추가
         MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
-        DataUtil().updateValue()//자산, 예산 최신화
+        DataUtil.updateValue()//자산, 예산 최신화
 
         finish()
 

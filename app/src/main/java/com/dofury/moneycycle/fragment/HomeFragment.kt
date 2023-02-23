@@ -60,7 +60,7 @@ object HomeFragment : Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun init(){
-        DataUtil().updateValue()//자산, 예산 최신화
+        DataUtil.updateValue()//자산, 예산 최신화
         val cal = Calendar.getInstance()
         cal.set(LocalDate.now().year,LocalDate.now().monthValue-1,LocalDate.now().dayOfMonth)
         val goalValue = MyApplication.prefs.getString("goal","0")
@@ -72,11 +72,11 @@ object HomeFragment : Fragment() {
         val remainBudgetValue = MyApplication.prefs.getString("remain_budget","0")
         val remainDayValue = (cal.getActualMaximum(Calendar.DAY_OF_MONTH)-LocalDate.now().dayOfMonth+1).toString()
 
-        binding.tvPlusBudgetValue.text = if(budgetPlus == "0") "" else "+(${DataUtil().parseMoney(budgetPlus.toLong())})"
-        binding.tvGoalValue.text= DataUtil().parseMoney(goalValue.toLong())
-        binding.tvBudgetValue.text= DataUtil().parseMoney(budgetValue.toLong())
-        binding.tvMoneyValue.text= DataUtil().parseMoney(moneyValue.toLong())
-        binding.tvBudgetRemainValue.text= DataUtil().parseMoney(remainBudgetValue.toLong())
+        binding.tvPlusBudgetValue.text = if(budgetPlus == "0") "" else "+(${DataUtil.parseMoney(budgetPlus.toLong())})"
+        binding.tvGoalValue.text= DataUtil.parseMoney(goalValue.toLong())
+        binding.tvBudgetValue.text= DataUtil.parseMoney(budgetValue.toLong())
+        binding.tvMoneyValue.text= DataUtil.parseMoney(moneyValue.toLong())
+        binding.tvBudgetRemainValue.text= DataUtil.parseMoney(remainBudgetValue.toLong())
         //이번 달에 마지막 날을 가져와서 남은 일수를 계산
         binding.tvRemainDayValue.text = remainDayValue
 
@@ -96,7 +96,7 @@ object HomeFragment : Fragment() {
 
         val brvdv = remainBudgetValue.toLong()/ remainDayValue.toLong()
         if(brvdv>=0){
-            binding.tvBudgetRemainValueDivideValue.text = DataUtil().parseMoney(brvdv)
+            binding.tvBudgetRemainValueDivideValue.text = DataUtil.parseMoney(brvdv)
         }else{
             binding.tvBudgetRemainValueDivideValue.text = "0"
         }

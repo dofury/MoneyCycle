@@ -44,9 +44,9 @@ class InitActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
         binding.btnInitSubmit.setOnClickListener(View.OnClickListener {
-            if((DataUtil().isNumber(moneyBuffer) && moneyBuffer != "")&&
-                (DataUtil().isNumber(goalBuffer) && goalBuffer != "") &&
-                (DataUtil().isNumber(budgetBuffer) && budgetBuffer != "")){
+            if((DataUtil.isNumber(moneyBuffer) && moneyBuffer != "")&&
+                (DataUtil.isNumber(goalBuffer) && goalBuffer != "") &&
+                (DataUtil.isNumber(budgetBuffer) && budgetBuffer != "")){
 
                 MyApplication.prefs.setString("goal",goalBuffer)
                 MyApplication.prefs.setString("budget",budgetBuffer)
@@ -78,15 +78,15 @@ class InitActivity : AppCompatActivity() {
 
     }
     fun setMoney(value: String){
-        binding.tvInitMoneyValue.text = DataUtil().parseMoney(value.toLong())
+        binding.tvInitMoneyValue.text = DataUtil.parseMoney(value.toLong())
         moneyBuffer = value
     }
     fun setBudget(value: String){
-        binding.tvInitBudgetValue.text = DataUtil().parseMoney(value.toLong())
+        binding.tvInitBudgetValue.text = DataUtil.parseMoney(value.toLong())
         budgetBuffer = value
     }
     fun setGoal(value: String){
-        binding.tvInitGoalValue.text = DataUtil().parseMoney(value.toLong())
+        binding.tvInitGoalValue.text = DataUtil.parseMoney(value.toLong())
         goalBuffer = value
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -113,7 +113,7 @@ class InitActivity : AppCompatActivity() {
         MyApplication.db.addLog(moneyLog)//db 추가
         MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
-        DataUtil().updateValue()//자산, 예산 최신화
+        DataUtil.updateValue()//자산, 예산 최신화
 
     }
 

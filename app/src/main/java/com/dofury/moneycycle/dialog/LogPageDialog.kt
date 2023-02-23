@@ -32,7 +32,7 @@ class LogPageDialog(private val context: AppCompatActivity) {
         }else{
             binding.tvMoneySign.text="-"
         }
-        binding.tvMoneyValue.text = DataUtil().parseMoney(moneyLogList[position].charge)
+        binding.tvMoneyValue.text = DataUtil.parseMoney(moneyLogList[position].charge)
         binding.tvCategory.text = moneyLogList[position].category
         binding.tvDate.text = parseDate(moneyLogList[position].date)
         binding.evMemo.setText(moneyLogList[position].memo)
@@ -67,7 +67,7 @@ class LogPageDialog(private val context: AppCompatActivity) {
             moneyLogList.removeAt(position)
             adapter.notifyItemRemoved(position)
 
-            DataUtil().updateValue()//자산, 예산 최신화
+            DataUtil.updateValue()//자산, 예산 최신화
 
             dialog.dismiss()
 

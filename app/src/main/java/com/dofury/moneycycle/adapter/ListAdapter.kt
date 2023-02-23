@@ -39,7 +39,7 @@ class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = DataUtil().parseMoney(moneyLogList[position].charge)
+        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList[position].charge)
         binding.itemDate.text = parseDate(moneyLogList[position].date)
         binding.itemType.text = moneyLogList[position].category
         parseCategoryImage(binding,position)

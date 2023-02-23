@@ -30,7 +30,7 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
         binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue))
 
-        binding.itemMoney.text = DataUtil().parseMoney(list[position].charge)
+        binding.itemMoney.text = DataUtil.parseMoney(list[position].charge)
         binding.itemDate.text = parseDate(list[position].date)
         binding.itemType.text = list[position].category
         parseCategoryImage(binding,position)

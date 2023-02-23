@@ -6,13 +6,11 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.time.LocalDateTime
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 class DBHelper(
     val context: Context?,
@@ -52,33 +50,7 @@ class DBHelper(
             val selectQueryHandler = "SELECT * FROM $TABLE_NAME"
             val db = this.writableDatabase
             val cursor = db.rawQuery(selectQueryHandler,null)
-            if(cursor.moveToFirst()){
-                do{
-                    val log = MoneyLog(
-                        cursor.getInt(cursor.getColumnIndex(UID)),
-                        cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
-                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
-                        cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
-                        cursor.getString(cursor.getColumnIndex(COL_DATE)),
-                        cursor.getString(cursor.getColumnIndex(COL_MEMO)),
-                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
-                        intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER))),
-                    )
-                    logs.add(log)
-                }while(cursor.moveToNext())
-            }
-            db.close()
-            return logs
-        }
-    val budgetLogs:MutableList<MoneyLog>
-        @SuppressLint("Range")
-    get() {
-        val logs = ArrayList<MoneyLog>()
-        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $COL_IS_BUDGET = TRUE AND $COL_SIGN = TRUE"
-        val db = this.writableDatabase
-        val cursor = db.rawQuery(selectQueryHandler,null)
-        if(cursor.moveToFirst()){
-            do{
+            while(cursor.moveToNext()){
                 val log = MoneyLog(
                     cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
@@ -90,11 +62,38 @@ class DBHelper(
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER))),
                 )
                 logs.add(log)
-            }while(cursor.moveToNext())
+            }
+            db.close()
+
+            return logs
         }
-        db.close()
-        return logs
-    }
+
+    val budgetLogs: MutableList<MoneyLog>
+        @SuppressLint("Range")
+        get() {
+            val logs = mutableListOf<MoneyLog>()
+            val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $COL_IS_BUDGET = ? AND $COL_SIGN = ?"
+            val db = readableDatabase
+            val cursor = db.rawQuery(selectQueryHandler, arrayOf("1","1"))
+
+            while (cursor.moveToNext()) {
+                val log = MoneyLog(
+                    cursor.getInt(cursor.getColumnIndex(UID)),
+                    cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_MEMO)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER)))
+                )
+                logs.add(log)
+            }
+            cursor.close()
+            db.close()
+            return logs
+        }
+
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("Range")
     fun getDateLog(localDateTime: LocalDateTime): MutableList<MoneyLog>{
