@@ -43,7 +43,7 @@ class LogActivity : AppCompatActivity() {
         setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
     }
-    public fun setFragment(tag :String,fragment: Fragment) {
+    fun setFragment(tag :String,fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
 
@@ -88,8 +88,6 @@ class LogActivity : AppCompatActivity() {
 
     private fun buttonEvent() {
         binding.ibClose.setOnClickListener(View.OnClickListener {//메인 화면 전환
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         })
 
@@ -174,8 +172,6 @@ class LogActivity : AppCompatActivity() {
 
         DataUtil().updateValue()//자산, 예산 최신화
 
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
         finish()
 
     }
