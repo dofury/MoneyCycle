@@ -38,6 +38,7 @@ class SettingFragment : Fragment() {
             try {
                 //contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                 val displayName = getFileName(contentResolver, uri)
+                val path = uri.path
                 //Toast.makeText(mainActivity, "Selected file: $displayName", Toast.LENGTH_SHORT).show()
 
                 contentResolver.openInputStream(uri)?.use {
@@ -122,7 +123,7 @@ class SettingFragment : Fragment() {
 
         binding.btnCsvSave.setOnClickListener {
             CSVWriter.writeToFile(MyApplication.db.allLogs,"moneyLogs.csv", mainActivity)
-            Snackbar.make(binding.root,"CSV 파일 저장 완료",Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root,"Download/moneyLog.csv",Snackbar.LENGTH_SHORT).show()
         }
 
         binding.btnCsvLoad.setOnClickListener {

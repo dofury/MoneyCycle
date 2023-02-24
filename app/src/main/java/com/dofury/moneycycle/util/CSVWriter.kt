@@ -1,14 +1,9 @@
 package com.dofury.moneycycle.util
 
 import android.content.Context
-import android.os.Build
 import android.os.Environment
 import com.dofury.moneycycle.dto.MoneyLog
-import com.opencsv.CSVReader
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileReader
-import java.io.IOException
 
 
 object CSVWriter {
@@ -16,9 +11,12 @@ object CSVWriter {
         val header = listOf("UID", "Charge", "Sign", "Category", "Date", "Memo", "Budget", "Server")
         val csvData = moneyLogs.joinToString("\n") { "${it.uid},${it.charge},${it.sign},${it.category},${it.date},${it.memo},${it.budget},${it.server}" }
         val csvString = "${header.joinToString(",")}\n$csvData"
-        val filePath: String =
+/*        val filePath: String =
             context.filesDir.path
-                .toString() + "/$fileName"
+                .toString() + "/$fileName"*/
+        val fileDownload = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val getDownload = fileDownload.path
+        val filePath: String = "$getDownload/$fileName"
 
         File(filePath).printWriter().use { out ->
             out.write(csvString)
