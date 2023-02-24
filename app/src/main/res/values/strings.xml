@@ -43,6 +43,9 @@
     <string name ="finance">금융 소득</string>
     <string name ="refund">환급</string>
 
+    <string name ="csv_save">CSV 저장</string>
+    <string name ="csv_load">CSV 불러오기</string>
+
     <string name="no">취소</string>
     <string name="yes">확인</string>
     <string name="memo">메모</string>

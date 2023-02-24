@@ -60,7 +60,6 @@ class LogPageDialog(private val context: AppCompatActivity) {
             dialog.dismiss()
         })
         binding.ibDelete.setOnClickListener(View.OnClickListener {
-            MoneyLogList.list.removeAt(position)//지워도 됨
             MyApplication.db.deleteLog(moneyLogList[position])
             moneyLogList.removeAt(position)
             adapter.notifyItemRemoved(position)

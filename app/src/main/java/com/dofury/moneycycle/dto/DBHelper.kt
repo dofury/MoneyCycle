@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -139,6 +140,13 @@ class DBHelper(
         Toast.makeText(this.context,"가계부 추가", Toast.LENGTH_SHORT).show()
     }
 
+    fun allAddLog(logs: MutableList<MoneyLog>){
+        drop()
+        for(log in logs){
+            addLog(log)
+        }
+    }
+
     private fun intToBoolean(int: Int): Boolean {
         return int>0
     }
@@ -177,5 +185,6 @@ class DBHelper(
             println(" 삭제 실패")
         }
     }
+
 
 }
