@@ -115,6 +115,7 @@
         android:orientation="horizontal">
 
         <CheckBox
+            android:buttonTint="@color/siam"
             android:id="@+id/is_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

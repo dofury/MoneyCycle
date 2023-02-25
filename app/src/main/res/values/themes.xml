@@ -33,6 +33,11 @@
         <item name="android:calendarViewShown">false</item>
     </style>
 
+    <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumb">@drawable/switch_thumb_selector</item>
+        <item name="android:track">@drawable/switch_track_selector</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 
 </resources>
