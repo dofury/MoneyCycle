@@ -55,6 +55,7 @@
     <string name="goal_charge">목표 금액</string>
     <string name="budget_plus">예산 PLUS</string>
     <string name="start_init">초기 설정</string>
+    <string name="log_search">로그 검색</string>
 
     <string name="budget_question">예산에서 제외 하시겠습니까?</string>
     <string name="reset_question">모든 데이터를 초기화 하시겠습니까?</string>

@@ -89,7 +89,7 @@
                         android:id="@+id/cpv_goal_percent"
                         android:layout_gravity="center"
                         android:layout_width="150dp"
-                        app:cpvProgressColor="@color/white_sky"
+                        app:cpvProgressColor="@color/blizzard_blue"
                         app:cpvNormalColor="@color/white_gray"
                         app:cpvProgress="0"
                         app:cpvShowTick="false"
@@ -150,7 +150,7 @@
                                 android:id="@+id/npb_budget_percent"
                                 app:progress_reached_bar_height="10dp"
                                 app:progress_unreached_bar_height="10dp"
-                                app:progress_reached_color="@color/white_sky"
+                                app:progress_reached_color="@color/blizzard_blue"
                                 app:progress_unreached_color="@color/white_gray"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>

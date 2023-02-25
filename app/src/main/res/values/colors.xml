@@ -11,7 +11,8 @@
     <color name="siam">#020715</color>
     <color name="sky">#c0cfdf</color>
     <color name ="blue">#2E2EFE</color>
-    <color name ="white_sky">#abdef0</color>
+    <color name ="pale_cyan">#96d9f6</color>
+    <color name ="blizzard_blue">#abdef0</color>
     <color name ="white_gray">#E2E2E2</color>
     <color name ="red">#FE2E2E</color>
 </resources>

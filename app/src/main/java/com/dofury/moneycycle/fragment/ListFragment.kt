@@ -1,5 +1,6 @@
 package com.dofury.moneycycle.fragment
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.activity.LogSearchActivity
 import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.databinding.FragmentListBinding
 import com.dofury.moneycycle.dto.MoneyLog
@@ -59,15 +61,19 @@ object ListFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun dateEvent(formatter: DateTimeFormatter){
-        binding.ibLeft.setOnClickListener(View.OnClickListener {
+        binding.ibLeft.setOnClickListener {
             date = date.plusMonths(-1)
             binding.tvDate.text = date.format(formatter)
             init()
-        })
-        binding.ibRight.setOnClickListener(View.OnClickListener {
+        }
+        binding.ibRight.setOnClickListener {
             date = date.plusMonths(1)
             binding.tvDate.text = date.format(formatter)
             init()
-        })
+        }
+        binding.ibSearch.setOnClickListener{
+            val intent = Intent(mainActivity,LogSearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

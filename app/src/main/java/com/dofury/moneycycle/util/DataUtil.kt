@@ -1,12 +1,16 @@
 package com.dofury.moneycycle.util
 
-import android.database.Cursor
-import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.dto.MoneyLog
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 object DataUtil {
 
@@ -80,8 +84,30 @@ object DataUtil {
         return makeGson.toJson(log, listType.type)
     }
 
-    fun logToCSV(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNowDate(): LocalDateTime {
+        return LocalDateTime.now()
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNowFirstDate(): LocalDateTime {
+        val now = getNowDate()
+        return LocalDateTime.of(now.year, now.month, 1, now.hour, now.minute)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNowLastDate(): LocalDateTime {
+        val now = getNowDate()
+        val cal = Calendar.getInstance()
+        cal.set(LocalDate.now().year, LocalDate.now().monthValue - 1, LocalDate.now().dayOfMonth)
+
+        return LocalDateTime.of(
+            now.year,
+            now.month,
+            cal.getActualMaximum(Calendar.DAY_OF_MONTH),
+            now.hour,
+            now.hour
+        )
     }
 
 

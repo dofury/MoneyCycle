@@ -59,8 +59,6 @@ class HomeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun init(){
         DataUtil.updateValue()//자산, 예산 최신화
-        val cal = Calendar.getInstance()
-        cal.set(LocalDate.now().year,LocalDate.now().monthValue-1,LocalDate.now().dayOfMonth)
         val goalValue = MyApplication.prefs.getString("goal","0")
 
         val budget = MyApplication.prefs.getString("budget","0")
@@ -68,7 +66,7 @@ class HomeFragment : Fragment() {
         val budgetValue = (budget.toLong() + budgetPlus.toLong()).toString()
         val moneyValue = MyApplication.prefs.getString("money","0")
         val remainBudgetValue = MyApplication.prefs.getString("remain_budget","0")
-        val remainDayValue = (cal.getActualMaximum(Calendar.DAY_OF_MONTH)-LocalDate.now().dayOfMonth+1).toString()
+        val remainDayValue = (DataUtil.getNowLastDate().dayOfMonth-DataUtil.getNowDate().dayOfMonth+1).toString()
 
         binding.tvPlusBudgetValue.text = if(budgetPlus == "0") "" else "+(${DataUtil.parseMoney(budgetPlus.toLong())})"
         binding.tvGoalValue.text= DataUtil.parseMoney(goalValue.toLong())
@@ -82,14 +80,14 @@ class HomeFragment : Fragment() {
         if(binding.cpvGoalPercent.progress<30){
             binding.cpvGoalPercent.setProgressColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }else{
-            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.white_sky)
+            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.blizzard_blue)
         }
 
         binding.npbBudgetPercent.progress = getPercent(budgetValue, remainBudgetValue)
         if(binding.npbBudgetPercent.progress<30){
             binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.red)
         }else{
-            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.white_sky)
+            binding.npbBudgetPercent.reachedBarColor = ContextCompat.getColor(binding.root.context,R.color.blizzard_blue)
         }
 
         val brvdv = remainBudgetValue.toLong()/ remainDayValue.toLong()
