@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.activity.LogSearchActivity
 import com.dofury.moneycycle.databinding.DialogDatePickerBinding
+import java.time.LocalDateTime
 
 class DatePickerDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
@@ -35,13 +36,18 @@ class DatePickerDialog(private val context: AppCompatActivity) {
             dialog.dismiss()
         })
         binding.btnOk.setOnClickListener(View.OnClickListener {
+            val date = LocalDateTime.of(binding.datePicker.year,
+                binding.datePicker.month+1,
+            binding.datePicker.dayOfMonth,
+            0,
+            0)
 
             when(tag){
                 "log_search_0" ->{
-                    (context as LogSearchActivity).setDate(0,binding.datePicker.year,binding.datePicker.month,binding.datePicker.dayOfMonth)
+                    (context as LogSearchActivity).setDate(0,date)
                 }
                 "log_search_1" ->{
-                    (context as LogSearchActivity).setDate(1,binding.datePicker.year,binding.datePicker.month,binding.datePicker.dayOfMonth)
+                    (context as LogSearchActivity).setDate(1,date)
                 }
             }
             dialog.dismiss()

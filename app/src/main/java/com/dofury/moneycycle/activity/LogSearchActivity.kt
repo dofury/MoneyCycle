@@ -9,6 +9,7 @@ import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.ActivityLogSearchBinding
 import com.dofury.moneycycle.dialog.DatePickerDialog
 import com.dofury.moneycycle.util.DataUtil
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -47,6 +48,14 @@ class LogSearchActivity : AppCompatActivity() {
                 binding.clDate.visibility = View.GONE
             }
         }
+        binding.switchCategory.setOnClickListener{
+            if(binding.switchCategory.isChecked){
+                binding.clCategory.visibility = View.VISIBLE
+            }
+            else{
+                binding.clCategory.visibility = View.GONE
+            }
+        }
         binding.tvFirstDate.setOnClickListener{
             dialog.show("log_search_0")
         }
@@ -57,10 +66,12 @@ class LogSearchActivity : AppCompatActivity() {
     /*
     * type 0 = first date
     * type 1 = second date*/
-    fun setDate(type:Int,year:Int,month:Int,day:Int){
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun setDate(type:Int, date: LocalDateTime){
+        val formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         when(type){
-            0 -> binding.tvFirstDate.text = "$year-$month-$day"
-            1 -> binding.tvSecondDate.text = "$year-$month-$day"
+            0 -> binding.tvFirstDate.text = date.format(formatter)
+            1 -> binding.tvSecondDate.text = date.format(formatter)
         }
     }
 
