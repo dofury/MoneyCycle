@@ -10,6 +10,12 @@
 
     <include layout="@layout/activity_toolbar"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <LinearLayout
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -219,17 +225,19 @@
                     </LinearLayout>
                 </LinearLayout>
                 <TextView
+                    android:id="@+id/barrier"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="50dp"
-                    android:text="       "/>
+                    android:layout_height="100dp"/>
             </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:src="@drawable/ic_add"
-        android:background="@color/siam"
-        app:backgroundTint="#000000" />
+        </ScrollView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:src="@drawable/ic_add"
+            android:background="@color/siam"
+            android:layout_marginBottom="10dp"
+            app:backgroundTint="#000000" />
+    </FrameLayout>
 </LinearLayout>
