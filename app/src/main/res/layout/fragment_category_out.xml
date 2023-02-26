@@ -234,7 +234,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="etc" />
+                    android:text="@string/etc" />
             </LinearLayout>
         </LinearLayout>
         <Button
