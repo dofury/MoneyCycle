@@ -38,15 +38,19 @@ class InitActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
         binding.btnInitSubmit.setOnClickListener(View.OnClickListener {
-            if((DataUtil.isNumber(moneyBuffer) && moneyBuffer != "")&&
-                (DataUtil.isNumber(goalBuffer) && goalBuffer != "") &&
-                (DataUtil.isNumber(budgetBuffer) && budgetBuffer != "")){
+            if((DataUtil.isNumber(moneyBuffer) && moneyBuffer.isNotBlank())&&
+                (DataUtil.isNumber(goalBuffer) && goalBuffer.isNotBlank()) &&
+                (DataUtil.isNumber(budgetBuffer) && budgetBuffer.isNotBlank())&&
+                (binding.tvInitBudgetCycle.text.isNotBlank() &&
+                        DataUtil.isBudgetCycle(binding.tvInitBudgetCycle.text.toString().toInt()))){
 
                 MyApplication.prefs.setString("goal",goalBuffer)
                 MyApplication.prefs.setString("budget",budgetBuffer)
 
                 MyApplication.prefs.setString("remain_budget",budgetBuffer)
+                MyApplication.prefs.setString("budget_cycle",binding.tvInitBudgetCycle.text.toString())
                 MyApplication.prefs.setBoolean("is_init",false)
+
 
                 createLog()//자산 로그 설정
 
@@ -59,7 +63,7 @@ class InitActivity : AppCompatActivity() {
             }
 
         })
-        val buttons = mapOf<String,LinearLayout>("money" to binding.llMoney, "goal" to binding.llGoal, "budget" to binding.llBudget)
+        val buttons = mapOf<String,LinearLayout>("init_money" to binding.llMoney, "init_goal" to binding.llGoal, "init_budget" to binding.llBudget, "init_budget_cycle" to binding.llBudgetCycle)
         buttons.forEach { it
             val map = it
             it.value.setOnClickListener(View.OnClickListener {
@@ -82,6 +86,9 @@ class InitActivity : AppCompatActivity() {
     fun setGoal(value: String){
         binding.tvInitGoalValue.text = DataUtil.parseMoney(value.toLong())
         goalBuffer = value
+    }
+    fun setBudgetCycle(value: String){
+        binding.tvInitBudgetCycle.text = value
     }
     @RequiresApi(Build.VERSION_CODES.O)
     fun createLog(){

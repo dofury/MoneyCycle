@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
+import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.MoneySetDialog
 import com.dofury.moneycycle.dialog.ResetDialog
 import com.dofury.moneycycle.dto.MoneyLog
@@ -105,12 +106,16 @@ class SettingFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun buttonEvent(){
         binding.clGoal.setOnClickListener {
-            val dialog = MoneySetDialog(mainActivity,"goal")
-            dialog.show()
+            val dialog = InputDialog(mainActivity)
+            dialog.show("goal")
         }
         binding.clBudgetCharge.setOnClickListener {
-            val dialog = MoneySetDialog(mainActivity,"budget")
-            dialog.show()
+            val dialog = InputDialog(mainActivity)
+            dialog.show("budget")
+        }
+        binding.clBudgetCycle.setOnClickListener {
+            val dialog = InputDialog(mainActivity)
+            dialog.show("budget_cycle")
         }
         binding.clBudgetPlus.setOnClickListener {
             val intent = Intent(context, BudgetPlusActivity::class.java)

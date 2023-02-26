@@ -18,6 +18,8 @@
     <string name="budget">예산</string>
     <string name="won">₩</string>
     <string name="budget_setting">예산 설정</string>
+    <string name="budget_cycle_setting">예산 주기 설정</string>
+    <string name="budget_cycle_setting_title">예산 주기 (1~31)</string>
     <string name="budget_value">예산 금액</string>
     <string name="goal_setting">목표 설정</string>
     <string name="goal_value">목표 금액</string>
@@ -52,6 +54,8 @@
     <string name="memo">메모</string>
     <string name="no_budget">예산 제외</string>
     <string name="yes_budget">예산 포함</string>
+    <string name="budget_cycle">예산 주기</string>
+
     <string name="budget_charge">예산 금액</string>
     <string name="goal_charge">목표 금액</string>
     <string name="budget_plus">예산 PLUS</string>

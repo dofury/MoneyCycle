@@ -30,6 +30,10 @@ object DataUtil {
         }
     }
 
+    fun isBudgetCycle(i: Int): Boolean{
+        return i in 1..31
+    }
+
 
     private fun getBudgetPlus(): Long{//실험실
         var sum: Long = 0
