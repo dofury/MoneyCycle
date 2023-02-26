@@ -31,7 +31,6 @@ object ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
-
         startInit()
 
         init()

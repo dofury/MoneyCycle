@@ -102,9 +102,9 @@ class DBHelper(
         val firstDate = month.atDay(1)
         val lastDate = month.atEndOfMonth()
         val logs = ArrayList<MoneyLog>()
-        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE strftime('%Y-%m-%d', $COL_DATE) BETWEEN '$firstDate' AND '$lastDate'"
+        val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE strftime('%Y-%m-%d', $COL_DATE) BETWEEN ? AND ?"
         val db = this.writableDatabase
-        val cursor = db.rawQuery(selectQueryHandler,null)
+        val cursor = db.rawQuery(selectQueryHandler, arrayOf(firstDate.toString(),lastDate.toString()))
         if(cursor.moveToFirst()){
             do{
                 val log = MoneyLog(
@@ -123,6 +123,31 @@ class DBHelper(
         db.close()
         return logs
     }
+    @SuppressLint("Range")
+    fun getQueryLog(sql: String,args: Array<String>): MutableList<MoneyLog>{
+        val logs = ArrayList<MoneyLog>()
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(sql,args)
+        if(cursor.moveToFirst()){
+            do{
+                val log = MoneyLog(
+                    cursor.getInt(cursor.getColumnIndex(UID)),
+                    cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_MEMO)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER))),
+                )
+                logs.add(log)
+            }while(cursor.moveToNext())
+        }
+        db.close()
+        return logs
+
+    }
+
     fun addLog(log: MoneyLog){
         val db = this.writableDatabase
         val values = ContentValues()

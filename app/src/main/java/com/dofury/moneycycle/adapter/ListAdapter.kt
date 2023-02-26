@@ -18,7 +18,7 @@ import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 
-class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
+open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
         return moneyLogList.size

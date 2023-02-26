@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="월급"
+                        android:text="@string/income"
                         app:layout_constraintTop_toBottomOf="@+id/civ_food"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="용돈" />
+                        android:text="@string/pocket_money" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="부수입" />
+                        android:text="@string/extra_income" />
                 </LinearLayout>
             </LinearLayout>
         <LinearLayout
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="금융소득" />
+                    android:text="@string/finance" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="환급" />
+                    android:text="@string/refund"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="잔액수정" />
+                    android:text="@string/change" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -191,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="기타" />
+                    android:text="@string/etc" />
             </LinearLayout>
         </LinearLayout>
         <Button

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
+import android.widget.Adapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.adapter.ListAdapter
@@ -12,6 +13,8 @@ import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
+import com.dofury.moneycycle.fragment.ListFragment
+import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
@@ -62,7 +65,9 @@ class LogPageDialog(private val context: AppCompatActivity) {
         binding.ibDelete.setOnClickListener(View.OnClickListener {
             MyApplication.db.deleteLog(moneyLogList[position])
             moneyLogList.removeAt(position)
+
             adapter.notifyItemRemoved(position)
+            ListFragment.init()
 
             DataUtil.updateValue()//자산, 예산 최신화
 
