@@ -74,6 +74,8 @@ class LogPageDialog(private val context: AppCompatActivity) {
 
         })
         dialog.setOnDismissListener {
+            moneyLogList[position].memo = binding.evMemo.text.toString()
+            MyApplication.db.updateLog(moneyLogList[position])
             ListFragment.init()
         }
 
