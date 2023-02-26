@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -166,8 +167,9 @@ class LogSearchActivity : AppCompatActivity() {
                 isFirst = sqlCheck[0].toBoolean()//지워도 됨
                 selectQueryHandler += sqlCheck[1]
 
-                var sql = "MEMO = '?'"
-                args.add(binding.etMemo.text.toString())//sign 1
+                var sql = "MEMO = ?"
+
+                args.add(binding.etMemo.text.toString())
 
                 selectQueryHandler += sql
             }
