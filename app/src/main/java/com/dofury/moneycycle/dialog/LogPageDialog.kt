@@ -67,13 +67,15 @@ class LogPageDialog(private val context: AppCompatActivity) {
             moneyLogList.removeAt(position)
 
             adapter.notifyItemRemoved(position)
-            ListFragment.init()
 
             DataUtil.updateValue()//자산, 예산 최신화
 
             dialog.dismiss()
 
         })
+        dialog.setOnDismissListener {
+            ListFragment.init()
+        }
 
         //크기 설정
         dialog.window!!.setLayout(

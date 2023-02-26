@@ -139,14 +139,14 @@
         android:paddingBottom="15dp"
         android:orientation="horizontal">
 
-        <EditText
+        <TextView
             android:id="@+id/ev_memo"
             android:inputType="text"
             android:background="@android:color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:hint="@string/memo"/>
+            android:text="@string/memo"/>
 
     </LinearLayout>
 </LinearLayout>
