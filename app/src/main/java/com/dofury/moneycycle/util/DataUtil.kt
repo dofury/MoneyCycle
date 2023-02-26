@@ -1,11 +1,16 @@
 package com.dofury.moneycycle.util
 
+import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.Build
+import android.provider.OpenableColumns
 import androidx.annotation.RequiresApi
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.dto.MoneyLog
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.io.File
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -112,6 +117,16 @@ object DataUtil {
             now.hour,
             now.hour
         )
+    }
+    @SuppressLint("Range")
+    fun getFileName(contentResolver: ContentResolver, uri: Uri): String? {
+        var displayName: String? = null
+        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        }
+        return displayName
     }
 
 

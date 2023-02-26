@@ -24,6 +24,7 @@ import com.dofury.moneycycle.dialog.MoneySetDialog
 import com.dofury.moneycycle.dialog.ResetDialog
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.CSVWriter
+import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
 import java.io.BufferedReader
 import java.io.File
@@ -38,10 +39,11 @@ class SettingFragment : Fragment() {
             val contentResolver = mainActivity.contentResolver
             try {
                 //contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                val displayName = getFileName(contentResolver, uri)
-                val path = uri.path
+                val displayName = DataUtil.getFileName(contentResolver, uri)
                 //Toast.makeText(mainActivity, "Selected file: $displayName", Toast.LENGTH_SHORT).show()
-
+                if(!displayName.toString().contains(".csv")){//csv 파일이 아니라면
+                    throw SecurityException("csv 파일이 아님")
+                }
                 contentResolver.openInputStream(uri)?.use {
                     inputStream ->
                     val reader = BufferedReader(InputStreamReader(inputStream))
@@ -70,6 +72,7 @@ class SettingFragment : Fragment() {
 
                 // Do something with the selected file
             } catch (e: SecurityException) {
+                Toast.makeText(mainActivity,"오류가 발생했습니다",Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }
@@ -90,17 +93,6 @@ class SettingFragment : Fragment() {
         buttonEvent()
 
         return binding.root
-    }
-
-    @SuppressLint("Range")
-    private fun getFileName(contentResolver: ContentResolver, uri: Uri): String? {
-        var displayName: String? = null
-        contentResolver.query(uri, null, null, null, null)?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-            }
-        }
-        return displayName
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
