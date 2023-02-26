@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.arrayMapOf
@@ -14,7 +15,10 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityLogSearchBinding
 import com.dofury.moneycycle.dialog.DatePickerDialog
 import com.dofury.moneycycle.dto.DBHelper
+import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy
+import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -168,13 +172,20 @@ class LogSearchActivity : AppCompatActivity() {
                 selectQueryHandler += sql
             }
 
+            if(selectQueryHandler == "" || args.size == 0){
+                throw NullPointerException("아무것도 입력하지 않음")
+            }
+
             val intent = Intent(this,LogSearchResultActivity::class.java)
             val list = ArrayList<String>(args.toTypedArray().toList())
             intent.putExtra("sql",selectQueryHandler)
             intent.putStringArrayListExtra("args",list)
             startActivity(intent)
-        }catch (e: Exception){
-            Log.d("bug","아무것도 입력하지않음")
+            finish()
+
+        }catch (e: NullPointerException){
+            Snackbar.make(binding.root,"검색 조건을 설정 해주세요.",Snackbar.LENGTH_SHORT).show()
+            Log.d("bug","bug")
         }
 
         Log.d("test",selectQueryHandler)
@@ -319,7 +330,6 @@ class LogSearchActivity : AppCompatActivity() {
         }
         binding.btnOk.setOnClickListener {
             searchLogs()
-            finish()
         }
         binding.rbOutlay.setOnClickListener {
             binding.clContentOut.visibility = View.VISIBLE

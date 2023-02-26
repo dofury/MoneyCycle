@@ -112,10 +112,6 @@ class LogActivity : AppCompatActivity() {
 
     fun inputNumber(number: String){
 
-        if(binding.tvNumber.text == "0"){
-            moneyBuffer = ""
-            binding.tvNumber.text = ""
-        }
         if(binding.tvNumber.text.length <=10){
             moneyBuffer += number
             binding.tvNumber.text = DataUtil.parseMoney(moneyBuffer.toLong())
@@ -124,6 +120,9 @@ class LogActivity : AppCompatActivity() {
             Snackbar.make(binding.root, "10자를 넘을 수 없습니다", Snackbar.LENGTH_LONG)
                 .setAction("action",null)
                 .show()
+        }
+        if(binding.tvNumber.text == "0"){
+            moneyBuffer = ""
         }
     }
     fun isBlank(): Boolean {
