@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "759618820171",
+    "project_id": "money-cycle",
+    "storage_bucket": "money-cycle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759618820171:android:4a40b5bf566aeaed8e95ce",
+        "android_client_info": {
+          "package_name": "com.dofury.moneycycle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759618820171-n9p3dotfhi8i713r55devhe3lcr3vl4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dofury.moneycycle",
+            "certificate_hash": "b15bcd344a8af034edbc71f229b9a1f9fa83df08"
+          }
+        },
+        {
+          "client_id": "759618820171-pu745d0iistbba8tjgmgpqeesgecfmom.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSf70WZw1gBlAM-DSMzWHlir9E2MpMOQM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759618820171-pu745d0iistbba8tjgmgpqeesgecfmom.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

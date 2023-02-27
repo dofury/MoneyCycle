@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
+import com.dofury.moneycycle.activity.LoginActivity
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.MoneySetDialog
@@ -126,7 +127,11 @@ class SettingFragment : Fragment() {
         binding.btnCsvLoad.setOnClickListener {
 
             getContent.launch("*/*");
+        }
 
+        binding.llLogin.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
         }
 
     }
