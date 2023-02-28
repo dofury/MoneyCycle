@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.arrayMapOf
@@ -26,6 +27,10 @@ class LogSearchActivity : AppCompatActivity() {
 
     private lateinit var isInlay: MutableMap<String,Boolean>
     private lateinit var isOutlay: MutableMap<String,Boolean>
+    private lateinit var inlayButtons: MutableMap<String, Button>
+    private lateinit var outlayButtons: MutableMap<String,Button>
+    private var isInSwitch = false
+    private var isOutSwitch = false
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,12 @@ class LogSearchActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         isInlay = arrayMapOf<String,Boolean>(getString(R.string.income) to false, getString(R.string.pocket_money) to false,getString(R.string.extra_income) to false,getString(R.string.finance) to false,getString(R.string.refund) to false,getString(R.string.change) to false,getString(R.string.etc) to false)
         isOutlay = arrayMapOf<String,Boolean>(getString(R.string.food) to false,getString(R.string.traffic) to false,getString(R.string.culture) to false,getString(R.string.fashion) to false, getString(R.string.house) to false, getString(R.string.event) to false,getString(R.string.hobby) to false,getString(R.string.change) to false,getString(R.string.etc) to false)
+        inlayButtons = arrayMapOf(getString(R.string.income) to binding.btnIncome,getString(R.string.pocket_money) to binding.btnPocketMoney,getString(R.string.extra_income) to binding.btnExtraIncome,
+            getString(R.string.finance) to binding.btnFinance,getString(R.string.refund) to binding.btnRefund,getString(R.string.change) to binding.btnChangeIn,
+            getString(R.string.etc) to binding.btnEtcIn)
+        outlayButtons = arrayMapOf(getString(R.string.food) to binding.btnFood,getString(R.string.traffic) to binding.btnTraffic,getString(R.string.culture) to binding.btnCulture,
+            getString(R.string.fashion) to binding.btnFashion,getString(R.string.house) to binding.btnHouse,getString(R.string.event) to binding.btnEvent,
+            getString(R.string.hobby) to binding.btnHobby,getString(R.string.change) to binding.btnChangeOut,getString(R.string.etc) to binding.btnEtcOut)
         binding.tvFirstDate.text = DataUtil.getNowFirstDate().format(formatter)
         binding.tvSecondDate.text = DataUtil.getNowDate().format(formatter)
     }
@@ -58,7 +69,7 @@ class LogSearchActivity : AppCompatActivity() {
         }
     }
 
-    fun budgetIsCheck(): Boolean{
+    private fun budgetIsCheck(): Boolean{
         return binding.cbNoBudget.isChecked || binding.cbYesBudget.isChecked
     }
 
@@ -75,6 +86,43 @@ class LogSearchActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun categoryInAllOn(){
+        isInlay.forEach { (t, _) ->
+            isInlay[t] = true
+        }
+        inlayButtons.forEach { (t, u) ->
+            inButtonOn(u,t)
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun categoryInAllOff(){
+        isInlay.forEach { (t, _) ->
+            isInlay[t] = false
+        }
+        inlayButtons.forEach { (t, u) ->
+            inButtonOff(u,t)
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun categoryOutAllOn(){
+        isOutlay.forEach { (t, _) ->
+            isOutlay[t] = true
+        }
+        outlayButtons.forEach { (t, u) ->
+            outButtonOn(u,t)
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun categoryOutAllOff(){
+        isOutlay.forEach { (t, _) ->
+            isOutlay[t] = false
+        }
+        outlayButtons.forEach { (t, u) ->
+            outButtonOff(u,t)
+        }
     }
     @RequiresApi(Build.VERSION_CODES.N)
     private fun searchLogs(){
@@ -208,97 +256,6 @@ class LogSearchActivity : AppCompatActivity() {
         Log.d("test",args.toString())
 
     }
-    private fun searchLog(){
-        //date(and) ,category(and 카테고리 내부는 or), is_budget(and 내부는 or), memo(and)
-        var firstSearch = true
-        var selectQueryHandler = ""
-        if(binding.switchDate.isChecked){
-            //date 조건+
-            selectQueryHandler += "SELECT * FROM ${DBHelper.TABLE_NAME} WHERE "
-            firstSearch = false
-
-            //CONTENT
-
-        }
-        if(binding.switchCategory.isChecked){
-
-            if(firstSearch){
-                selectQueryHandler += "SELECT * FROM ${DBHelper.TABLE_NAME} WHERE "
-                firstSearch = false
-            }else{
-                selectQueryHandler += " AND "
-            }
-
-            var sql = "((SIGN = 1 AND CATEGORY IN("
-            for(check in isInlay){
-                if(check.value){
-                    sql += "'${check.key}',"
-                }
-            }
-
-            sql = if(sql != "((SIGN = 1 AND CATEGORY IN("){
-                sql = sql.subSequence(0,sql.length-1) as String
-                sql += "))"
-                selectQueryHandler += sql
-                " OR (SIGN = 0 AND CATEGORY IN("
-            }else{
-                sql += "))"
-                selectQueryHandler += sql
-                " OR (SIGN = 0 AND CATEGORY IN("
-            }
-            for(check in isOutlay){
-                if(check.value){
-                    sql += "'${check.key}',"
-                }
-            }
-            sql = sql.subSequence(0,sql.length-1) as String
-            sql += ")))"
-            selectQueryHandler += sql
-
-        }
-        if(binding.switchBudget.isChecked){
-            if(firstSearch){
-                selectQueryHandler += "SELECT * FROM ${DBHelper.TABLE_NAME} WHERE "
-                firstSearch = false
-            }else{
-                selectQueryHandler += " AND "
-            }
-            selectQueryHandler += "("
-
-            if(binding.cbYesBudget.isChecked){
-                var sql = "(SIGN = 1 AND IS_BUDGET IN(1) )"
-                selectQueryHandler += sql
-            }
-
-            if(!firstSearch){
-                selectQueryHandler += " AND "
-            }
-
-            if(binding.cbNoBudget.isChecked){
-                var sql = "(SIGN = 0 AND IS_BUDGET IN(0) )"
-                selectQueryHandler += sql
-            }
-
-            selectQueryHandler += ")"
-
-
-        }
-        if(binding.switchMemo.isChecked){
-
-            if(firstSearch){
-                selectQueryHandler += "SELECT * FROM ${DBHelper.TABLE_NAME} WHERE"
-            }else{
-                selectQueryHandler += " AND "
-            }
-
-            var sql = "MEMO = '${binding.etMemo.text}'"
-            selectQueryHandler += sql
-        }
-        Log.d("test",selectQueryHandler)
-
-
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
@@ -348,38 +305,122 @@ class LogSearchActivity : AppCompatActivity() {
             searchLogs()
         }
         binding.rbOutlay.setOnClickListener {
+            binding.switchCategoryAll.isChecked = isOutSwitch
             binding.clContentOut.visibility = View.VISIBLE
             binding.clContentIn.visibility = View.GONE
         }
         binding.rbInlay.setOnClickListener {
+            binding.switchCategoryAll.isChecked = isInSwitch
             binding.clContentOut.visibility = View.GONE
             binding.clContentIn.visibility = View.VISIBLE
+        }
+        binding.switchCategoryAll.setOnClickListener{
+            if(binding.rbInlay.isChecked){
+                if(binding.switchCategoryAll.isChecked){
+                    isInSwitch = true
+                    categoryInAllOn()
+                }else{
+                    isInSwitch = false
+                    categoryInAllOff()
+                }
+            }
+            if(binding.rbOutlay.isChecked){
+                if(binding.switchCategoryAll.isChecked){
+                    isOutSwitch = true
+                    categoryOutAllOn()
+                }else{
+                    isOutSwitch = false
+                    categoryOutAllOff()
+                }
+            }
+
         }
         categoryButtonEvent()
     }
 
+    private fun inButtonOn(btn: Button,key: String){
+        btn.setBackgroundResource(R.drawable.btn_siam)
+        btn.setTextColor(
+            ContextCompat.getColor(this,R.color.white))
+        isInlay[key] = true
+        if(isAllInButton()){
+            isInSwitch = true
+            binding.switchCategoryAll.isChecked = isInSwitch
+        }
+    }
+    private fun outButtonOn(btn: Button,key: String){
+        btn.setBackgroundResource(R.drawable.btn_siam)
+        btn.setTextColor(
+            ContextCompat.getColor(this,R.color.white))
+        isOutlay[key] = true
+        if(isAllOutButton()){
+            isOutSwitch = true
+            binding.switchCategoryAll.isChecked = isOutSwitch
+        }
+    }
+    private fun inButtonOff(btn: Button,key: String){
+        btn.setBackgroundResource(R.drawable.btn_white_gray)
+        btn.setTextColor(
+            ContextCompat.getColor(this,R.color.siam))
+        isInlay[key] = false
+        if(isNotAllInButton()){
+            isInSwitch = false
+            binding.switchCategoryAll.isChecked = isInSwitch
+        }
+    }
+    private fun outButtonOff(btn: Button,key: String){
+        btn.setBackgroundResource(R.drawable.btn_white_gray)
+        btn.setTextColor(
+            ContextCompat.getColor(this,R.color.siam))
+        isOutlay[key] = false
+        if(isNotAllOutButton()){
+            isOutSwitch = false
+            binding.switchCategoryAll.isChecked = isOutSwitch
+        }
+    }
+    private fun isNotAllInButton(): Boolean{
+        isInlay.forEach { (t, u)->
+            if(u){
+                return false
+            }
+        }
+        return true
+    }
+    private fun isAllInButton(): Boolean{
+        isInlay.forEach { (t, u)->
+            if(!u){
+                return false
+            }
+        }
+        return true
+    }
+    private fun isNotAllOutButton(): Boolean{
+        isOutlay.forEach { (t, u)->
+            if(u){
+                return false
+            }
+        }
+        return true
+    }
+    private fun isAllOutButton(): Boolean{
+        isOutlay.forEach { (t, u)->
+            if(!u){
+                return false
+            }
+        }
+        return true
+    }
     private fun categoryButtonEvent(){
-        val inlayButtons = arrayMapOf(getString(R.string.income) to binding.btnIncome,getString(R.string.pocket_money) to binding.btnPocketMoney,getString(R.string.extra_income) to binding.btnExtraIncome,
-            getString(R.string.finance) to binding.btnFinance,getString(R.string.refund) to binding.btnRefund,getString(R.string.change) to binding.btnChangeIn,
-            getString(R.string.etc) to binding.btnEtcIn)
-        val outlayButtons = arrayMapOf(getString(R.string.food) to binding.btnFood,getString(R.string.traffic) to binding.btnTraffic,getString(R.string.culture) to binding.btnCulture,
-            getString(R.string.fashion) to binding.btnFashion,getString(R.string.house) to binding.btnHouse,getString(R.string.event) to binding.btnEvent,
-            getString(R.string.hobby) to binding.btnHobby,getString(R.string.change) to binding.btnChangeOut,getString(R.string.etc) to binding.btnEtcOut)
+
 
         inlayButtons.forEach{
             val btn = it.value
             val key = it.key
             btn.setOnClickListener{
                 if(isInlay[key] == true){
-                    btn.setBackgroundResource(R.drawable.btn_white_gray)
-                    btn.setTextColor(
-                        ContextCompat.getColor(this,R.color.siam))
-                    isInlay[key] = false
+                    inButtonOff(btn,key)
                 }else{
-                    btn.setBackgroundResource(R.drawable.btn_siam)
-                    btn.setTextColor(
-                        ContextCompat.getColor(this,R.color.white))
-                    isInlay[key] = true
+                    inButtonOn(btn,key)
                 }
             }
         }
@@ -389,15 +430,9 @@ class LogSearchActivity : AppCompatActivity() {
             val key = it.key
             btn.setOnClickListener{
                 if(isOutlay[key] == true){
-                    btn.setBackgroundResource(R.drawable.btn_white_gray)
-                    btn.setTextColor(
-                        ContextCompat.getColor(this,R.color.siam))
-                    isOutlay[key] = false
+                    outButtonOff(btn,key)
                 }else{
-                    btn.setBackgroundResource(R.drawable.btn_siam)
-                    btn.setTextColor(
-                        ContextCompat.getColor(this,R.color.white))
-                    isOutlay[key] = true
+                    outButtonOn(btn,key)
                 }
             }
         }
