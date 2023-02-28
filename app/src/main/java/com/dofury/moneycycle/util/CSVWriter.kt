@@ -2,8 +2,11 @@ package com.dofury.moneycycle.util
 
 import android.content.Context
 import android.os.Environment
+import android.widget.Toast
 import com.dofury.moneycycle.dto.MoneyLog
+import com.google.android.material.snackbar.Snackbar
 import java.io.File
+import java.io.OutputStream
 
 
 object CSVWriter {
@@ -18,9 +21,14 @@ object CSVWriter {
         val getDownload = fileDownload.path
         val filePath: String = "$getDownload/$fileName"
 
-        File(filePath).printWriter().use { out ->
-            out.write(csvString)
+        try {
+            File(filePath).printWriter().use { out ->
+                out.write(csvString)
+            }
+        }catch (e: Exception){
+            Toast.makeText(context,"파일을 저장할 수 없습니다",Toast.LENGTH_SHORT).show()
         }
+
     }
     fun isExternalStorageWritable() : Boolean{
         when{

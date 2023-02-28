@@ -5,10 +5,10 @@ import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.databinding.DialogLogSetBinding
+import com.dofury.moneycycle.dto.MoneyLog
 
 class LogSetDialog(private val context: LogActivity) {
     private val dialog = Dialog(context)

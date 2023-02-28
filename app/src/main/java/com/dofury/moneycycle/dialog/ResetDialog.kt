@@ -1,31 +1,16 @@
 package com.dofury.moneycycle.dialog
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
-import com.dofury.moneycycle.adapter.ListAdapter
-import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
-import com.dofury.moneycycle.activity.LogActivity
-import com.dofury.moneycycle.activity.MainActivity
-import com.dofury.moneycycle.adapter.BudgetPlusAdapter
-import com.dofury.moneycycle.databinding.DialogLogPageBinding
-import com.dofury.moneycycle.databinding.DialogLogSetBinding
 import com.dofury.moneycycle.databinding.DialogYesNoBinding
 import com.dofury.moneycycle.fragment.mainActivity
-import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
-import kotlin.system.exitProcess
 
 class ResetDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)

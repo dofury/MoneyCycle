@@ -5,25 +5,19 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
-import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityLogSearchBinding
 import com.dofury.moneycycle.dialog.DatePickerDialog
 import com.dofury.moneycycle.dto.DBHelper
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
-import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class LogSearchActivity : AppCompatActivity() {

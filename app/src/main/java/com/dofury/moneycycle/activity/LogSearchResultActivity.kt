@@ -1,21 +1,14 @@
 package com.dofury.moneycycle.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
-import com.dofury.moneycycle.adapter.BudgetPlusAdapter
 import com.dofury.moneycycle.adapter.SearchResultAdapter
-import com.dofury.moneycycle.databinding.ActivityBudgetPlusBinding
-import com.dofury.moneycycle.databinding.ActivityInitBinding
 import com.dofury.moneycycle.databinding.ActivityLogSearchResultBinding
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
-import com.dofury.moneycycle.util.DataUtil
-import com.google.android.material.snackbar.Snackbar
 
 
 class LogSearchResultActivity : AppCompatActivity() {

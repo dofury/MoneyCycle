@@ -4,17 +4,14 @@ import android.app.Dialog
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
-import android.widget.Adapter
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.dofury.moneycycle.adapter.ListAdapter
-import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
+import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.fragment.ListFragment
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
@@ -24,6 +21,7 @@ class LogPageDialog(private val context: AppCompatActivity) {
     private lateinit var binding: DialogLogPageBinding
     @RequiresApi(Build.VERSION_CODES.O)
     fun show(moneyLogList: MutableList<MoneyLog>, adapter: ListAdapter, position: Int){
+        var isDelete = false
         binding = DialogLogPageBinding.inflate(context.layoutInflater)
 
         dialog.setContentView(binding.root)
@@ -68,14 +66,17 @@ class LogPageDialog(private val context: AppCompatActivity) {
 
             adapter.notifyItemRemoved(position)
 
+            isDelete = true
             DataUtil.updateValue()//자산, 예산 최신화
 
             dialog.dismiss()
 
         })
         dialog.setOnDismissListener {
-            moneyLogList[position].memo = binding.evMemo.text.toString()
-            MyApplication.db.updateLog(moneyLogList[position])
+            if(!isDelete){//삭제된 로그가 아니라면 메모 업데이트
+                moneyLogList[position].memo = binding.evMemo.text.toString()
+                MyApplication.db.updateLog(moneyLogList[position])
+            }
             ListFragment.init()
         }
 

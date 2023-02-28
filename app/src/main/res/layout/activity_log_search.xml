@@ -75,6 +75,7 @@
                                                             android:id="@+id/switch_date"
                                                             android:layout_width="wrap_content"
                                                             android:layout_height="wrap_content"
+                                                            android:checked="true"
                                                             app:track="@drawable/switch_track_selector"
                                                             android:thumb="@drawable/switch_thumb_selector"
                                                             app:layout_constraintRight_toRightOf="parent"
@@ -88,8 +89,7 @@
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
                                                     android:orientation="horizontal"
-                                                    android:gravity="center"
-                                                    android:visibility="gone">
+                                                    android:gravity="center">
                                                         <TextView
                                                             android:id="@+id/tv_first_date"
                                                             android:layout_width="wrap_content"
@@ -157,6 +157,7 @@
                                                             android:id="@+id/switch_category"
                                                             android:layout_width="wrap_content"
                                                             android:layout_height="wrap_content"
+                                                            android:checked="true"
                                                             app:track="@drawable/switch_track_selector"
                                                             android:thumb="@drawable/switch_thumb_selector"
                                                             app:layout_constraintRight_toRightOf="parent"
@@ -169,7 +170,6 @@
                                                     android:layout_gravity="center"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
-                                                    android:visibility="gone"
                                                     android:orientation="horizontal">
                                                         <androidx.constraintlayout.widget.ConstraintLayout
                                                             android:id="@+id/cl_category_radio"
@@ -437,6 +437,7 @@
                                                             android:id="@+id/switch_budget"
                                                             android:layout_width="wrap_content"
                                                             android:layout_height="wrap_content"
+                                                            android:checked="true"
                                                             android:thumb="@drawable/switch_thumb_selector"
                                                             app:layout_constraintBottom_toBottomOf="parent"
                                                             app:layout_constraintRight_toRightOf="parent"
@@ -451,8 +452,7 @@
                                                     android:layout_gravity="center"
                                                     android:layout_marginTop="10dp"
                                                     android:gravity="center"
-                                                    android:orientation="horizontal"
-                                                    android:visibility="gone">
+                                                    android:orientation="horizontal">
 
                                                         <androidx.constraintlayout.widget.ConstraintLayout
                                                             android:id="@+id/cl_content_in_4"
@@ -518,6 +518,7 @@
                                                             android:id="@+id/switch_memo"
                                                             android:layout_width="wrap_content"
                                                             android:layout_height="wrap_content"
+                                                            android:checked="true"
                                                             app:track="@drawable/switch_track_selector"
                                                             android:thumb="@drawable/switch_thumb_selector"
                                                             app:layout_constraintRight_toRightOf="parent"
@@ -531,8 +532,7 @@
                                                     android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
                                                     android:orientation="horizontal"
-                                                    android:gravity="center"
-                                                    android:visibility="gone">
+                                                    android:gravity="center">
                                                         <EditText
                                                             android:id="@+id/et_memo"
                                                             android:layout_width="match_parent"

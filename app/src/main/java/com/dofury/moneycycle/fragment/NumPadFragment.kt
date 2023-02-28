@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.databinding.FragmentPadBinding
 import com.google.android.material.snackbar.Snackbar
 

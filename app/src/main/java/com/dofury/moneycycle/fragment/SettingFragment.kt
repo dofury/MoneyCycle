@@ -1,14 +1,8 @@
 package com.dofury.moneycycle.fragment
 
-import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,14 +15,15 @@ import com.dofury.moneycycle.activity.BudgetPlusActivity
 import com.dofury.moneycycle.activity.LoginActivity
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.InputDialog
-import com.dofury.moneycycle.dialog.MoneySetDialog
 import com.dofury.moneycycle.dialog.ResetDialog
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.CSVWriter
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.util.Permission
+import com.dofury.moneycycle.util.Permission.isWriteExternalStoragePermissionGranted
 import com.google.android.material.snackbar.Snackbar
 import java.io.BufferedReader
-import java.io.File
+import java.io.IOException
 import java.io.InputStreamReader
 
 
@@ -46,7 +41,7 @@ class SettingFragment : Fragment() {
                     throw SecurityException("csv 파일이 아님")
                 }
                 contentResolver.openInputStream(uri)?.use {
-                    inputStream ->
+                        inputStream ->
                     val reader = BufferedReader(InputStreamReader(inputStream))
                     val logs: MutableList<MoneyLog> = mutableListOf()
                     var line: String? = reader.readLine()
@@ -70,6 +65,7 @@ class SettingFragment : Fragment() {
                     }
                     MyApplication.db.allAddLog(logs)
                 }
+
 
                 // Do something with the selected file
             } catch (e: SecurityException) {
@@ -120,8 +116,15 @@ class SettingFragment : Fragment() {
         }
 
         binding.btnCsvSave.setOnClickListener {
-            CSVWriter.writeToFile(MyApplication.db.allLogs,"moneyLogs.csv", mainActivity)
-            Snackbar.make(binding.root,"Download/moneyLog.csv",Snackbar.LENGTH_SHORT).show()
+            if (isWriteExternalStoragePermissionGranted(mainActivity)) {
+                // 권한이 부여된 경우 실행할 코드
+                CSVWriter.writeToFile(MyApplication.db.allLogs,"moneyLogs.csv", mainActivity)
+                Snackbar.make(binding.root,"Download/moneyLog.csv",Snackbar.LENGTH_SHORT).show()
+            } else {
+                // 권한이 부여되지 않은 경우 권한 요청 코드 실행
+                Permission.verifyStoragePermissions(mainActivity)
+                Snackbar.make(binding.root,"권한이 없습니다",Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnCsvLoad.setOnClickListener {

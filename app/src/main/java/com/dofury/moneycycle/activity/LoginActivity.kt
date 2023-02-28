@@ -83,8 +83,10 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             // 로그인 성공
+            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
         } else {
             // 로그인 실패
+            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
         }
     }
 

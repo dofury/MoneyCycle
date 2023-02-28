@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.google.android.material.snackbar.Snackbar
+import com.dofury.moneycycle.fragment.mainActivity
 import java.io.File
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -162,7 +162,6 @@ class DBHelper(
 
         db.insert(TABLE_NAME, null, values)
         db.close()
-        Toast.makeText(this.context,"가계부 추가", Toast.LENGTH_SHORT).show()
     }
 
     fun allAddLog(logs: MutableList<MoneyLog>){

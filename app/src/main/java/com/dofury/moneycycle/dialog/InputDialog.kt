@@ -5,24 +5,14 @@ import android.os.Build
 import android.text.InputType
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputBinding
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.dofury.moneycycle.adapter.ListAdapter
-import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.InitActivity
-import com.dofury.moneycycle.activity.LogActivity
-import com.dofury.moneycycle.adapter.BudgetPlusAdapter
 import com.dofury.moneycycle.databinding.DialogInputBinding
-import com.dofury.moneycycle.databinding.DialogLogPageBinding
-import com.dofury.moneycycle.databinding.DialogLogSetBinding
-import com.dofury.moneycycle.databinding.DialogYesNoBinding
 import com.dofury.moneycycle.util.DataUtil
-import java.text.SimpleDateFormat
 
 class InputDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)

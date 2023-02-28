@@ -3,22 +3,20 @@ package com.dofury.moneycycle.fragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import com.dofury.moneycycle.activity.LogActivity
-import com.dofury.moneycycle.activity.MainActivity
+import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.InitActivity
+import com.dofury.moneycycle.activity.LogActivity
+import com.dofury.moneycycle.activity.MainActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
 import com.dofury.moneycycle.util.DataUtil
-import java.time.LocalDate
 import java.util.*
-
 
 
 lateinit var mainActivity: MainActivity

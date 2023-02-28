@@ -13,10 +13,7 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
-import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 
 class SearchResultAdapter(private val moneyLogList: MutableList<MoneyLog>,private val context: AppCompatActivity) :
