@@ -57,6 +57,26 @@ class LogSearchActivity : AppCompatActivity() {
             sqlList
         }
     }
+
+    fun budgetIsCheck(): Boolean{
+        return binding.cbNoBudget.isChecked || binding.cbYesBudget.isChecked
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun categoryIsCheck(): Boolean{
+        isInlay.forEach { (t, u) ->
+            if(u){
+                return true
+            }
+        }
+        isOutlay.forEach { (t, u) ->
+            if(u){
+                return true
+            }
+        }
+        return false
+    }
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun searchLogs(){
         var isFirst = true //첫 sql인지 체크
         var selectQueryHandler = ""
@@ -80,7 +100,7 @@ class LogSearchActivity : AppCompatActivity() {
                 args.add(lastDate.toString())
 
             }
-            if(binding.switchCategory.isChecked){
+            if(binding.switchCategory.isChecked && categoryIsCheck()){
 
                 val sqlCheck = firstCheck(isFirst)
                 isFirst = sqlCheck[0].toBoolean()
@@ -121,7 +141,7 @@ class LogSearchActivity : AppCompatActivity() {
                 selectQueryHandler += sql
 
             }
-            if(binding.switchBudget.isChecked){
+            if(binding.switchBudget.isChecked && budgetIsCheck()){
 
                 val sqlCheck = firstCheck(isFirst)
                 isFirst = sqlCheck[0].toBoolean()
