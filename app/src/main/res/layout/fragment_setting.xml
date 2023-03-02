@@ -32,12 +32,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_login_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 >
 
         <LinearLayout
-            android:id="@+id/ll_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white_gray"
@@ -51,6 +51,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edge"

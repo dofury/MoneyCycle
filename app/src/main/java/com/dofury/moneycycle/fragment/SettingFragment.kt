@@ -17,6 +17,7 @@ import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.ResetDialog
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.dto.User
 import com.dofury.moneycycle.util.CSVWriter
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.util.Permission
@@ -27,9 +28,10 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-class SettingFragment : Fragment() {
+object SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
 
+    var user = User()
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             val contentResolver = mainActivity.contentResolver
@@ -76,9 +78,18 @@ class SettingFragment : Fragment() {
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    fun userInit(){
+        binding.tvNickname.text = user.nickname
+        binding.tvEmail.text = user.email
+        if(user.nickname.isNotBlank()){
+            binding.cardUser.visibility = View.VISIBLE
+            binding.cardLoginCheck.visibility = View.GONE
+        }else{
+            binding.cardUser.visibility = View.GONE
+            binding.cardLoginCheck.visibility = View.VISIBLE
+        }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -86,7 +97,7 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(layoutInflater)
-
+        userInit()
         buttonEvent()
 
         return binding.root
@@ -132,7 +143,7 @@ class SettingFragment : Fragment() {
             getContent.launch("*/*");
         }
 
-        binding.llLogin.setOnClickListener {
+        binding.cardLoginCheck.setOnClickListener {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
         }

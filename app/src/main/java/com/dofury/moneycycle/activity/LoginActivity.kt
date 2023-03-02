@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.databinding.ActivityLoginBinding
+import com.dofury.moneycycle.dto.User
+import com.dofury.moneycycle.fragment.SettingFragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -82,6 +84,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
+            finish()
+            val users = User(user.getIdToken(true).toString(),user.email!!,user.displayName!!,user.providerId)
+            SettingFragment.user = users
+            SettingFragment.userInit()
             // 로그인 성공
             Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
         } else {

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId) {
                 R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
                 R.id.listFragment -> setFragment(TAG_LIST, ListFragment)
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
+                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment)
             }
             true
         }
