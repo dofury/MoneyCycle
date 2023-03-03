@@ -3,6 +3,7 @@ package com.dofury.moneycycle.fragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,10 @@ import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.util.Permission
 import com.dofury.moneycycle.util.Permission.isWriteExternalStoragePermissionGranted
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -147,6 +152,20 @@ object SettingFragment : Fragment() {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
         }
+        binding.ibSync.setOnClickListener {
+            firebaseSync()
+        }
+
+    }
+    private fun firebaseSync(){
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val databaseReference = FirebaseDatabase.getInstance().getReference("MoneyCycle")
+
+        // 데이터 베이스 삽입
+        databaseReference.child("UserLogs").child(firebaseAuth.uid!!).setValue(DataUtil.logToJson())
+        Snackbar.make(binding.root,"완료",Snackbar.LENGTH_SHORT)
+        Log.d("test","good")
+
 
     }
 
