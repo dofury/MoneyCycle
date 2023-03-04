@@ -11,8 +11,10 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 object DataUtil {
@@ -89,6 +91,18 @@ object DataUtil {
     fun logToJson(): String {
         val log = MyApplication.db.allLogs
         return makeGson.toJson(log, listType.type)
+    }
+
+    fun jsonToLog(json: String): MutableList<MoneyLog>? {
+        return if(json!=null)
+            makeGson.fromJson(json, listType.type) else null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun parseDate(date: String): String {
+        val beforeDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date)
+        val formatter = SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm")
+        return formatter.format(beforeDate).replace("PM", "오후").replace("AM", "오전")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -38,7 +38,7 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
         binding.itemMoney.text = DataUtil.parseMoney(moneyLogList[position].charge)
-        binding.itemDate.text = parseDate(moneyLogList[position].date)
+        binding.itemDate.text = DataUtil.parseDate(moneyLogList[position].date)
         binding.itemType.text = moneyLogList[position].category
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
@@ -49,13 +49,6 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
             val dialog = LogPageDialog(mainActivity)
             dialog.show(moneyLogList,this,position)
         })
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun parseDate(date: String): String {
-        val beforeDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date)
-        val formatter = SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm")
-        return formatter.format(beforeDate).replace("PM", "오후").replace("AM", "오전")
     }
 
     private fun parseCategoryImage(binding: ListItemBinding,position: Int){

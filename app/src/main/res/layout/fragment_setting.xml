@@ -80,7 +80,7 @@
                     android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="cha_dh1004@naver.com"
+                    android:text="이메일"
                     android:textColor="@color/gray"
                     android:textSize="15dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -100,41 +100,51 @@
 
                 <LinearLayout
                     android:id="@+id/ll_sync"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    android:gravity="center"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/tv_realSync"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="실시간 동기화"
-                        android:textSize="15dp" />
 
                     <TextView
                         android:layout_marginTop="5dp"
-                        android:id="@+id/tv_sync_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="마지막 동기화: 2022-01-02"
-                        android:textColor="@color/gray"
+                        android:text="┌ 마지막 백업 ┐"
+                        android:textColor="@color/siam"
                         android:textSize="15dp" />
+                    <TextView
+                        android:layout_marginTop="5dp"
+                        android:id="@+id/tv_backup_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="없음"
+                        android:textColor="@color/gray"
+                        android:textSize="13dp" />
                 </LinearLayout>
-                <ImageButton
-                    android:id="@+id/ib_sync"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:src="@drawable/ic_sync"
-                    android:background="@color/white"
+                <Button
+                    android:id="@+id/btn_backup_save"
+                    android:text="백업"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:tint="@color/siam" />
-
-
-
+                    android:layout_marginEnd="10dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_siam"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/btn_backup_load"/>
+                <Button
+                    android:id="@+id/btn_backup_load"
+                    android:text="복구"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_siam"
+                    app:layout_constraintRight_toRightOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 

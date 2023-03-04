@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
@@ -46,7 +47,9 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
+        if(MyApplication.prefs.getBoolean("auto_login",false) && MyApplication.prefs.getString("id_token","").isNotBlank()){
+            LoginActivity().firebaseAuthWithGoogle(MyApplication.prefs.getString("id_token",""),this)
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

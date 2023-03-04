@@ -31,10 +31,16 @@ import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 object SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private var isInit = false
 
     var user = User()
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -82,16 +88,23 @@ object SettingFragment : Fragment() {
         }
     }
 
+    fun init(){
+        isInit = true
+        binding.tvBackupDate.text = MyApplication.prefs.getString("backup_date","없음")
+        userInit()
+    }
 
     fun userInit(){
-        binding.tvNickname.text = user.nickname
-        binding.tvEmail.text = user.email
-        if(user.nickname.isNotBlank()){
-            binding.cardUser.visibility = View.VISIBLE
-            binding.cardLoginCheck.visibility = View.GONE
-        }else{
-            binding.cardUser.visibility = View.GONE
-            binding.cardLoginCheck.visibility = View.VISIBLE
+        if(isInit){
+            binding.tvNickname.text = user.nickname
+            binding.tvEmail.text = user.email
+            if(!user.nickname.isNullOrBlank()){
+                binding.cardUser.visibility = View.VISIBLE
+                binding.cardLoginCheck.visibility = View.GONE
+            }else{
+                binding.cardUser.visibility = View.GONE
+                binding.cardLoginCheck.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -102,7 +115,7 @@ object SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSettingBinding.inflate(layoutInflater)
-        userInit()
+        init()
         buttonEvent()
 
         return binding.root
@@ -152,18 +165,41 @@ object SettingFragment : Fragment() {
             val intent = Intent(context, LoginActivity::class.java)
             startActivity(intent)
         }
-        binding.ibSync.setOnClickListener {
-            firebaseSync()
+        binding.btnBackupSave.setOnClickListener {
+            firebaseSave()
+        }
+        binding.btnBackupLoad.setOnClickListener {
+            firebaseLoad()
         }
 
     }
-    private fun firebaseSync(){
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun firebaseSave(){
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val databaseReference = FirebaseDatabase.getInstance().getReference("MoneyCycle")
+        val now = DataUtil.getNowDate()
+        val formatted = DataUtil.parseDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+
+        MyApplication.prefs.setString("backup_date",formatted)
+        binding.tvBackupDate.text = formatted
+        // 데이터 베이스 삽입
+        databaseReference.child("UserLogs").child(firebaseAuth.uid!!).setValue(DataUtil.logToJson())
+        Snackbar.make(binding.root,"백업 완료",Snackbar.LENGTH_SHORT).show()
+        Log.d("test","good")
+
+
+    }
+    private fun firebaseLoad(){
         val firebaseAuth = FirebaseAuth.getInstance()
         val databaseReference = FirebaseDatabase.getInstance().getReference("MoneyCycle")
 
         // 데이터 베이스 삽입
-        databaseReference.child("UserLogs").child(firebaseAuth.uid!!).setValue(DataUtil.logToJson())
-        Snackbar.make(binding.root,"완료",Snackbar.LENGTH_SHORT)
+        databaseReference.child("UserLogs").child(firebaseAuth.uid!!).get().addOnCompleteListener {
+            val logs:MutableList<MoneyLog> = DataUtil.jsonToLog(it.result.value.toString())!!
+            MyApplication.db.allAddLog(logs)
+            Snackbar.make(binding.root,"복구 완료",Snackbar.LENGTH_SHORT).show()
+        }
+
         Log.d("test","good")
 
 

@@ -1,9 +1,11 @@
 package com.dofury.moneycycle.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.databinding.ActivityLoginBinding
 import com.dofury.moneycycle.dto.User
 import com.dofury.moneycycle.fragment.SettingFragment
@@ -21,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var signInButton: SignInButton
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
+    private var firebaseAuth = FirebaseAuth.getInstance()
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
-    private fun signIn() {
+    fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -61,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
             if (task!!.isSuccess) {
                 val account = task.signInAccount
                 if (account != null) {
-                    firebaseAuthWithGoogle(account)
+                    firebaseAuthWithGoogle(account.idToken.toString(),this)
                 }
             } else {
                 Toast.makeText(this, "Google Sign-In failed.", Toast.LENGTH_SHORT).show()
@@ -69,30 +71,32 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+    fun firebaseAuthWithGoogle(idToken: String,context: Context) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
-                    updateUI(user)
+                    MyApplication.prefs.setBoolean("auto_login",true)
+                    MyApplication.prefs.setString("id_token",idToken)
+                    updateUI(user,context)
                 } else {
-                    Toast.makeText(this, "Firebase Authentication failed.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Firebase Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    private fun updateUI(user: FirebaseUser?) {
+    private fun updateUI(user: FirebaseUser?,context: Context) {
         if (user != null) {
             finish()
             val users = User(user.getIdToken(true).toString(),user.email!!,user.displayName!!,user.providerId)
             SettingFragment.user = users
             SettingFragment.userInit()
             // 로그인 성공
-            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show()
         } else {
             // 로그인 실패
-            Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
         }
     }
 
