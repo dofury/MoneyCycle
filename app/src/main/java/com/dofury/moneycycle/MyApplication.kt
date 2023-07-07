@@ -1,7 +1,6 @@
 package com.dofury.moneycycle
 
 import android.app.Application
-import com.dofury.moneycycle.activity.LoginActivity
 import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.util.PreferenceUtil
 
@@ -18,6 +17,8 @@ class MyApplication : Application() {
     override fun onCreate() {
         prefs= PreferenceUtil(applicationContext)
         db = DBHelper(this)
+
+
         //MoneyLogList.list= db.allLogs
 
         super.onCreate()

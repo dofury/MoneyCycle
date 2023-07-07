@@ -2,9 +2,12 @@ package com.dofury.moneycycle.util
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
+import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.dto.MoneyLog
@@ -86,6 +89,30 @@ object DataUtil {
         updateRemainBudget()
         updateBudgetPlus()
         updateMoney()
+    }
+
+    fun budgetCheck(context: Context){
+        val lastMonth = MyApplication.prefs.getString("lastMonth",Calendar.getInstance().get(Calendar.MONTH).toString()).toInt()
+        val lastYear = MyApplication.prefs.getString("lastYear",Calendar.getInstance().get(Calendar.YEAR).toString()).toInt()
+
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        if (lastYear < currentYear || (lastYear == currentYear && lastMonth < currentMonth)) {
+
+            // 달이 변경되었으므로 초기화 작업 수행
+
+        for(log in MyApplication.db.resetLogs){//예산 초기화 진행
+            log.budget = false
+            MyApplication.db.updateLog(log)
+        }
+
+        // 현재 달을 저장
+        MyApplication.prefs.setString("lastMonth",currentMonth.toString())
+        MyApplication.prefs.setString("lastYear",currentYear.toString())
+
+        Toast.makeText(context,"남은 예산 초기화 작업 실행",Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     fun logToJson(): String {

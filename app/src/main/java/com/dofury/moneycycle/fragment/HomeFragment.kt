@@ -51,6 +51,7 @@ class HomeFragment : Fragment() {
             val intent = Intent(mainActivity, InitActivity::class.java)
             startActivity(intent)
         }else{
+            DataUtil.budgetCheck(mainActivity)
             init()
         }
     }

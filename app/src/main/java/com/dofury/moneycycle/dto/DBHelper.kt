@@ -44,6 +44,32 @@ class DBHelper(
         onCreate(db)
     }
 
+    val resetLogs: MutableList<MoneyLog>
+        @SuppressLint("Range")
+        get() {
+            val logs = ArrayList<MoneyLog>()
+            val selectQueryHandler = "SELECT * FROM $TABLE_NAME WHERE $COL_IS_BUDGET = ?"
+            val db = readableDatabase
+            val cursor = db.rawQuery(selectQueryHandler, arrayOf("1"))
+
+            while (cursor.moveToNext()) {
+                val log = MoneyLog(
+                    cursor.getInt(cursor.getColumnIndex(UID)),
+                    cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
+                    cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
+                    cursor.getString(cursor.getColumnIndex(COL_DATE)),
+                    cursor.getString(cursor.getColumnIndex(COL_MEMO)),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_BUDGET))),
+                    intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_IS_SERVER)))
+                )
+                logs.add(log)
+            }
+            cursor.close()
+            db.close()
+            return logs
+        }
+
     val allLogs:MutableList<MoneyLog>
         @SuppressLint("Range")
         get() {

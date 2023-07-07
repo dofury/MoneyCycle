@@ -26,19 +26,20 @@ class PreferenceUtil(context: Context) {
             makeGson.fromJson(json, listType.type) else null
     }
     fun setList(key: String, list: MutableList<MoneyLog>) {
-        var str = makeGson.toJson(list,listType.type)
+        val str = makeGson.toJson(list,listType.type)
         prefs.edit().putString(key, str).apply()
     }
     fun setString(key: String, str: String) {
         prefs.edit().putString(key, str).apply()
     }
+
     fun setBoolean(key: String, bool: Boolean) {
         prefs.edit().putBoolean(key, bool).apply()
     }
     fun remove(key: String){
-        prefs.edit().remove(key).commit()
+        prefs.edit().remove(key).apply()
     }
     fun clear(){
-        prefs.edit().clear().commit()
+        prefs.edit().clear().apply()
     }
 }

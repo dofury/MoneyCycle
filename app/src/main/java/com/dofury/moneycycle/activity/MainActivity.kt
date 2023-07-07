@@ -14,6 +14,7 @@ import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
+import com.dofury.moneycycle.util.DataUtil
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlin.system.exitProcess
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
-
         setFragment(TAG_HOME, HomeFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         if(MyApplication.prefs.getBoolean("auto_login",false) && MyApplication.prefs.getString("id_token","").isNotBlank()){
             LoginActivity().firebaseAuthWithGoogle(MyApplication.prefs.getString("id_token",""),this)
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
