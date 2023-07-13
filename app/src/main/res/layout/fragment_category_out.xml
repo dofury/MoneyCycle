@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="식비"
+                        android:text="@string/food"
                         app:layout_constraintTop_toBottomOf="@+id/civ_food"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="교통비" />
+                        android:text="@string/traffic" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:textSize="20dp"
-                        android:text="문화생활" />
+                        android:text="@string/culture" />
                 </LinearLayout>
             </LinearLayout>
         <LinearLayout
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="패션/미용" />
+                    android:text="@string/fashion" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="주거/통신" />
+                    android:text="@string/house" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="경조사" />
+                    android:text="@string/event" />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="취미" />
+                    android:text="@string/hobby" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="잔액수정" />
+                    android:text="@string/change" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -234,7 +234,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="20dp"
-                    android:text="기타" />
+                    android:text="@string/etc" />
             </LinearLayout>
         </LinearLayout>
         <Button

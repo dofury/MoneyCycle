@@ -5,17 +5,10 @@ import android.os.Build
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
-import com.dofury.moneycycle.adapter.ListAdapter
-import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
-import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.LogActivity
-import com.dofury.moneycycle.databinding.DialogLogPageBinding
 import com.dofury.moneycycle.databinding.DialogLogSetBinding
-import com.dofury.moneycycle.util.DataUtil
-import java.text.SimpleDateFormat
+import com.dofury.moneycycle.dto.MoneyLog
 
 class LogSetDialog(private val context: LogActivity) {
     private val dialog = Dialog(context)
@@ -50,9 +43,9 @@ class LogSetDialog(private val context: LogActivity) {
         binding.btnOk.setOnClickListener(View.OnClickListener {
 
             if(moneyLog.sign){//예산 포함
-                moneyLog.is_budget = binding.isBudget.isChecked
+                moneyLog.budget = binding.isBudget.isChecked
             }else{//예산 제외
-                moneyLog.is_budget = !binding.isBudget.isChecked
+                moneyLog.budget = !binding.isBudget.isChecked
             }
             moneyLog.memo = binding.etMemo.text.toString()
             context.submitLog()

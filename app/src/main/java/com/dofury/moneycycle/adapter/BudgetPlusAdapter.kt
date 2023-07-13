@@ -1,6 +1,5 @@
 package com.dofury.moneycycle.adapter
 
-import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +11,9 @@ import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.BudgetPlusActivity
 import com.dofury.moneycycle.databinding.ListItemBinding
-import com.dofury.moneycycle.dialog.LogPageDialog
-import com.dofury.moneycycle.dialog.YesNoDialog
+import com.dofury.moneycycle.dialog.BudgetPlusDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
-import com.dofury.moneycycle.dto.MoneyLogList.list
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
-import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 
 class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<MoneyLog>) :
@@ -36,7 +30,7 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
         binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue))
 
-        binding.itemMoney.text = DataUtil().parseMoney(list[position].charge)
+        binding.itemMoney.text = DataUtil.parseMoney(list[position].charge)
         binding.itemDate.text = parseDate(list[position].date)
         binding.itemType.text = list[position].category
         parseCategoryImage(binding,position)
@@ -45,7 +39,7 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
     @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = YesNoDialog(activity)
+            val dialog = BudgetPlusDialog(activity)
             dialog.show(list,this,position)
         })
     }

@@ -36,7 +36,7 @@
 
                 <RadioButton
                     android:id="@+id/rb_one"
-                    android:buttonTint="#FFFFFF"
+                    android:buttonTint="@color/white"
                     android:text="지출"
                     android:textSize="25dp"
                     android:textColor="@color/white"
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:buttonTint="#FFFFFF"
+                    android:buttonTint="@color/white"
                     android:textSize="25dp"
                     android:text="수입"
                     android:textColor="@color/white" />

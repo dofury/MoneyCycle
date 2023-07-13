@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Fragment"
+    tools:context=".activity.BudgetPlusActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:theme="@style/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:id="@+id/toolbar"
+                    android:layout_height="?actionBarSize">
+                        <ImageButton
+                            android:id="@+id/btn_back"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/siam"
+                            android:src="@drawable/ic_left"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/log_search"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center"/>
+                </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="10dp">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cv_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:padding="20dp"
+                                            android:orientation="vertical">
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+                                                        <TextView
+                                                            android:id="@+id/tv_date"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:textSize="20dp"
+                                                            android:textStyle="bold"
+                                                            android:text="@string/date"/>
+                                                        <androidx.appcompat.widget.SwitchCompat
+                                                            android:id="@+id/switch_date"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:checked="true"
+                                                            app:track="@drawable/switch_track_selector"
+                                                            android:thumb="@drawable/switch_thumb_selector"
+                                                            app:layout_constraintRight_toRightOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent" />
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/cl_date"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal"
+                                                    android:gravity="center">
+                                                        <TextView
+                                                            android:id="@+id/tv_first_date"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:padding="5dp"
+                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                            app:layout_constraintRight_toLeftOf="@id/tv_sign"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:theme="@style/Button"
+                                                            android:text="2022-10-12"/>
+                                                        <TextView
+                                                            android:id="@+id/tv_sign"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginStart="10dp"
+                                                            android:layout_marginEnd="10dp"
+                                                            app:layout_constraintRight_toLeftOf="@id/tv_second_date"
+                                                            app:layout_constraintLeft_toRightOf="@id/tv_first_date"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:text="~"/>
+                                                        <TextView
+                                                            android:id="@+id/tv_second_date"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:padding="5dp"
+                                                            app:layout_constraintRight_toRightOf="parent"
+                                                            app:layout_constraintLeft_toRightOf="@id/tv_sign"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:theme="@style/Button"
+                                                            android:text="2022-12-12"/>
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </LinearLayout>
+
+                                </androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cv_category"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@id/cv_date">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:padding="20dp"
+                                            android:orientation="vertical">
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+                                                        <TextView
+                                                            android:id="@+id/tv_category"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:textSize="20dp"
+                                                            android:textStyle="bold"
+                                                            android:text="@string/category"/>
+                                                        <androidx.appcompat.widget.SwitchCompat
+                                                            android:id="@+id/switch_category"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:checked="true"
+                                                            app:track="@drawable/switch_track_selector"
+                                                            android:thumb="@drawable/switch_thumb_selector"
+                                                            app:layout_constraintRight_toRightOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent" />
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/cl_category"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+                                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                                            android:id="@+id/cl_category_radio"
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            app:layout_constraintTop_toTopOf="parent">
+                                                                <RadioGroup
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    app:layout_constraintTop_toTopOf="parent"
+                                                                    android:checkedButton="@id/rb_outlay"
+                                                                    android:gravity="center"
+                                                                    android:orientation="horizontal">
+                                                                        <RadioButton
+                                                                            android:id="@+id/rb_outlay"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:buttonTint="@color/siam"
+                                                                            android:text="@string/outlay"
+                                                                            android:layout_marginEnd="10dp"/>
+                                                                        <RadioButton
+                                                                            android:id="@+id/rb_inlay"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:buttonTint="@color/siam"
+                                                                            android:text="@string/inlay"
+                                                                            android:layout_marginStart="10dp"/>
+                                                                </RadioGroup>
+                                                                <TextView
+                                                                    android:id="@+id/tv_category_all"
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    app:layout_constraintRight_toLeftOf="@id/switch_category_all"
+                                                                    app:layout_constraintTop_toTopOf="parent"
+                                                                    app:layout_constraintBottom_toBottomOf="parent"
+                                                                    android:layout_marginEnd="10dp"
+                                                                    android:text="ALL"/>
+                                                                <com.google.android.material.switchmaterial.SwitchMaterial
+                                                                    android:id="@+id/switch_category_all"
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    app:track="@drawable/switch_track_selector"
+                                                                    android:thumb="@drawable/switch_thumb_selector"
+                                                                    app:layout_constraintRight_toRightOf="parent"
+                                                                    app:layout_constraintTop_toTopOf="parent"
+                                                                    app:layout_constraintBottom_toBottomOf="parent"/>
+                                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                                            android:id="@+id/cl_content_out"
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginTop="20dp"
+                                                            app:layout_constraintTop_toBottomOf="@id/cl_category_radio"
+                                                            app:layout_constraintBottom_toBottomOf="parent">
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_out_1"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    app:layout_constraintTop_toTopOf="parent">
+                                                                        <Button
+                                                                            android:id="@+id/btn_food"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            android:text="@string/food" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_traffic"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toRightOf="@id/btn_food"
+                                                                            app:layout_constraintRight_toLeftOf="@+id/btn_culture"
+                                                                            android:text="@string/traffic" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_culture"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/culture" />
+
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_out_2"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginTop="20dp"
+                                                                    app:layout_constraintTop_toBottomOf="@id/cl_content_out_1">
+                                                                        <Button
+                                                                            android:id="@+id/btn_fashion"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            android:text="@string/fashion" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_house"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toRightOf="@id/btn_fashion"
+                                                                            app:layout_constraintRight_toLeftOf="@+id/btn_event"
+                                                                            android:text="@string/house" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_event"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/event" />
+
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_out_3"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginTop="20dp"
+                                                                    app:layout_constraintTop_toBottomOf="@id/cl_content_out_2">
+                                                                        <Button
+                                                                            android:id="@+id/btn_hobby"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            android:text="@string/hobby" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_change_out"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toRightOf="@id/btn_hobby"
+                                                                            app:layout_constraintRight_toLeftOf="@+id/btn_etc_out"
+                                                                            android:text="@string/change" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_etc_out"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/etc" />
+
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                                            android:id="@+id/cl_content_in"
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginTop="20dp"
+                                                            android:visibility="gone"
+                                                            app:layout_constraintTop_toBottomOf="@id/cl_category_radio"
+                                                            app:layout_constraintBottom_toBottomOf="parent">
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_in_1"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    app:layout_constraintTop_toTopOf="parent">
+                                                                        <Button
+                                                                            android:id="@+id/btn_income"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            android:text="@string/income" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_pocket_money"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toRightOf="@id/btn_income"
+                                                                            app:layout_constraintRight_toLeftOf="@+id/btn_extra_income"
+                                                                            android:text="@string/pocket_money" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_extra_income"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/extra_income" />
+
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_in_2"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginTop="20dp"
+                                                                    app:layout_constraintTop_toBottomOf="@id/cl_content_in_1">
+                                                                        <Button
+                                                                            android:id="@+id/btn_finance"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            android:text="@string/finance" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_refund"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toRightOf="@id/btn_finance"
+                                                                            app:layout_constraintRight_toLeftOf="@+id/btn_change_in"
+                                                                            android:text="@string/refund" />
+                                                                        <Button
+                                                                            android:id="@+id/btn_change_in"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/change" />
+
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                                    android:id="@+id/cl_content_in_3"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginTop="20dp"
+                                                                    app:layout_constraintTop_toBottomOf="@id/cl_content_in_2">
+                                                                        <Button
+                                                                            android:id="@+id/btn_etc_in"
+                                                                            android:layout_width="wrap_content"
+                                                                            android:layout_height="wrap_content"
+                                                                            android:background="@drawable/btn_white_gray"
+                                                                            app:layout_constraintTop_toTopOf="parent"
+                                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                                            app:layout_constraintRight_toRightOf="parent"
+                                                                            android:text="@string/etc" />
+                                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </LinearLayout>
+
+                                </androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cv_budget"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@id/cv_category"
+                                    app:layout_constraintBottom_toTopOf="@id/cv_memo">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical"
+                                            android:padding="20dp">
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+
+                                                        <TextView
+                                                            android:id="@+id/tv_budget"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:text="@string/budget"
+                                                            android:textSize="20dp"
+                                                            android:textStyle="bold"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent" />
+
+                                                        <androidx.appcompat.widget.SwitchCompat
+                                                            android:id="@+id/switch_budget"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:checked="true"
+                                                            android:thumb="@drawable/switch_thumb_selector"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            app:layout_constraintRight_toRightOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:track="@drawable/switch_track_selector" />
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/cl_budget"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="10dp"
+                                                    android:gravity="center"
+                                                    android:orientation="horizontal">
+
+                                                        <androidx.constraintlayout.widget.ConstraintLayout
+                                                            android:id="@+id/cl_content_in_4"
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_marginTop="20dp"
+                                                            app:layout_constraintTop_toTopOf="parent">
+
+                                                                <CheckBox
+                                                                    android:id="@+id/cb_yes_budget"
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginEnd="10dp"
+                                                                    android:buttonTint="@color/siam"
+                                                                    android:text="@string/yes_budget"
+                                                                    app:layout_constraintLeft_toLeftOf="parent"
+                                                                    app:layout_constraintRight_toLeftOf="@id/cb_no_budget"
+                                                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                                                <CheckBox
+                                                                    android:id="@+id/cb_no_budget"
+                                                                    android:layout_width="wrap_content"
+                                                                    android:layout_height="wrap_content"
+                                                                    android:layout_marginStart="10dp"
+                                                                    android:buttonTint="@color/siam"
+                                                                    android:text="@string/no_budget"
+                                                                    app:layout_constraintLeft_toRightOf="@id/cb_yes_budget"
+                                                                    app:layout_constraintRight_toRightOf="parent"
+                                                                    app:layout_constraintTop_toTopOf="parent" />
+                                                        </androidx.constraintlayout.widget.ConstraintLayout>
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </LinearLayout>
+
+                                </androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cv_memo"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@id/cv_budget"
+                                    app:layout_constraintBottom_toTopOf="@id/barrier">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:padding="20dp"
+                                            android:orientation="vertical">
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+                                                        <TextView
+                                                            android:id="@+id/tv_memo"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            app:layout_constraintLeft_toLeftOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent"
+                                                            android:textSize="20dp"
+                                                            android:textStyle="bold"
+                                                            android:text="@string/memo"/>
+                                                        <androidx.appcompat.widget.SwitchCompat
+                                                            android:id="@+id/switch_memo"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:checked="true"
+                                                            app:track="@drawable/switch_track_selector"
+                                                            android:thumb="@drawable/switch_thumb_selector"
+                                                            app:layout_constraintRight_toRightOf="parent"
+                                                            app:layout_constraintTop_toTopOf="parent"
+                                                            app:layout_constraintBottom_toBottomOf="parent" />
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                                <androidx.constraintlayout.widget.ConstraintLayout
+                                                    android:id="@+id/cl_memo"
+                                                    android:layout_marginTop="10dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal"
+                                                    android:gravity="center">
+                                                        <EditText
+                                                            android:id="@+id/et_memo"
+                                                            android:layout_width="match_parent"
+                                                            android:layout_height="wrap_content"
+                                                            app:layout_constraintTop_toTopOf="parent"/>
+
+                                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                                        </LinearLayout>
+
+                                </androidx.cardview.widget.CardView>
+                                <TextView
+                                    android:id="@+id/barrier"
+                                    android:layout_marginTop="10dp"
+                                    app:layout_constraintTop_toBottomOf="@id/cv_memo"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                </ScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:layout_marginBottom="10dp">
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background= "@drawable/btn_siam"
+                    android:textColor="@color/white"
+                    android:text="@string/yes" />
+                </LinearLayout>
+        </FrameLayout>
+
+
+
+</LinearLayout>

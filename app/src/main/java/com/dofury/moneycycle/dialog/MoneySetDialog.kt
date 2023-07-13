@@ -36,7 +36,7 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
     private fun buttonEvent(){
 
         binding.btnYes.setOnClickListener(View.OnClickListener {
-            if(DataUtil().isNumber(binding.etMoney.text.toString())){
+            if(DataUtil.isNumber(binding.etMoney.text.toString())){
                 MyApplication.prefs.setString(tag,binding.etMoney.text.toString())
                 Toast.makeText(context,"설정 완료",Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -49,7 +49,7 @@ class MoneySetDialog(private val context: AppCompatActivity,private val tag: Str
         })
     }
     private fun init(){
-        binding.etMoney.hint = DataUtil().parseMoney(MyApplication.prefs.getString(tag,"0").toLong())
+        binding.etMoney.hint = DataUtil.parseMoney(MyApplication.prefs.getString(tag,"0").toLong())
         when(tag){
             "budget" -> binding.tvName.text = context.getString(R.string.budget_charge)
             "goal" -> binding.tvName.text = context.getString(R.string.goal_charge)

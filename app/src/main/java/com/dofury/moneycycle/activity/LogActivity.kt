@@ -15,6 +15,7 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
 import com.dofury.moneycycle.fragment.CategoryOutFragment
+import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
@@ -43,7 +44,7 @@ class LogActivity : AppCompatActivity() {
         setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
     }
-    public fun setFragment(tag :String,fragment: Fragment) {
+    fun setFragment(tag :String,fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
 
@@ -88,8 +89,6 @@ class LogActivity : AppCompatActivity() {
 
     private fun buttonEvent() {
         binding.ibClose.setOnClickListener(View.OnClickListener {//메인 화면 전환
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
             finish()
         })
 
@@ -113,18 +112,17 @@ class LogActivity : AppCompatActivity() {
 
     fun inputNumber(number: String){
 
-        if(binding.tvNumber.text == "0"){
-            moneyBuffer = ""
-            binding.tvNumber.text = ""
-        }
         if(binding.tvNumber.text.length <=10){
             moneyBuffer += number
-            binding.tvNumber.text = DataUtil().parseMoney(moneyBuffer.toLong())
+            binding.tvNumber.text = DataUtil.parseMoney(moneyBuffer.toLong())
         }
         else{
             Snackbar.make(binding.root, "10자를 넘을 수 없습니다", Snackbar.LENGTH_LONG)
                 .setAction("action",null)
                 .show()
+        }
+        if(binding.tvNumber.text == "0"){
+            moneyBuffer = ""
         }
     }
     fun isBlank(): Boolean {
@@ -137,7 +135,7 @@ class LogActivity : AppCompatActivity() {
     fun removeNumber() {
         if(moneyBuffer != ""){
             moneyBuffer = moneyBuffer.subSequence(0,moneyBuffer.length-1) as String
-            binding.tvNumber.text = if(moneyBuffer!="") DataUtil().parseMoney(moneyBuffer.toLong())else "0"
+            binding.tvNumber.text = if(moneyBuffer!="") DataUtil.parseMoney(moneyBuffer.toLong())else "0"
         }
     }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -172,10 +170,10 @@ class LogActivity : AppCompatActivity() {
         MyApplication.db.addLog(moneyLog)//db 추가
         MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
 
-        DataUtil().updateValue()//자산, 예산 최신화
+        DataUtil.updateValue()//자산, 예산 최신화
 
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        HomeFragment().init()
+
         finish()
 
     }

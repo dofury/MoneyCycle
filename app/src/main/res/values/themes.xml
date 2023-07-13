@@ -8,6 +8,7 @@
 
     <style name="appbar" parent="Theme.MoneyCycle">
         <item name="colorPrimary">@color/siam</item>
+        <item name="android:backgroundTint">@color/siam</item>
     </style>
     <style name ="Fragment" parent="Theme.MoneyCycle">
         <item name="android:textColor">@color/siam</item>
@@ -25,6 +26,18 @@
         <item name="android:textSize">30dp</item>
         <item name="android:textColor">@color/siam</item>
     </style>
+
+    <style name="MyDatePickerStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/siam</item>
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+    </style>
+
+    <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:thumb">@drawable/switch_thumb_selector</item>
+        <item name="android:track">@drawable/switch_track_selector</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 
 </resources>

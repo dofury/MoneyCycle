@@ -4,8 +4,13 @@
     package="com.dofury.moneycycle">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name="com.dofury.moneycycle.MyApplication"
+        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,12 +21,8 @@
         android:theme="@style/Theme.MoneyCycle"
         tools:targetApi="31">
         <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/actions" />
-        <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id"/>
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -35,6 +36,14 @@
             android:exported="true">
         </activity>
         <activity
+            android:name=".activity.LogSearchActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".activity.LogSearchResultActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".activity.InitActivity"
             android:exported="true">
         </activity>
@@ -42,6 +51,9 @@
             android:name=".activity.BudgetPlusActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true">
+        </activity>
     </application>
-
 </manifest>

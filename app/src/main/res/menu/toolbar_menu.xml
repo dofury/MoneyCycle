@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_baseline"
+        android:icon="@drawable/ic_close"
         android:title="설정"
         app:showAsAction="ifRoom" />
 </menu>

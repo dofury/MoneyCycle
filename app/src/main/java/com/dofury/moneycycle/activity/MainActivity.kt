@@ -3,22 +3,18 @@ package com.dofury.moneycycle.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityMainBinding
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
-import com.dofury.moneycycle.fragment.mainActivity
+import com.dofury.moneycycle.util.DataUtil
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import kotlin.system.exitProcess
@@ -34,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("test","hi")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -42,21 +37,19 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
-        val toolbar : Toolbar = findViewById(R.id.toolbar)
-
         setFragment(TAG_HOME, HomeFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
-                R.id.listFragment -> setFragment(TAG_LIST, ListFragment())
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
+                R.id.listFragment -> setFragment(TAG_LIST, ListFragment)
+                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment)
             }
             true
         }
-
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)//기본 타이틀 삭제
+        if(MyApplication.prefs.getBoolean("auto_login",false) && MyApplication.prefs.getString("id_token","").isNotBlank()){
+            LoginActivity().firebaseAuthWithGoogle(MyApplication.prefs.getString("id_token",""),this)
+        }
 
     }
 
@@ -97,31 +90,13 @@ class MainActivity : AppCompatActivity() {
         }
         else if(tag == TAG_LIST){
             if(list!=null){
+                ListFragment.init()
                 fragTransaction.show(list)
             }
         }
         fragTransaction.commitAllowingStateLoss()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> {
-
-                System.exit(0) // 현재 액티비티를 종료시킨다.
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
     fun restart(){
         ActivityCompat.finishAffinity(this)
