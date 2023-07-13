@@ -1,6 +1,7 @@
 package com.dofury.moneycycle.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
@@ -19,20 +21,14 @@ import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.ResetDialog
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.User
-import com.dofury.moneycycle.util.CSVWriter
 import com.dofury.moneycycle.util.DataUtil
-import com.dofury.moneycycle.util.Permission
-import com.dofury.moneycycle.util.Permission.isWriteExternalStoragePermissionGranted
+import com.dofury.moneycycle.util.FileHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
-import java.text.SimpleDateFormat
-import java.time.LocalDate
+
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -43,49 +39,32 @@ object SettingFragment : Fragment() {
     private var isInit = false
 
     var user = User()
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            val contentResolver = mainActivity.contentResolver
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val createFileActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            result.data?.data?.also { uri ->
+                FileHelper.writeCSV(mainActivity,MyApplication.db.allLogs,uri)
+            }
+        }
+    }
+
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == AppCompatActivity.RESULT_OK){
+            val uri: Uri? = result.data?.data
+
             try {
-                //contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                val displayName = DataUtil.getFileName(contentResolver, uri)
-                //Toast.makeText(mainActivity, "Selected file: $displayName", Toast.LENGTH_SHORT).show()
-                if(!displayName.toString().contains(".csv")){//csv 파일이 아니라면
-                    throw SecurityException("csv 파일이 아님")
-                }
-                contentResolver.openInputStream(uri)?.use {
-                        inputStream ->
-                    val reader = BufferedReader(InputStreamReader(inputStream))
-                    val logs: MutableList<MoneyLog> = mutableListOf()
-                    var line: String? = reader.readLine()
-                    var count = 0
-                    while(line!=null){
-                        val tokens = line.split(",")
-                        if(count>0){
-                            val log = MoneyLog()
-                            log.uid = tokens[0].toInt() //uid
-                            log.charge = tokens[1].toLong() //uid
-                            log.sign = tokens[2].toBoolean() //uid
-                            log.category = tokens[3] //uid
-                            log.date = tokens[4] //uid
-                            log.memo = tokens[5] //uid
-                            log.budget = tokens[6].toBoolean() //uid
-                            log.server = tokens[7].toBoolean() //uid
-                            logs.add(log)
-                        }
-                        line = reader.readLine()
-                        count++
-                    }
-                    MyApplication.db.allAddLog(logs)
+                uri?.let {
+                    FileHelper.readCSV(mainActivity,it)
                 }
 
-
-                // Do something with the selected file
             } catch (e: SecurityException) {
                 Toast.makeText(mainActivity,"오류가 발생했습니다",Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }
+
+
     }
 
     fun init(){
@@ -132,8 +111,9 @@ object SettingFragment : Fragment() {
             dialog.show("budget")
         }
         binding.clBudgetCycle.setOnClickListener {
-            val dialog = InputDialog(mainActivity)
-            dialog.show("budget_cycle")
+            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
+            //val dialog = InputDialog(mainActivity)
+            //dialog.show("budget_cycle")
         }
         binding.clBudgetPlus.setOnClickListener {
             val intent = Intent(context, BudgetPlusActivity::class.java)
@@ -145,20 +125,21 @@ object SettingFragment : Fragment() {
         }
 
         binding.btnCsvSave.setOnClickListener {
-            if (isWriteExternalStoragePermissionGranted(mainActivity)) {
-                // 권한이 부여된 경우 실행할 코드
-                CSVWriter.writeToFile(MyApplication.db.allLogs,"moneyLogs.csv", mainActivity)
-                Snackbar.make(binding.root,"Download/moneyLog.csv",Snackbar.LENGTH_SHORT).show()
-            } else {
-                // 권한이 부여되지 않은 경우 권한 요청 코드 실행
-                Permission.verifyStoragePermissions(mainActivity)
-                Snackbar.make(binding.root,"권한이 없습니다",Snackbar.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "application/csv"
+                putExtra(Intent.EXTRA_TITLE, "moneyLogs.csv")
             }
+            createFileActivityResultLauncher.launch(intent)
+            Toast.makeText(mainActivity,"저장 완료",Toast.LENGTH_SHORT).show()
         }
 
         binding.btnCsvLoad.setOnClickListener {
-
-            getContent.launch("*/*");
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "text/*"
+            }
+            getContent.launch(intent);
         }
 
         binding.cardLoginCheck.setOnClickListener {
@@ -173,6 +154,7 @@ object SettingFragment : Fragment() {
         }
 
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun firebaseSave(){
         val firebaseAuth = FirebaseAuth.getInstance()
