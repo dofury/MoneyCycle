@@ -101,12 +101,12 @@
             android:layout_weight="1"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btn_blank"
+                android:id="@+id/btn_double_zero"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:layout_weight="1"
-                android:text=""/>
+                android:text="00"/>
             <Button
                 android:id="@+id/btn_zero"
                 android:layout_width="match_parent"

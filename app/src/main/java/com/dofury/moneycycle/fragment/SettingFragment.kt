@@ -26,8 +26,6 @@ import com.dofury.moneycycle.util.FileHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -143,8 +141,9 @@ object SettingFragment : Fragment() {
         }
 
         binding.cardLoginCheck.setOnClickListener {
-            val intent = Intent(context, LoginActivity::class.java)
-            startActivity(intent)
+            //val intent = Intent(context, LoginActivity::class.java)
+            //startActivity(intent)
+            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
         }
         binding.btnBackupSave.setOnClickListener {
             firebaseSave()

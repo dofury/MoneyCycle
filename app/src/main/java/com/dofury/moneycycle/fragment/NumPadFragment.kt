@@ -38,12 +38,13 @@ class NumPadFragment : Fragment() {
             binding.btnSeven,
             binding.btnEight,
             binding.btnNine,
+            binding.btnDoubleZero,
             binding.btnZero
         )
 
         buttons.forEach {
-            it.setOnClickListener {
-                val number = when(it.id) {
+            it.setOnClickListener {view->
+                val number = when(view.id) {
                     R.id.btn_one -> "1"
                     R.id.btn_two -> "2"
                     R.id.btn_three -> "3"
@@ -53,6 +54,7 @@ class NumPadFragment : Fragment() {
                     R.id.btn_seven -> "7"
                     R.id.btn_eight -> "8"
                     R.id.btn_nine -> "9"
+                    R.id.btn_double_zero -> "00"
                     else -> "0"
                 }
                 activity.inputNumber(number)
