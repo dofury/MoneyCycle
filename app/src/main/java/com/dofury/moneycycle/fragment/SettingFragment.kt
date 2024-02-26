@@ -126,7 +126,7 @@ object SettingFragment : Fragment() {
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "moneyLogs.csv")
+                putExtra(Intent.EXTRA_TITLE, "moneyLog.csv")
             }
             createFileActivityResultLauncher.launch(intent)
             Toast.makeText(mainActivity,"저장 완료",Toast.LENGTH_SHORT).show()
