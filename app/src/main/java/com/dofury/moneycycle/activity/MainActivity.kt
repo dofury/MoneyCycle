@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity() {
         if(tag == TAG_HOME){
             if(home!=null){
                 viewModel.currentAmountUpdate()
-                //HomeFragment().init()// viewmodel을 사용해 데이터 연결
+                viewModel.remainBudgetAmountUpdate()
+                viewModel.BudgetPlusAmountUpdate()
                 fragTransaction.show(home)
             }
         }

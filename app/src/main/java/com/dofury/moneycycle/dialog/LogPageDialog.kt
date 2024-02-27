@@ -14,6 +14,7 @@ import com.dofury.moneycycle.databinding.DialogLogPageBinding
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -58,7 +59,10 @@ class LogPageDialog(private val context: Context) {
                     false -> moneyLogList[position].isBudget = true
                 }
             }
-            db!!.moneyLogDao().update(moneyLogList[position])//db 반영
+            GlobalScope.launch(Dispatchers.IO) {
+                db!!.moneyLogDao().update(moneyLogList[position])//db 반영
+            }
+
         })
 
         binding.ibClose.setOnClickListener(View.OnClickListener {

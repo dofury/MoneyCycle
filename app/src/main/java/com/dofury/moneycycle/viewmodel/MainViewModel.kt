@@ -1,5 +1,6 @@
 package com.dofury.moneycycle.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -56,6 +57,22 @@ class MainViewModel: ViewModel() {
     fun currentAmountUpdate(){
         GlobalScope.launch(Dispatchers.IO) {
             _currentAmount.postValue(DataUtil.getMoney().toString())
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun BudgetPlusAmountUpdate(){
+        GlobalScope.launch(Dispatchers.IO) {
+            val data = DataUtil.getBudgetPlus().toString()
+            _budgetPlusAmount.postValue(data)
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun remainBudgetAmountUpdate(){
+        GlobalScope.launch(Dispatchers.IO) {
+            val data = DataUtil.getRemainBudget().toString()
+            _remainBudgetAmount.postValue(data)
         }
     }
 

@@ -65,6 +65,8 @@ class HomeFragment : Fragment() {
         super.onResume()
         Log.d("test","main-resume")
         viewModel.currentAmountUpdate()
+        viewModel.remainBudgetAmountUpdate()
+        viewModel.BudgetPlusAmountUpdate()
     }
     private fun startInit(){
         val isInit: Boolean = MyApplication.prefs.getBoolean("is_init",true)
@@ -79,28 +81,29 @@ class HomeFragment : Fragment() {
     fun init(){
         viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
-        viewModel.budgetPlusAmount.observe(viewLifecycleOwner) { value ->
-            binding.tvPlusBudgetValue.text = value
+        viewModel.budgetPlusAmount.observe(viewLifecycleOwner) {value ->
+            binding.tvPlusBudgetValue.text = if(value == "0") "" else "+(${DataUtil.parseMoney(value.toLong())})"
         }
+
         viewModel.budgetSumAmount.observe(viewLifecycleOwner) {value ->
-            binding.tvBudgetValue.text = value
+            binding.tvBudgetValue.text = DataUtil.parseMoney(value.toLong())
         }
 
         viewModel.currentAmount.observe(viewLifecycleOwner) {value->
             binding.tvMoneyValue.text = DataUtil.parseMoney(value.toLong())
         }
 
+        viewModel.remainBudgetAmount.observe(viewLifecycleOwner) {value->
+            binding.tvBudgetRemainValue.text = DataUtil.parseMoney(value.toLong())
+        }
+
         //DataUtil.updateValue()//자산, 예산 최신화
         val goalValue = viewModel.targetAmount.value
-        val budgetPlus = viewModel.budgetPlusAmount.value
         val budgetValue = viewModel.budgetSumAmount.value
         val moneyValue = viewModel.currentAmount.value
         val remainBudgetValue = viewModel.remainBudgetAmount.value
         val remainDayValue = (DataUtil.getNowLastDate().dayOfMonth-DataUtil.getNowDate().dayOfMonth+1).toString()
 
-        if (budgetPlus != null) {
-            binding.tvPlusBudgetValue.text = if(budgetPlus == "0") "" else "+(${DataUtil.parseMoney(budgetPlus.toLong())})"
-        }
         if (goalValue != null) {
             binding.tvGoalValue.text= DataUtil.parseMoney(goalValue.toLong())
         }
@@ -108,9 +111,6 @@ class HomeFragment : Fragment() {
             binding.tvBudgetValue.text= DataUtil.parseMoney(budgetValue.toLong())
         }
 
-        if (remainBudgetValue != null) {
-            binding.tvBudgetRemainValue.text= DataUtil.parseMoney(remainBudgetValue.toLong())
-        }
         //이번 달에 마지막 날을 가져와서 남은 일수를 계산
         binding.tvRemainDayValue.text = remainDayValue
 

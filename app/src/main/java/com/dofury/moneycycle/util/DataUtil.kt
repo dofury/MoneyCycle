@@ -52,16 +52,12 @@ object DataUtil {
     }
 
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun getBudgetPlus(): Long {//실험실
+   fun getBudgetPlus(): Long {//실험실
         var sum: Long = 0
-        GlobalScope.launch(Dispatchers.IO){
             for (log in MyApplication.db.moneyLogDao().getAll()) {
                 if (log.isBudget && log.sign)
                     sum += log.charge
             }
-        }
-
         return sum
     }
 
@@ -74,10 +70,8 @@ object DataUtil {
         return percent
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun getRemainBudget(): Long {//실험실
+    fun getRemainBudget(): Long {//실험실
         var sum: Long = 0
-        GlobalScope.launch(Dispatchers.IO){
             for (log in MyApplication.db.moneyLogDao().getAll()) {
                 if (log.isBudget)
                     sum += if (!log.sign) {
@@ -86,8 +80,6 @@ object DataUtil {
                         log.charge
                     }
             }
-        }
-
 
         return MyApplication.prefs.getString("budgetAmount", "0").toLong() + sum
     }
