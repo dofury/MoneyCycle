@@ -16,8 +16,8 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
-class SearchResultAdapter(private val moneyLogList: MutableList<MoneyLog>,private val context: AppCompatActivity) :
-    ListAdapter(moneyLogList) {
+class SearchResultAdapter(private val moneyLogList: MutableList<MoneyLog>, private val context: AppCompatActivity) :
+    ListAdapter(moneyLogList,context) {
     override fun getItemCount(): Int {
         return moneyLogList.size
     }

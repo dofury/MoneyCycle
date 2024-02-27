@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.adapter.BudgetPlusAdapter
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.DialogYesNoBinding
 import com.dofury.moneycycle.dto.MoneyLog
 
@@ -16,15 +17,15 @@ class BudgetPlusDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogYesNoBinding
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun show(list: MutableList<MoneyLog>,adapter: BudgetPlusAdapter,position: Int){
+    private val db = MoneyLogDatabase.getInstance(context)
+    fun show(list: List<MoneyLog>, adapter: BudgetPlusAdapter, position: Int){
         binding =DialogYesNoBinding.inflate(context.layoutInflater)
 
         dialog.setContentView(binding.root)
 
 
         init()
-        buttonEvent(list,adapter,position)
+        buttonEvent(list.toMutableList(),adapter,position)
         //크기 설정
         dialog.window!!.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
@@ -33,15 +34,14 @@ class BudgetPlusDialog(private val context: AppCompatActivity) {
         dialog.setCancelable(true)
         dialog.show()
     }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun buttonEvent(list: MutableList<MoneyLog>,adapter: BudgetPlusAdapter,position: Int){
+    fun buttonEvent(list: MutableList<MoneyLog>, adapter: BudgetPlusAdapter, position: Int){
         binding.btnNo.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })
         binding.btnYes.setOnClickListener(View.OnClickListener {
 
-            list[position].budget = false
-            MyApplication.db.updateLog( list[position])//db 반영
+            list[position].isBudget = false
+            db!!.moneyLogDao().update( list[position])//db 반영
             list.removeAt(position)
 
             //MoneyLogList.list = MyApplication.db.allLogs

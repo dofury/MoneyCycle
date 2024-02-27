@@ -90,8 +90,8 @@ class LoginActivity : AppCompatActivity() {
         if (user != null) {
             finish()
             val users = User(user.getIdToken(true).toString(),user.email!!,user.displayName!!,user.providerId)
-            SettingFragment.user = users
-            SettingFragment.userInit()
+            //SettingFragment.user = users
+            //SettingFragment.userInit()
             // 로그인 성공
             Toast.makeText(context, "Login Success", Toast.LENGTH_SHORT).show()
         } else {

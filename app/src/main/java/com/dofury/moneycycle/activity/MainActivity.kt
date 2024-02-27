@@ -8,15 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityMainBinding
+import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 private const val TAG_HOME = "home_fragment"
@@ -25,25 +33,28 @@ private const val TAG_LIST = "list_fragment"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         MobileAds.initialize(this) {}
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
         setFragment(TAG_HOME, HomeFragment())
+        viewModel.currentAmountUpdate()
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.homeFragment -> setFragment(TAG_HOME, HomeFragment())
-                R.id.listFragment -> setFragment(TAG_LIST, ListFragment)
-                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment)
+                R.id.listFragment -> setFragment(TAG_LIST, ListFragment())
+                R.id.settingFragment -> setFragment(TAG_SETTING, SettingFragment())
             }
             true
         }
@@ -53,7 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
@@ -79,7 +89,8 @@ class MainActivity : AppCompatActivity() {
 
         if(tag == TAG_HOME){
             if(home!=null){
-                HomeFragment().init()
+                viewModel.currentAmountUpdate()
+                //HomeFragment().init()// viewmodel을 사용해 데이터 연결
                 fragTransaction.show(home)
             }
         }
@@ -90,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
         else if(tag == TAG_LIST){
             if(list!=null){
-                ListFragment.init()
+                //ListFragment
                 fragTransaction.show(list)
             }
         }

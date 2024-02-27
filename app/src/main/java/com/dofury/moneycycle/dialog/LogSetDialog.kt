@@ -14,7 +14,6 @@ class LogSetDialog(private val context: LogActivity) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogLogSetBinding
-    @RequiresApi(Build.VERSION_CODES.O)
     fun show(moneyLog: MoneyLog){
         binding = DialogLogSetBinding.inflate(context.layoutInflater)
 
@@ -30,7 +29,6 @@ class LogSetDialog(private val context: LogActivity) {
         dialog.setCancelable(true)
         dialog.show()
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun buttonEvent(moneyLog: MoneyLog){
         if(moneyLog.sign){//예산 포함
             binding.isBudget.text=context.getString(R.string.yes_budget)
@@ -43,9 +41,9 @@ class LogSetDialog(private val context: LogActivity) {
         binding.btnOk.setOnClickListener(View.OnClickListener {
 
             if(moneyLog.sign){//예산 포함
-                moneyLog.budget = binding.isBudget.isChecked
+                moneyLog.isBudget = binding.isBudget.isChecked
             }else{//예산 제외
-                moneyLog.budget = !binding.isBudget.isChecked
+                moneyLog.isBudget = !binding.isBudget.isChecked
             }
             moneyLog.memo = binding.etMemo.text.toString()
             context.submitLog()

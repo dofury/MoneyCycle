@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.adapter.SearchResultAdapter
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityLogSearchResultBinding
 import com.dofury.moneycycle.dto.MoneyLog
 
@@ -15,6 +16,7 @@ class LogSearchResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogSearchResultBinding
     private lateinit var logs: MutableList<MoneyLog>
+    private val db = MoneyLogDatabase.getInstance(applicationContext)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,10 +33,7 @@ class LogSearchResultActivity : AppCompatActivity() {
         val intent = intent
         val sql = intent.getStringExtra("sql")
         val args = intent.getStringArrayListExtra("args")!!.toTypedArray()
-        logs = MyApplication.db.getQueryLog(
-            sql!!,
-            args!!
-        )
+        logs = db!!.moneyLogDao().getQueryLog(sql!!).toMutableList()
     }
 
     private fun buttonEvent() {

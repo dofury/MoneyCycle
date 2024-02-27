@@ -15,7 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
-import com.dofury.moneycycle.activity.LoginActivity
+import com.dofury.moneycycle.activity.MainActivity
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.ResetDialog
@@ -31,17 +32,17 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-object SettingFragment : Fragment() {
-    private lateinit var binding: FragmentSettingBinding
+class SettingFragment : Fragment() {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private var isInit = false
+    private lateinit var binding: FragmentSettingBinding
+
 
     var user = User()
-    @RequiresApi(Build.VERSION_CODES.O)
     private val createFileActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             result.data?.data?.also { uri ->
-                FileHelper.writeCSV(mainActivity,MyApplication.db.allLogs,uri)
+                FileHelper(requireContext()).writeCSV(context as MainActivity,MyApplication.db.moneyLogDao().getAll(),uri)
             }
         }
     }
@@ -53,11 +54,11 @@ object SettingFragment : Fragment() {
 
             try {
                 uri?.let {
-                    FileHelper.readCSV(mainActivity,it)
+                    FileHelper(requireContext()).readCSV(context as MainActivity,it)
                 }
 
             } catch (e: SecurityException) {
-                Toast.makeText(mainActivity,"오류가 발생했습니다",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context as MainActivity,"오류가 발생했습니다",Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }
@@ -101,15 +102,15 @@ object SettingFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun buttonEvent(){
         binding.clGoal.setOnClickListener {
-            val dialog = InputDialog(mainActivity)
+            val dialog = InputDialog(context as MainActivity)
             dialog.show("goal")
         }
         binding.clBudgetCharge.setOnClickListener {
-            val dialog = InputDialog(mainActivity)
+            val dialog = InputDialog(context as MainActivity)
             dialog.show("budget")
         }
         binding.clBudgetCycle.setOnClickListener {
-            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as MainActivity,"미구현",Toast.LENGTH_SHORT).show()
             //val dialog = InputDialog(mainActivity)
             //dialog.show("budget_cycle")
         }
@@ -118,7 +119,7 @@ object SettingFragment : Fragment() {
             startActivity(intent)
         }
         binding.clReset.setOnClickListener{
-            val dialog = ResetDialog(mainActivity)
+            val dialog = ResetDialog(context as MainActivity)
             dialog.show()
         }
 
@@ -129,7 +130,7 @@ object SettingFragment : Fragment() {
                 putExtra(Intent.EXTRA_TITLE, "moneyLog.csv")
             }
             createFileActivityResultLauncher.launch(intent)
-            Toast.makeText(mainActivity,"저장 완료",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as MainActivity,"저장 완료",Toast.LENGTH_SHORT).show()
         }
 
         binding.btnCsvLoad.setOnClickListener {
@@ -143,7 +144,7 @@ object SettingFragment : Fragment() {
         binding.cardLoginCheck.setOnClickListener {
             //val intent = Intent(context, LoginActivity::class.java)
             //startActivity(intent)
-            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as MainActivity,"미구현",Toast.LENGTH_SHORT).show()
         }
         binding.btnBackupSave.setOnClickListener {
             firebaseSave()
@@ -177,7 +178,7 @@ object SettingFragment : Fragment() {
         // 데이터 베이스 삽입
         databaseReference.child("UserLogs").child(firebaseAuth.uid!!).get().addOnCompleteListener {
             val logs:MutableList<MoneyLog> = DataUtil.jsonToLog(it.result.value.toString())!!
-            MyApplication.db.allAddLog(logs)
+            MyApplication.db.moneyLogDao().insertAll(requireContext(),logs)
             Snackbar.make(binding.root,"복구 완료",Snackbar.LENGTH_SHORT).show()
         }
 

@@ -1,5 +1,6 @@
 package com.dofury.moneycycle.adapter
 
+import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +13,9 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
-import java.text.SimpleDateFormat
 
-open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
+open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>,private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
         return moneyLogList.size
@@ -43,10 +42,9 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogPageDialog(mainActivity)
+            val dialog = LogPageDialog(context)
             dialog.show(moneyLogList,this,position)
         })
     }

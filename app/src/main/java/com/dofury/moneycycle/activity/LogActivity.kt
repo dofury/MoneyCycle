@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.dofury.moneycycle.*
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityLogBinding
 import com.dofury.moneycycle.dialog.LogSetDialog
 import com.dofury.moneycycle.dto.MoneyLog
@@ -19,6 +20,11 @@ import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,14 +39,13 @@ class LogActivity : AppCompatActivity() {
     private var tag = TAG_NUM
     private var moneyBuffer: String = ""
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        moneyLog = MoneyLog(0, 0, false, "", "", "",true,false)
+        moneyLog = MoneyLog(0, false, "", "", "",true,false)
         setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
     }
@@ -138,14 +143,13 @@ class LogActivity : AppCompatActivity() {
             binding.tvNumber.text = if(moneyBuffer!="") DataUtil.parseMoney(moneyBuffer.toLong())else "0"
         }
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setCategory(category : String) {
         moneyLog.category = category
         val dialog = LogSetDialog(this)
         this.layoutInflater
         dialog.show(moneyLog)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+    @OptIn(DelicateCoroutinesApi::class)
     fun submitLog(){
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -167,17 +171,25 @@ class LogActivity : AppCompatActivity() {
 
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
-        MyApplication.db.addLog(moneyLog)//db 추가
-        MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
+        GlobalScope.launch(Dispatchers.IO){
+            MyApplication.db.moneyLogDao().insert(moneyLog)
+            val newList = MyApplication.db.moneyLogDao().getAll().toMutableList()
+            withContext(Dispatchers.Main){
+                MoneyLogList.list = newList
+            }
 
-        DataUtil.updateValue()//자산, 예산 최신화
 
-        HomeFragment().init()
+        }
+
+
+
+        //DataUtil.updateValue()//자산, 예산 최신화
+
+        //HomeFragment().init()
 
         finish()
 
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun logToMain(){//실험
         submitLog()
         val intent = Intent(this, MainActivity::class.java)

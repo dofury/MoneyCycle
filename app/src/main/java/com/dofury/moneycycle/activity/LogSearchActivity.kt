@@ -31,7 +31,6 @@ class LogSearchActivity : AppCompatActivity() {
     private lateinit var outlayButtons: MutableMap<String,Button>
     private var isInSwitch = false
     private var isOutSwitch = false
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

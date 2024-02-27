@@ -13,23 +13,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.LogSearchActivity
 import com.dofury.moneycycle.adapter.ListAdapter
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.FragmentListBinding
 import com.dofury.moneycycle.dto.MoneyLog
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 
-object ListFragment : Fragment() {
+class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
-    lateinit var moneyLogList: MutableList<MoneyLog>
+    private lateinit var moneyLogList: MutableList<MoneyLog>
+    private lateinit var db: MoneyLogDatabase
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
+        db = MoneyLogDatabase.getInstance(requireContext())!!
         startInit()
 
         init()
@@ -44,20 +52,28 @@ object ListFragment : Fragment() {
         return manager
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun startInit(){
         val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
         date = LocalDateTime.now()
         binding.tvDate.text=date.format(formatter)
         dateEvent(formatter)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+    @OptIn(DelicateCoroutinesApi::class)
     fun init(){
-        moneyLogList = MyApplication.db.getDateLog(date)
-        binding.rcvList.adapter = ListAdapter(moneyLogList)
+        val month = YearMonth.from(date)
+        val firstDate = month.atDay(1)
+        val lastDate = month.atEndOfMonth()
+        GlobalScope.launch(Dispatchers.IO){
+            moneyLogList = db.moneyLogDao().getDateLog(firstDate.toString(),lastDate.toString()).toMutableList()
+            // UI 업데이트는 메인 스레드에서 수행
+            withContext(Dispatchers.Main) {
+                // UI 업데이트 작업 수행
+                binding.rcvList.adapter = ListAdapter(moneyLogList,requireContext())
+            }
+        }
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun dateEvent(formatter: DateTimeFormatter){
         binding.ibLeft.setOnClickListener {
             date = date.plusMonths(-1)
@@ -70,7 +86,7 @@ object ListFragment : Fragment() {
             init()
         }
         binding.ibSearch.setOnClickListener{
-            val intent = Intent(mainActivity,LogSearchActivity::class.java)
+            val intent = Intent(context,LogSearchActivity::class.java)
             startActivity(intent)
         }
     }
