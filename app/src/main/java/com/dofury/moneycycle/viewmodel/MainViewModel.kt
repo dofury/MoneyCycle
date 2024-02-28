@@ -1,15 +1,16 @@
 package com.dofury.moneycycle.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dofury.moneycycle.MyApplication
+import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.YearMonth
 
 class MainViewModel: ViewModel() {
     private val _targetAmount = MutableLiveData<String>()
@@ -19,6 +20,7 @@ class MainViewModel: ViewModel() {
     private val _currentAmount = MutableLiveData<String>()
     private val _remainBudgetAmount = MutableLiveData<String>()
     private val _remainDays = MutableLiveData<String>()
+    private val _moneyLogList = MutableLiveData<MutableList<MoneyLog>>()
 
     val targetAmount: MutableLiveData<String>
         get() = _targetAmount
@@ -34,6 +36,9 @@ class MainViewModel: ViewModel() {
 
     val remainBudgetAmount: MutableLiveData<String>
         get() = _remainBudgetAmount
+
+    val moneyLogList: MutableLiveData<MutableList<MoneyLog>>
+        get() = _moneyLogList
     init {
         dataInit()
     }
@@ -42,6 +47,7 @@ class MainViewModel: ViewModel() {
         super.onCleared()
     }
     private fun dataInit(){
+        moneyLogListLoad()
         _targetAmount.value = MyApplication.prefs.getString("targetAmount","0")
         _budgetAmount.value = MyApplication.prefs.getString("budgetAmount","0")
         _budgetPlusAmount.value = MyApplication.prefs.getString("budgetPlusAmount","0")
@@ -73,6 +79,31 @@ class MainViewModel: ViewModel() {
         GlobalScope.launch(Dispatchers.IO) {
             val data = DataUtil.getRemainBudget().toString()
             _remainBudgetAmount.postValue(data)
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun moneyLogListLoad(){
+        val month = YearMonth.from(LocalDateTime.now())
+        val firstDate = month.atDay(1)
+        val lastDate = month.atEndOfMonth()
+        GlobalScope.launch(Dispatchers.IO) {
+            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateLog(firstDate.toString(),lastDate.toString()).toMutableList())
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun moneyLogListUpdate(moneyLog: MoneyLog){
+        GlobalScope.launch(Dispatchers.IO) {
+            MyApplication.db.moneyLogDao().update(moneyLog)
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun moneyLogListDelete(moneyLog: MoneyLog){
+        GlobalScope.launch(Dispatchers.IO) {
+            _moneyLogList.value?.remove(moneyLog)
+            MyApplication.db.moneyLogDao().delete(moneyLog)
         }
     }
 

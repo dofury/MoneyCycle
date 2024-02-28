@@ -1,11 +1,9 @@
 package com.dofury.moneycycle.adapter
 
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dofury.moneycycle.ListViewHolder
@@ -14,20 +12,21 @@ import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.viewmodel.MainViewModel
 
-open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>,private val context: Context) :
+open class ListAdapter(private val context: Context,private val viewModel: MainViewModel) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val moneyLogList = viewModel.moneyLogList.value
     override fun getItemCount(): Int {
-        return moneyLogList.size
+        return moneyLogList!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ListViewHolder(
         ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
-        if(moneyLogList[position].sign){//지출,수입 검사하여 색칠
+        if(moneyLogList?.get(position)!!.sign){//지출,수입 검사하여 색칠
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,
                 R.color.blue
             ))
@@ -44,13 +43,13 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>,private v
     }
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogPageDialog(context)
-            dialog.show(moneyLogList,this,position)
+            val dialog = LogPageDialog(context,viewModel,this)
+            dialog.show(position)
         })
     }
 
     private fun parseCategoryImage(binding: ListItemBinding,position: Int){
-        when(moneyLogList[position].category){
+        when(moneyLogList?.get(position)!!.category){
 
             binding.root.context.getString(R.string.house) ->
                 binding.civCategory.setImageResource(R.drawable.house_icon)

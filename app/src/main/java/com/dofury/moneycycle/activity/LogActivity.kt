@@ -181,12 +181,6 @@ class LogActivity : AppCompatActivity() {
 
         }
 
-
-
-        //DataUtil.updateValue()//자산, 예산 최신화
-
-        //HomeFragment().init()
-
         finish()
 
     }

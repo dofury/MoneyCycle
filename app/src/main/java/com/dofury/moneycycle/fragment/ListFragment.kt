@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
@@ -16,6 +17,7 @@ import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.FragmentListBinding
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,15 +31,14 @@ import java.time.format.DateTimeFormatter
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
-    private lateinit var moneyLogList: MutableList<MoneyLog>
-    private lateinit var db: MoneyLogDatabase
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
-        db = MoneyLogDatabase.getInstance(requireContext())!!
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         startInit()
 
         init()
@@ -58,20 +59,12 @@ class ListFragment : Fragment() {
         binding.tvDate.text=date.format(formatter)
         dateEvent(formatter)
     }
-    @OptIn(DelicateCoroutinesApi::class)
-    fun init(){
-        val month = YearMonth.from(date)
-        val firstDate = month.atDay(1)
-        val lastDate = month.atEndOfMonth()
-        GlobalScope.launch(Dispatchers.IO){
-            moneyLogList = db.moneyLogDao().getDateLog(firstDate.toString(),lastDate.toString()).toMutableList()
-            // UI 업데이트는 메인 스레드에서 수행
-            withContext(Dispatchers.Main) {
-                // UI 업데이트 작업 수행
-                binding.rcvList.adapter = ListAdapter(moneyLogList,requireContext())
-            }
-        }
 
+    fun init(){
+        viewModel.moneyLogList.observe(viewLifecycleOwner) {
+            binding.rcvList.adapter =
+                viewModel.moneyLogList.value?.let { ListAdapter(requireContext(),viewModel) }
+        }
     }
 
     private fun dateEvent(formatter: DateTimeFormatter){

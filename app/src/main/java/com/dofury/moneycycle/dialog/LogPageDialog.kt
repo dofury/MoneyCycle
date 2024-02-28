@@ -2,36 +2,35 @@ package com.dofury.moneycycle.dialog
 
 import android.app.Dialog
 import android.content.Context
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.DialogLogPageBinding
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
-class LogPageDialog(private val context: Context) {
+class LogPageDialog(private val context: Context, private val viewModel: MainViewModel,private val adapter: ListAdapter) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogLogPageBinding
-    private val db = MoneyLogDatabase.getInstance(context)
+    private val moneyLogList = viewModel.moneyLogList.value
     @OptIn(DelicateCoroutinesApi::class)
-    fun show(moneyLogList: MutableList<MoneyLog>, adapter: ListAdapter, position: Int){
+    fun show(position: Int){
         var isDelete = false
         binding = DialogLogPageBinding.inflate(LayoutInflater.from(context))
 
         dialog.setContentView(binding.root)
 
-        if(moneyLogList[position].sign){
+        if(moneyLogList?.get(position)!!.sign){
             binding.tvMoneySign.text="+"
         }else{
             binding.tvMoneySign.text="-"
@@ -59,36 +58,25 @@ class LogPageDialog(private val context: Context) {
                     false -> moneyLogList[position].isBudget = true
                 }
             }
-            GlobalScope.launch(Dispatchers.IO) {
-                db!!.moneyLogDao().update(moneyLogList[position])//db 반영
-            }
-
+            viewModel.moneyLogListUpdate(moneyLogList[position])
         })
 
         binding.ibClose.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })
         binding.ibDelete.setOnClickListener(View.OnClickListener {
-            db!!.moneyLogDao().delete(moneyLogList[position])
-            moneyLogList.removeAt(position)
-
+            viewModel.moneyLogListDelete(moneyLogList[position])
+            moneyLogList.remove(moneyLogList[position])
             adapter.notifyItemRemoved(position)
-
             isDelete = true
-            DataUtil.updateValue()//자산, 예산 최신화
-
             dialog.dismiss()
 
         })
         dialog.setOnDismissListener {
             if(!isDelete){//삭제된 로그가 아니라면 메모 업데이트
                 moneyLogList[position].memo = binding.evMemo.text.toString()
-                GlobalScope.launch{
-                    db!!.moneyLogDao().update(moneyLogList[position])
-                }
-
+                viewModel.moneyLogListUpdate(moneyLogList[position])
             }
-           // ListFragment.init()
         }
 
         //크기 설정

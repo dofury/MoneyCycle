@@ -10,6 +10,7 @@ import com.dofury.moneycycle.adapter.SearchResultAdapter
 import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityLogSearchResultBinding
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.viewmodel.MainViewModel
 
 
 class LogSearchResultActivity : AppCompatActivity() {
@@ -25,7 +26,7 @@ class LogSearchResultActivity : AppCompatActivity() {
 
         init()
         binding.rcvList.layoutManager = createLayoutManager()
-        binding.rcvList.adapter = SearchResultAdapter(logs,this)
+        binding.rcvList.adapter = SearchResultAdapter(this, MainViewModel())
         binding.rcvList.addItemDecoration(DividerItemDecoration(this,LinearLayoutManager.VERTICAL))
         buttonEvent()
     }

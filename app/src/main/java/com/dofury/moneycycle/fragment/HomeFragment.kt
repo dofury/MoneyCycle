@@ -64,9 +64,7 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("test","main-resume")
-        viewModel.currentAmountUpdate()
-        viewModel.remainBudgetAmountUpdate()
-        viewModel.BudgetPlusAmountUpdate()
+
     }
     private fun startInit(){
         val isInit: Boolean = MyApplication.prefs.getBoolean("is_init",true)

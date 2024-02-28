@@ -1,9 +1,7 @@
 package com.dofury.moneycycle.activity
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -11,20 +9,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
-import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityMainBinding
-import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.ListFragment
 import com.dofury.moneycycle.fragment.SettingFragment
-import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 private const val TAG_HOME = "home_fragment"
@@ -35,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
 
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -64,6 +54,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.currentAmountUpdate()
+        viewModel.remainBudgetAmountUpdate()
+        viewModel.BudgetPlusAmountUpdate()
+        viewModel.moneyLogListLoad()
+    }
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
