@@ -1,29 +1,26 @@
 package com.dofury.moneycycle.activity
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ActivityLogSearchBinding
 import com.dofury.moneycycle.dialog.DatePickerDialog
-import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.util.DataUtil
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 class LogSearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogSearchBinding
+
 
     private lateinit var isInlay: MutableMap<String,Boolean>
     private lateinit var isOutlay: MutableMap<String,Boolean>
@@ -33,13 +30,13 @@ class LogSearchActivity : AppCompatActivity() {
     private var isOutSwitch = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLogSearchBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
+
         init()
         buttonEvent()
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun init(){
         val formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         isInlay = arrayMapOf<String,Boolean>(getString(R.string.income) to false, getString(R.string.pocket_money) to false,getString(R.string.extra_income) to false,getString(R.string.finance) to false,getString(R.string.refund) to false,getString(R.string.change) to false,getString(R.string.etc) to false)
@@ -55,12 +52,11 @@ class LogSearchActivity : AppCompatActivity() {
     }
 
     private fun firstCheck(isFirst: Boolean): MutableList<String>{
-        val firstSQL = "SELECT * FROM ${DBHelper.TABLE_NAME} WHERE "
+
         val andSQL = " AND "
         var sqlList = mutableListOf<String>("false","")
 
         return if(isFirst){
-            sqlList[1] = firstSQL
             sqlList
         }else{
             sqlList[1] = andSQL
@@ -72,8 +68,7 @@ class LogSearchActivity : AppCompatActivity() {
         return binding.cbNoBudget.isChecked || binding.cbYesBudget.isChecked
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun categoryIsCheck(): Boolean{
+    private fun categoryIsCheck(): Boolean{
         isInlay.forEach { (t, u) ->
             if(u){
                 return true
@@ -87,7 +82,6 @@ class LogSearchActivity : AppCompatActivity() {
         return false
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun categoryInAllOn(){
         isInlay.forEach { (t, _) ->
             isInlay[t] = true
@@ -96,7 +90,6 @@ class LogSearchActivity : AppCompatActivity() {
             inButtonOn(u,t)
         }
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun categoryInAllOff(){
         isInlay.forEach { (t, _) ->
             isInlay[t] = false
@@ -105,7 +98,6 @@ class LogSearchActivity : AppCompatActivity() {
             inButtonOff(u,t)
         }
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun categoryOutAllOn(){
         isOutlay.forEach { (t, _) ->
             isOutlay[t] = true
@@ -114,7 +106,6 @@ class LogSearchActivity : AppCompatActivity() {
             outButtonOn(u,t)
         }
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun categoryOutAllOff(){
         isOutlay.forEach { (t, _) ->
             isOutlay[t] = false
@@ -123,12 +114,11 @@ class LogSearchActivity : AppCompatActivity() {
             outButtonOff(u,t)
         }
     }
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun searchLogs(){
         var isFirst = true //첫 sql인지 체크
         var selectQueryHandler = ""
         var isContents = false//리스트에 요소가 있는지 체크
-        var args = mutableListOf<String>()
+        val args = mutableListOf<String>()
         try {
             if(binding.switchDate.isChecked){
                 //date 조건+
@@ -140,9 +130,7 @@ class LogSearchActivity : AppCompatActivity() {
                 val firstDate = binding.tvFirstDate.text
                 val lastDate = binding.tvSecondDate.text
 
-                selectQueryHandler += "strftime('%Y-%m-%d', ${DBHelper.COL_DATE}) BETWEEN ? AND ?"
-
-                //args에 추가
+                selectQueryHandler += "strftime('%Y-%m-%d', date) BETWEEN '$firstDate' AND '$lastDate'"
                 args.add(firstDate.toString())
                 args.add(lastDate.toString())
 
@@ -153,11 +141,11 @@ class LogSearchActivity : AppCompatActivity() {
                 isFirst = sqlCheck[0].toBoolean()
                 selectQueryHandler += sqlCheck[1]
 
-                var sql = "((SIGN = ? AND CATEGORY IN("
-                args.add("1")//sign 1
+                var sql = "((SIGN = 1 AND CATEGORY IN("
+                args.add("1")
                 for(check in isInlay){
                     if(check.value){
-                        sql += "?,"
+                        sql += "${check.key},"
                         args.add(check.key)
                         isContents = true
                     }
@@ -169,12 +157,12 @@ class LogSearchActivity : AppCompatActivity() {
                 }
                 sql += "))"
                 selectQueryHandler += sql
-                sql = " OR (SIGN = ? AND CATEGORY IN("
-                args.add("0")//sign 0
+                sql = " OR (SIGN = 0 AND CATEGORY IN("
+                args.add("0")
 
                 for(check in isOutlay){
                     if(check.value){
-                        sql += "?,"
+                        sql += "${check.key},"
                         args.add(check.key)
                         isContents = true
                     }
@@ -195,24 +183,24 @@ class LogSearchActivity : AppCompatActivity() {
                 selectQueryHandler += sqlCheck[1]
 
 
-                var sql = "((SIGN = ? AND IS_BUDGET IN("
-                args.add("1")//sign 1
+                var sql = "((SIGN = 1 AND IS_BUDGET IN("
+                args.add("1")
 
                 if(binding.cbYesBudget.isChecked){
-                    sql += "?))"
-                    args.add("1")//sign 1
+                    sql += "1))"
+                    args.add("1")
                     selectQueryHandler += sql
                 }else{
                     sql += "))"
                     selectQueryHandler += sql
                 }
 
-                sql = " OR (SIGN = ? AND IS_BUDGET IN("
-                args.add("0")//sign 0
+                sql = " OR (SIGN = 0 AND IS_BUDGET IN("
+                args.add("0")
 
                 if(binding.cbNoBudget.isChecked){
-                    sql += "?))"
-                    args.add("0")//sign 0
+                    sql += "0))"
+                    args.add("0")
                     selectQueryHandler += sql
                 }else{
                     sql += "))"
@@ -228,9 +216,9 @@ class LogSearchActivity : AppCompatActivity() {
                 isFirst = sqlCheck[0].toBoolean()//지워도 됨
                 selectQueryHandler += sqlCheck[1]
 
-                var sql = "MEMO = ?"
-
+                val sql = "MEMO = ${binding.etMemo.text}"
                 args.add(binding.etMemo.text.toString())
+
 
                 selectQueryHandler += sql
             }
@@ -240,9 +228,7 @@ class LogSearchActivity : AppCompatActivity() {
             }
 
             val intent = Intent(this,LogSearchResultActivity::class.java)
-            val list = ArrayList<String>(args.toTypedArray().toList())
             intent.putExtra("sql",selectQueryHandler)
-            intent.putStringArrayListExtra("args",list)
             startActivity(intent)
             finish()
 
@@ -256,7 +242,6 @@ class LogSearchActivity : AppCompatActivity() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
         val dialog = DatePickerDialog(this)
         binding.btnBack.setOnClickListener(View.OnClickListener {
@@ -440,7 +425,6 @@ class LogSearchActivity : AppCompatActivity() {
     /*
     * type 0 = first date
     * type 1 = second date*/
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setDate(type:Int, date: LocalDateTime){
         val formatter = DateTimeFormatter.ofPattern("YYYY-MM-dd")
         when(type){

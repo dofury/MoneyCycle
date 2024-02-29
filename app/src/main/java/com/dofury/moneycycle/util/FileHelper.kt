@@ -2,40 +2,41 @@ package com.dofury.moneycycle.util
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.fragment.ListFragment
 import com.opencsv.CSVWriter
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.*
 
 
 class FileHelper(private val context: Context) {
-    private val db = MoneyLogDatabase.getInstance(context)
-    fun writeCSV(activity: AppCompatActivity, moneyLogs: List<MoneyLog>, uri: Uri) {
+    fun writeCSV(activity: AppCompatActivity, moneyLogs: List<MoneyLog>, uri: Uri,resultCallback: ()-> Unit) {
         activity.contentResolver.openOutputStream(uri).use { outputStream ->
             val writer = OutputStreamWriter(outputStream)
             val csvWriter = CSVWriter(writer)
 
             // Write Header
             val header =
-                arrayOf("UID", "Charge", "Sign", "Category", "Date", "Memo", "Budget", "Server")
+                arrayOf("ID", "Charge", "Sign", "Category", "Date", "Memo", "IsBudget", "IsServer")
             csvWriter.writeNext(header)
-            /*            val csvData = moneyLogs.joinToString("\n") { "${it.uid},${it.charge},${it.sign},${it.category},${it.date},${it.memo},${it.budget},${it.server}" }
-                        val csvString = "${header.joinToString(",")}\n$csvData"*/
+
             // Write Data
             moneyLogs.forEach { item ->
                 csvWriter.writeNext(item.toString().split(",").toTypedArray())
             }
             csvWriter.close()
         }
-
+        resultCallback()
     }
 
-    fun readCSV(activity: AppCompatActivity, uri: Uri) {
+    @OptIn(DelicateCoroutinesApi::class)
+    fun readCSV(activity: AppCompatActivity, uri: Uri,resultCallback: ()-> Unit) {
         val displayName = DataUtil.getFileName(activity.contentResolver, uri)
         if (displayName.toString().contains(".csv")) {//csv 파일이 아니라면
             activity.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -60,11 +61,14 @@ class FileHelper(private val context: Context) {
                     line = reader.readLine()
                     count++
                 }
-                db!!.moneyLogDao().insertAll(context,logs)
+                GlobalScope.launch(Dispatchers.IO){
+                    MyApplication.db.moneyLogDao().insertAll(context,logs)
+                }
                 reader.close()
             }
 
         }
+        resultCallback()
     }
 
 }

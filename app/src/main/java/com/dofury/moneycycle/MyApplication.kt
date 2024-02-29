@@ -2,13 +2,9 @@ package com.dofury.moneycycle
 
 import android.app.Application
 import android.content.Context
-import androidx.room.RoomDatabase
 import com.dofury.moneycycle.database.MoneyLogDatabase
-import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.util.PreferenceUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+
 
 class MyApplication : Application() {
     companion object {

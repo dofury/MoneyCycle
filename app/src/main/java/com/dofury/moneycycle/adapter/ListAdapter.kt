@@ -10,13 +10,12 @@ import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
-import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.viewmodel.MainViewModel
 
-open class ListAdapter(private val context: Context,private val viewModel: MainViewModel) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val moneyLogList = viewModel.moneyLogList.value
+class ListAdapter(private val context: Context,private val viewModel: MainViewModel) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), LogPageDialog.LogPageDialogListener {
+    private var moneyLogList = viewModel.moneyLogList.value
     override fun getItemCount(): Int {
         return moneyLogList!!.size
     }
@@ -35,17 +34,17 @@ open class ListAdapter(private val context: Context,private val viewModel: MainV
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList[position].charge)
-        binding.itemDate.text = DataUtil.parseDate(moneyLogList[position].date)
-        binding.itemType.text = moneyLogList[position].category
+        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList!![position].charge)
+        binding.itemDate.text = DataUtil.parseDate(moneyLogList!![position].date)
+        binding.itemType.text = moneyLogList!![position].category
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
     private fun buttonEvent(holder: ListViewHolder, position: Int){
-        holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogPageDialog(context,viewModel,this)
+        holder.itemView.setOnClickListener {
+            val dialog = LogPageDialog(context, viewModel.moneyLogList.value!!, this)
             dialog.show(position)
-        })
+        }
     }
 
     private fun parseCategoryImage(binding: ListItemBinding,position: Int){
@@ -81,4 +80,19 @@ open class ListAdapter(private val context: Context,private val viewModel: MainV
                 binding.civCategory.setImageResource(R.drawable.refund_icon)
         }
     }
+
+    fun updateLog(){
+        moneyLogList = viewModel.moneyLogList.value
+        notifyDataSetChanged()
+    }
+    override fun onLogUpdated(position: Int) {
+        viewModel.moneyLogListUpdate(moneyLogList!![position])
+        this.notifyItemChanged(position)
+    }
+
+    override fun onLogDeleted(position: Int) {
+        viewModel.moneyLogListDelete(moneyLogList!![position])
+        this.notifyItemRemoved(position)
+    }
+
 }

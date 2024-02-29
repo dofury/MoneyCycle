@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dofury.moneycycle.ListViewHolder
@@ -12,14 +11,15 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.util.DataUtil
-import com.dofury.moneycycle.viewmodel.MainViewModel
+import com.dofury.moneycycle.viewmodel.SearchResultViewModel
 import java.text.SimpleDateFormat
 
-class SearchResultAdapter(private val context: Context, private val viewModel: MainViewModel
+class SearchResultAdapter(private val context: Context, private val viewModel: SearchResultViewModel
 ) :
-    ListAdapter(context,viewModel) {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), LogPageDialog.LogPageDialogListener {
+    private var moneyLogList = viewModel.moneyLogList.value
     override fun getItemCount(): Int {
-        return viewModel.moneyLogList.value!!.size
+        return moneyLogList!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ListViewHolder(
@@ -28,7 +28,6 @@ class SearchResultAdapter(private val context: Context, private val viewModel: M
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
-        val moneyLogList = viewModel.moneyLogList.value
         if(moneyLogList?.get(position)!!.sign){//지출,수입 검사하여 색칠
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,
                 R.color.blue
@@ -38,17 +37,17 @@ class SearchResultAdapter(private val context: Context, private val viewModel: M
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList[position].charge)
-        binding.itemDate.text = parseDate(moneyLogList[position].date)
-        binding.itemType.text = moneyLogList[position].category
+        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList!![position].charge)
+        binding.itemDate.text = parseDate(moneyLogList!![position].date)
+        binding.itemType.text = moneyLogList!![position].category
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
     private fun buttonEvent(holder: ListViewHolder, position: Int){
-        holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogPageDialog(context,viewModel,this)
+        holder.itemView.setOnClickListener{
+            val dialog = LogPageDialog(context,viewModel.moneyLogList.value!!,this)
             dialog.show(position)
-        })
+        }
     }
 
     private fun parseDate(date: String): String {
@@ -90,5 +89,20 @@ class SearchResultAdapter(private val context: Context, private val viewModel: M
             binding.root.context.getString(R.string.refund) ->
                 binding.civCategory.setImageResource(R.drawable.refund_icon)
         }
+    }
+
+    fun updateLog(){
+        moneyLogList = viewModel.moneyLogList.value
+        notifyDataSetChanged()
+    }
+
+    override fun onLogUpdated(position: Int) {
+        viewModel.moneyLogListUpdate(moneyLogList!![position])
+        this.notifyItemChanged(position)
+    }
+
+    override fun onLogDeleted(position: Int) {
+        viewModel.moneyLogListDelete(moneyLogList!![position])
+        this.notifyItemRemoved(position)
     }
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 class MainViewModel: ViewModel() {
     private val _targetAmount = MutableLiveData<String>()
@@ -67,7 +68,7 @@ class MainViewModel: ViewModel() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun BudgetPlusAmountUpdate(){
+    fun budgetPlusAmountUpdate(){
         GlobalScope.launch(Dispatchers.IO) {
             val data = DataUtil.getBudgetPlus().toString()
             _budgetPlusAmount.postValue(data)
@@ -88,7 +89,7 @@ class MainViewModel: ViewModel() {
         val firstDate = month.atDay(1)
         val lastDate = month.atEndOfMonth()
         GlobalScope.launch(Dispatchers.IO) {
-            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateLog(firstDate.toString(),lastDate.toString()).toMutableList())
+            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateBetweenLog(firstDate.toString(),lastDate.toString()).toMutableList())
         }
     }
 
@@ -104,6 +105,14 @@ class MainViewModel: ViewModel() {
         GlobalScope.launch(Dispatchers.IO) {
             _moneyLogList.value?.remove(moneyLog)
             MyApplication.db.moneyLogDao().delete(moneyLog)
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun moneyLogListDateLoad(date: LocalDateTime){
+        GlobalScope.launch(Dispatchers.IO) {
+            val dateFormat = date.format(DateTimeFormatter.ofPattern("yyyy-MM"))
+            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateLog(dateFormat.toString()).toMutableList())
         }
     }
 

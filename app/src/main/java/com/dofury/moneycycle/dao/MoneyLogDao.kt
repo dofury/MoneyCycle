@@ -6,10 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.dofury.moneycycle.dto.DBHelper
 import com.dofury.moneycycle.dto.MoneyLog
-import java.time.LocalDateTime
-import java.time.YearMonth
 
 @Dao
 interface MoneyLogDao {
@@ -17,7 +14,7 @@ interface MoneyLogDao {
     fun insert(moneyLog: MoneyLog)
 
     fun insertAll(context: Context,logs: List<MoneyLog>){
-        context.deleteDatabase("MoneyLog2")
+        context.deleteDatabase("MoneyLog")
         for(log in logs){
             insert(log)
         }
@@ -38,7 +35,10 @@ interface MoneyLogDao {
     fun getResetBudgetLogs(): List<MoneyLog>
 
     @Query("SELECT * FROM MoneyLog WHERE strftime('%Y-%m-%d', date) BETWEEN :startDate AND :endDate")
-    fun getDateLog(startDate: String, endDate: String): List<MoneyLog>
+    fun getDateBetweenLog(startDate: String, endDate: String): List<MoneyLog>
+
+    @Query("SELECT * FROM MoneyLog WHERE strftime('%Y-%m', date) = :monthDate")
+    fun getDateLog(monthDate: String): List<MoneyLog>
 
     @Query("SELECT * FROM MoneyLog WHERE :sql")
     fun getQueryLog(sql: String): List<MoneyLog>

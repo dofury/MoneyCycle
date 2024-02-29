@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         viewModel.currentAmountUpdate()
         viewModel.remainBudgetAmountUpdate()
-        viewModel.BudgetPlusAmountUpdate()
+        viewModel.budgetPlusAmountUpdate()
         viewModel.moneyLogListLoad()
     }
     private fun setFragment(tag: String, fragment: Fragment) {
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             if(home!=null){
                 viewModel.currentAmountUpdate()
                 viewModel.remainBudgetAmountUpdate()
-                viewModel.BudgetPlusAmountUpdate()
+                viewModel.budgetPlusAmountUpdate()
                 fragTransaction.show(home)
             }
         }

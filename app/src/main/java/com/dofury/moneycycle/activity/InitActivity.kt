@@ -116,8 +116,6 @@ class InitActivity : AppCompatActivity() {
             MyApplication.db.moneyLogDao().insert(moneyLog)//db 추가
         }
 
-        DataUtil.updateValue()//자산, 예산 최신화
-
     }
 
 }

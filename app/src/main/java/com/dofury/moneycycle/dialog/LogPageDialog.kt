@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.lifecycle.ViewModel
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.database.MoneyLogDatabase
@@ -18,11 +19,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
-class LogPageDialog(private val context: Context, private val viewModel: MainViewModel,private val adapter: ListAdapter) {
+class LogPageDialog(private val context: Context,private val moneyLogList: List<MoneyLog>, private val listener: LogPageDialogListener) {
+    interface LogPageDialogListener {
+        fun onLogUpdated(position: Int)
+        fun onLogDeleted(position: Int)
+    }
+
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogLogPageBinding
-    private val moneyLogList = viewModel.moneyLogList.value
     @OptIn(DelicateCoroutinesApi::class)
     fun show(position: Int){
         var isDelete = false
@@ -58,16 +63,15 @@ class LogPageDialog(private val context: Context, private val viewModel: MainVie
                     false -> moneyLogList[position].isBudget = true
                 }
             }
-            viewModel.moneyLogListUpdate(moneyLogList[position])
+            listener.onLogUpdated(position)
+
         })
 
         binding.ibClose.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })
         binding.ibDelete.setOnClickListener(View.OnClickListener {
-            viewModel.moneyLogListDelete(moneyLogList[position])
-            moneyLogList.remove(moneyLogList[position])
-            adapter.notifyItemRemoved(position)
+            listener.onLogDeleted(position)
             isDelete = true
             dialog.dismiss()
 
@@ -75,7 +79,7 @@ class LogPageDialog(private val context: Context, private val viewModel: MainVie
         dialog.setOnDismissListener {
             if(!isDelete){//삭제된 로그가 아니라면 메모 업데이트
                 moneyLogList[position].memo = binding.evMemo.text.toString()
-                viewModel.moneyLogListUpdate(moneyLogList[position])
+                listener.onLogUpdated(position)
             }
         }
 

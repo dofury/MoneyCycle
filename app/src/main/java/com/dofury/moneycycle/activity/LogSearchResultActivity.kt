@@ -3,38 +3,52 @@ package com.dofury.moneycycle.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.adapter.SearchResultAdapter
-import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityLogSearchResultBinding
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.viewmodel.MainViewModel
+import com.dofury.moneycycle.viewmodel.SearchResultViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class LogSearchResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogSearchResultBinding
-    private lateinit var logs: MutableList<MoneyLog>
-    private val db = MoneyLogDatabase.getInstance(applicationContext)
+    private lateinit var viewModel: SearchResultViewModel
+    private lateinit var adapter: SearchResultAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogSearchResultBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[SearchResultViewModel::class.java]
         setContentView(binding.root)
 
         init()
-        binding.rcvList.layoutManager = createLayoutManager()
-        binding.rcvList.adapter = SearchResultAdapter(this, MainViewModel())
-        binding.rcvList.addItemDecoration(DividerItemDecoration(this,LinearLayoutManager.VERTICAL))
+
         buttonEvent()
     }
+
     fun init(){
-        val intent = intent
         val sql = intent.getStringExtra("sql")
-        val args = intent.getStringArrayListExtra("args")!!.toTypedArray()
-        logs = db!!.moneyLogDao().getQueryLog(sql!!).toMutableList()
+        binding.rcvList.layoutManager = createLayoutManager()
+        adapter = SearchResultAdapter(this, viewModel)
+        binding.rcvList.adapter = adapter
+        binding.rcvList.addItemDecoration(DividerItemDecoration(this,LinearLayoutManager.VERTICAL))
+
+        viewModel.moneyLogList.observe(this) {
+            adapter.updateLog()
+        }
+
+        if (sql != null) {
+            viewModel.moneyLogListLoad(sql)
+        }
+
     }
 
     private fun buttonEvent() {
