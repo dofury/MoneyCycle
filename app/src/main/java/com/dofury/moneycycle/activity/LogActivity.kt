@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,7 +20,9 @@ import com.dofury.moneycycle.fragment.CategoryOutFragment
 import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.viewmodel.LogViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,13 +34,14 @@ import java.time.format.DateTimeFormatter
 private const val TAG_NUM = "numPad_fragment"
 private const val TAG_CATEGORY_IN = "category_in_fragment"
 private const val TAG_CATEGORY_OUT = "category_out_fragment"
-
+@AndroidEntryPoint
 class LogActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogBinding
     lateinit var moneyLog: MoneyLog
     private var tag = TAG_NUM
     private var moneyBuffer: String = ""
+    private val viewModel: LogViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,23 +175,9 @@ class LogActivity : AppCompatActivity() {
 
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
-        GlobalScope.launch(Dispatchers.IO){
-            MyApplication.db.moneyLogDao().insert(moneyLog)
-            val newList = MyApplication.db.moneyLogDao().getAll().toMutableList()
-            withContext(Dispatchers.Main){
-                MoneyLogList.list = newList
-            }
-
-
-        }
+        viewModel.insertMoneyLog(moneyLog)
 
         finish()
 
-    }
-    fun logToMain(){//실험
-        submitLog()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

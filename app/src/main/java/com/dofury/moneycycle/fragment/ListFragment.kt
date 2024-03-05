@@ -13,10 +13,10 @@ import com.dofury.moneycycle.activity.LogSearchActivity
 import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.databinding.FragmentListBinding
 import com.dofury.moneycycle.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-
+@AndroidEntryPoint
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime

@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.databinding.FragmentCategoryOutBinding
-
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class CategoryOutFragment : Fragment() {
     private lateinit var binding: FragmentCategoryOutBinding
     private lateinit var activity: LogActivity
@@ -18,7 +19,6 @@ class CategoryOutFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

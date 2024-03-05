@@ -2,6 +2,7 @@ package com.dofury.moneycycle.activity
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -16,22 +17,22 @@ import com.dofury.moneycycle.fragment.SettingFragment
 import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.system.exitProcess
 
 private const val TAG_HOME = "home_fragment"
 private const val TAG_SETTING = "setting_fragment"
 private const val TAG_LIST = "list_fragment"
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         MobileAds.initialize(this) {}
         val adRequest = AdRequest.Builder().build()

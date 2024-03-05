@@ -8,7 +8,9 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.arrayMapOf
 import androidx.core.content.ContextCompat
+import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.dao.MoneyLogDao
 import com.dofury.moneycycle.databinding.ActivityLogSearchBinding
 import com.dofury.moneycycle.dialog.DatePickerDialog
 import com.dofury.moneycycle.util.DataUtil
@@ -62,6 +64,7 @@ class LogSearchActivity : AppCompatActivity() {
             sqlList[1] = andSQL
             sqlList
         }
+
     }
 
     private fun budgetIsCheck(): Boolean{

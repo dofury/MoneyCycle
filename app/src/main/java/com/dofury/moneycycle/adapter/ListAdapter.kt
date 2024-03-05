@@ -6,15 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Insert
 import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.viewmodel.MainViewModel
+import javax.inject.Inject
 
-class ListAdapter(private val context: Context,private val viewModel: MainViewModel) :
+
+class ListAdapter
+    @Inject
+    constructor(private val context: Context,private val viewModel: MainViewModel):
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), LogPageDialog.LogPageDialogListener {
+
     private var moneyLogList = viewModel.moneyLogList.value
     override fun getItemCount(): Int {
         return moneyLogList!!.size

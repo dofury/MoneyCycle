@@ -28,6 +28,7 @@ import com.dofury.moneycycle.util.FileHelper
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -36,8 +37,7 @@ import kotlinx.coroutines.withContext
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-
+@AndroidEntryPoint
 class SettingFragment : Fragment() {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private var isInit = false

@@ -12,20 +12,21 @@ abstract class MoneyLogDatabase: RoomDatabase() {
     abstract fun moneyLogDao(): MoneyLogDao
 
     companion object {
-        private var instance: MoneyLogDatabase? = null
+        const val DATABASE_NAME = "moneyLog-database"
 
-        @Synchronized
-        fun getInstance(context: Context): MoneyLogDatabase? {
-            if (instance == null){
-               synchronized(MoneyLogDatabase::class){
-                   instance = Room.databaseBuilder(
-                       context.applicationContext,
-                       MoneyLogDatabase::class.java,
-                       "moneyLog-database"
-                   ).build()
-               }
+        @Volatile
+        private var INSTANCE: MoneyLogDatabase? = null
+
+        fun getInstance(context: Context): MoneyLogDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    MoneyLogDatabase::class.java,
+                    "app_database"
+                ).build()
+                INSTANCE = instance
+                instance
             }
-            return instance
         }
     }
 }

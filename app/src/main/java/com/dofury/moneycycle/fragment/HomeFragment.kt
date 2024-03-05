@@ -19,13 +19,12 @@ import com.dofury.moneycycle.activity.MainActivity
 import com.dofury.moneycycle.databinding.FragmentHomeBinding
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 
-
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private lateinit var mainActivity: MainActivity
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -37,9 +36,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater)
-
-
-        mainActivity = context as MainActivity
 
         startInit()
         binding.fab.setOnClickListener{

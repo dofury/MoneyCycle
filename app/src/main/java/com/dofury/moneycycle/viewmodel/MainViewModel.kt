@@ -1,10 +1,15 @@
 package com.dofury.moneycycle.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.repository.MoneyLogRepository
 import com.dofury.moneycycle.util.DataUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -12,8 +17,12 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
-class MainViewModel: ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val repository: MoneyLogRepository
+): ViewModel() {
     private val _targetAmount = MutableLiveData<String>()
     private val _budgetAmount = MutableLiveData<String>()
     private val _budgetPlusAmount = MutableLiveData<String>()
@@ -43,6 +52,7 @@ class MainViewModel: ViewModel() {
     init {
         dataInit()
     }
+
 
     override fun onCleared() {
         super.onCleared()
@@ -83,13 +93,14 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun moneyLogListLoad(){
         val month = YearMonth.from(LocalDateTime.now())
         val firstDate = month.atDay(1)
         val lastDate = month.atEndOfMonth()
-        GlobalScope.launch(Dispatchers.IO) {
-            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateBetweenLog(firstDate.toString(),lastDate.toString()).toMutableList())
+        viewModelScope.launch {
+            val moneyLogs = repository.getDateBetweenLog(firstDate.toString(),lastDate.toString()).toMutableList()
+            Log.d("test","길이" + moneyLogs.size)
+            _moneyLogList.postValue(moneyLogs)
         }
     }
 
@@ -108,11 +119,11 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun moneyLogListDateLoad(date: LocalDateTime){
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val dateFormat = date.format(DateTimeFormatter.ofPattern("yyyy-MM"))
-            _moneyLogList.postValue(MyApplication.db.moneyLogDao().getDateLog(dateFormat.toString()).toMutableList())
+            val moneyLogs = repository.getDateLog(dateFormat).toMutableList()
+            _moneyLogList.postValue(moneyLogs)
         }
     }
 
