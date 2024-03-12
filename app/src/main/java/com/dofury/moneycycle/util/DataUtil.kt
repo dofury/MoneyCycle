@@ -52,9 +52,9 @@ object DataUtil {
     }
 
 
-   fun getBudgetPlus(): Long {//실험실
+   fun getBudgetPlus(moneyLogs: List<MoneyLog>): Long {//실험실
         var sum: Long = 0
-            for (log in MyApplication.db.moneyLogDao().getAll()) {
+            for (log in moneyLogs) {
                 if (log.isBudget && log.sign)
                     sum += log.charge
             }
@@ -70,9 +70,9 @@ object DataUtil {
         return percent
     }
 
-    fun getRemainBudget(): Long {//실험실
+    fun getRemainBudget(moneyLogs: List<MoneyLog>): Long {//실험실
         var sum: Long = 0
-            for (log in MyApplication.db.moneyLogDao().getAll()) {
+            for (log in moneyLogs) {
                 if (log.isBudget)
                     sum += if (!log.sign) {
                         (0 - log.charge)
@@ -84,9 +84,9 @@ object DataUtil {
         return MyApplication.prefs.getString("budgetAmount", "0").toLong() + sum
     }
 
-    fun getMoney(): Long{
+    fun getMoney(moneyLogs: List<MoneyLog>): Long{
         var sum: Long = 0
-        for (log in MyApplication.db.moneyLogDao().getAll()) {
+        for (log in moneyLogs) {
             sum += if (!log.sign) {
                 (0 - log.charge)
             } else {
@@ -94,31 +94,6 @@ object DataUtil {
             }
         }
         return sum
-    }
-
-
-
-
-    private fun updateBudgetPlus() {
-        MyApplication.prefs.setString("budgetPlusAmount", getBudgetPlus().toString())
-    }
-
-    private fun updateRemainBudget() {
-        MyApplication.prefs.setString("remainBudgetAmount", getRemainBudget().toString())
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun updateMoney() {
-        GlobalScope.launch(Dispatchers.Main) {
-            //val money = getMoney().await().toString()
-            //MyApplication.prefs.setString("currentAmount", money)
-        }
-    }
-
-    fun updateValue() {
-        updateRemainBudget()
-        updateBudgetPlus()
-        //updateMoney()
     }
 
     fun budgetCheck(context: Context) {

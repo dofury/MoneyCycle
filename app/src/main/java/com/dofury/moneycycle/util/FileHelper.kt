@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.repository.MoneyLogRepository
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.opencsv.CSVWriter
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +38,7 @@ class FileHelper(private val context: Context) {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun readCSV(activity: AppCompatActivity, uri: Uri,resultCallback: ()-> Unit) {
+    fun readCSV(activity: AppCompatActivity,viewModel: MainViewModel, uri: Uri,resultCallback: ()-> Unit) {
         val displayName = DataUtil.getFileName(activity.contentResolver, uri)
         if (displayName.toString().contains(".csv")) {//csv 파일이 아니라면
             activity.contentResolver.openInputStream(uri)?.use { inputStream ->
@@ -62,7 +64,7 @@ class FileHelper(private val context: Context) {
                     count++
                 }
                 GlobalScope.launch(Dispatchers.IO){
-                    MyApplication.db.moneyLogDao().insertAll(context,logs)
+                    viewModel.addCSVLog(logs,activity)
                 }
                 reader.close()
             }

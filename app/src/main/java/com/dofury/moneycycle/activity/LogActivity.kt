@@ -1,33 +1,23 @@
 package com.dofury.moneycycle.activity
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.dofury.moneycycle.*
-import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityLogBinding
 import com.dofury.moneycycle.dialog.LogSetDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
 import com.dofury.moneycycle.fragment.CategoryOutFragment
-import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.viewmodel.LogViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

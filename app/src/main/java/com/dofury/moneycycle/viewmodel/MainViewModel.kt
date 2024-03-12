@@ -1,5 +1,6 @@
 package com.dofury.moneycycle.viewmodel
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -73,14 +74,15 @@ class MainViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     fun currentAmountUpdate(){
         GlobalScope.launch(Dispatchers.IO) {
-            _currentAmount.postValue(DataUtil.getMoney().toString())
+            val logs = repository.getAllMoneyLog()
+            _currentAmount.postValue(DataUtil.getMoney(logs).toString())
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     fun budgetPlusAmountUpdate(){
         GlobalScope.launch(Dispatchers.IO) {
-            val data = DataUtil.getBudgetPlus().toString()
+            val data = DataUtil.getBudgetPlus(repository.getAllMoneyLog()).toString()
             _budgetPlusAmount.postValue(data)
         }
     }
@@ -88,7 +90,7 @@ class MainViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     fun remainBudgetAmountUpdate(){
         GlobalScope.launch(Dispatchers.IO) {
-            val data = DataUtil.getRemainBudget().toString()
+            val data = DataUtil.getRemainBudget(repository.getAllMoneyLog()).toString()
             _remainBudgetAmount.postValue(data)
         }
     }
@@ -107,7 +109,7 @@ class MainViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     fun moneyLogListUpdate(moneyLog: MoneyLog){
         GlobalScope.launch(Dispatchers.IO) {
-            MyApplication.db.moneyLogDao().update(moneyLog)
+            repository.update(moneyLog)
         }
     }
 
@@ -115,7 +117,7 @@ class MainViewModel @Inject constructor(
     fun moneyLogListDelete(moneyLog: MoneyLog){
         GlobalScope.launch(Dispatchers.IO) {
             _moneyLogList.value?.remove(moneyLog)
-            MyApplication.db.moneyLogDao().delete(moneyLog)
+            repository.delete(moneyLog)
         }
     }
 
@@ -124,6 +126,12 @@ class MainViewModel @Inject constructor(
             val dateFormat = date.format(DateTimeFormatter.ofPattern("yyyy-MM"))
             val moneyLogs = repository.getDateLog(dateFormat).toMutableList()
             _moneyLogList.postValue(moneyLogs)
+        }
+    }
+
+    fun addCSVLog(logs: List<MoneyLog>, activity: Activity){
+        viewModelScope.launch {
+            repository.insertAll(logs,activity)
         }
     }
 

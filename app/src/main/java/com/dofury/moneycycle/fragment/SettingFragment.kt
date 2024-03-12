@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
 import com.dofury.moneycycle.activity.MainActivity
@@ -25,6 +26,7 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.User
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.util.FileHelper
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -42,6 +44,7 @@ class SettingFragment : Fragment() {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private var isInit = false
     private lateinit var binding: FragmentSettingBinding
+    private lateinit var viewModel: MainViewModel
 
 
     private var user = User()
@@ -74,7 +77,7 @@ class SettingFragment : Fragment() {
 
             try {
                 uri?.let {
-                    FileHelper(requireContext()).readCSV(context as MainActivity,it){
+                    FileHelper(requireContext()).readCSV(context as MainActivity,viewModel,it){
                         Toast.makeText(context as MainActivity,"불러오기 성공",Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -89,6 +92,7 @@ class SettingFragment : Fragment() {
     }
 
     fun init(){
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         isInit = true
         binding.tvBackupDate.text = MyApplication.prefs.getString("backup_date","없음")
         userInit()
@@ -196,7 +200,7 @@ class SettingFragment : Fragment() {
         // 데이터 베이스 삽입
         databaseReference.child("UserLogs").child(firebaseAuth.uid!!).get().addOnCompleteListener {
             val logs:MutableList<MoneyLog> = DataUtil.jsonToLog(it.result.value.toString())!!
-            MyApplication.db.moneyLogDao().insertAll(requireContext(),logs)
+            viewModel.addCSVLog(logs,requireActivity())
             Snackbar.make(binding.root,"복구 완료",Snackbar.LENGTH_SHORT).show()
         }
 

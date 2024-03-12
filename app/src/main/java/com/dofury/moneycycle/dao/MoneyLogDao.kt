@@ -13,8 +13,7 @@ interface MoneyLogDao {
     @Insert
     fun insert(moneyLog: MoneyLog)
 
-    fun insertAll(context: Context,logs: List<MoneyLog>){
-        context.deleteDatabase("MoneyLog")
+    fun insertAll(logs: List<MoneyLog>){
         for(log in logs){
             insert(log)
         }

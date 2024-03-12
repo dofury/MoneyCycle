@@ -1,5 +1,6 @@
 package com.dofury.moneycycle.repository
 
+import android.content.Context
 import com.dofury.moneycycle.dao.MoneyLogDao
 import com.dofury.moneycycle.dto.MoneyLog
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,13 @@ class MoneyLogRepository(private val moneyLogDao: MoneyLogDao) {
     suspend fun insert(moneyLog: MoneyLog) {
         withContext(Dispatchers.IO) {
             moneyLogDao.insert(moneyLog)
+        }
+    }
+
+    suspend fun insertAll(moneyLogs: List<MoneyLog>,context: Context) {
+        withContext(Dispatchers.IO) {
+            context.deleteDatabase("MoneyLog")
+            moneyLogDao.insertAll(moneyLogs)
         }
     }
 
