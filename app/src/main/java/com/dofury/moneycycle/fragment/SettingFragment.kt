@@ -117,6 +117,7 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentSettingBinding.inflate(layoutInflater)
         init()
         buttonEvent()

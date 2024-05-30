@@ -1,6 +1,7 @@
 package com.dofury.moneycycle.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -8,15 +9,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.adapter.SearchResultAdapter
+import com.dofury.moneycycle.dao.QueryCondition
 import com.dofury.moneycycle.databinding.ActivityLogSearchResultBinding
 import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.viewmodel.SearchResultViewModel
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
+@AndroidEntryPoint
 class LogSearchResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogSearchResultBinding
@@ -35,7 +40,8 @@ class LogSearchResultActivity : AppCompatActivity() {
     }
 
     fun init(){
-        val sql = intent.getStringExtra("sql")
+        val queryCondition = intent?.extras?.getParcelable<QueryCondition>("query")
+        Log.d("queryCondition",queryCondition.toString())
         binding.rcvList.layoutManager = createLayoutManager()
         adapter = SearchResultAdapter(this, viewModel)
         binding.rcvList.adapter = adapter
@@ -45,8 +51,8 @@ class LogSearchResultActivity : AppCompatActivity() {
             adapter.updateLog()
         }
 
-        if (sql != null) {
-            viewModel.moneyLogListLoad(sql)
+        if (queryCondition != null) {
+            viewModel.moneyLogListLoad(queryCondition)
         }
 
     }
