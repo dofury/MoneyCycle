@@ -6,9 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.dofury.moneycycle.fragment.mainActivity
 import java.io.File
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -54,7 +52,6 @@ class DBHelper(
 
             while (cursor.moveToNext()) {
                 val log = MoneyLog(
-                    cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
@@ -79,7 +76,6 @@ class DBHelper(
             val cursor = db.rawQuery(selectQueryHandler,null)
             while(cursor.moveToNext()){
                 val log = MoneyLog(
-                    cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
@@ -105,7 +101,6 @@ class DBHelper(
 
             while (cursor.moveToNext()) {
                 val log = MoneyLog(
-                    cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
@@ -134,7 +129,6 @@ class DBHelper(
         if(cursor.moveToFirst()){
             do{
                 val log = MoneyLog(
-                    cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
@@ -157,7 +151,6 @@ class DBHelper(
         if(cursor.moveToFirst()){
             do{
                 val log = MoneyLog(
-                    cursor.getInt(cursor.getColumnIndex(UID)),
                     cursor.getLong(cursor.getColumnIndex(COL_CHARGE)),
                     intToBoolean(cursor.getInt(cursor.getColumnIndex(COL_SIGN))),
                     cursor.getString(cursor.getColumnIndex(COL_CATEGORY)),
@@ -183,8 +176,8 @@ class DBHelper(
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
         values.put(COL_MEMO, log.memo)
-        values.put(COL_IS_BUDGET, log.budget)
-        values.put(COL_IS_SERVER, log.server)
+        values.put(COL_IS_BUDGET, log.isBudget)
+        values.put(COL_IS_SERVER, log.isServer)
 
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -209,17 +202,17 @@ class DBHelper(
         values.put(COL_CATEGORY, log.category)
         values.put(COL_DATE, log.date)
         values.put(COL_MEMO, log.memo)
-        values.put(COL_IS_BUDGET, log.budget)
-        values.put(COL_IS_SERVER, log.server)
+        values.put(COL_IS_BUDGET, log.isBudget)
+        values.put(COL_IS_SERVER, log.isServer)
 
-        return db.update(TABLE_NAME, values, "$UID=?", arrayOf(log.uid.toString()))
+        return db.update(TABLE_NAME, values, "$UID=?", arrayOf(log.toString()))
     }
 
     // 유저 삭제 메소드
     fun deleteLog(log: MoneyLog){
         val db = this.writableDatabase
 
-        db.delete(TABLE_NAME,"$UID=?", arrayOf(log.uid.toString()))
+        //db.delete(TABLE_NAME,"$UID=?", arrayOf(log..toString()))
         db.close()
     }
 

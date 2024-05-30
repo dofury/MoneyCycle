@@ -5,14 +5,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.adapter.BudgetPlusAdapter
+import com.dofury.moneycycle.database.MoneyLogDatabase
 import com.dofury.moneycycle.databinding.ActivityBudgetPlusBinding
 
 
 class BudgetPlusActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBudgetPlusBinding
+    private val db = MoneyLogDatabase.getInstance(applicationContext)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +22,7 @@ class BudgetPlusActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.rcvList.layoutManager = createLayoutManager()
-        binding.rcvList.adapter = BudgetPlusAdapter(this,MyApplication.db.budgetLogs)
+        binding.rcvList.adapter = BudgetPlusAdapter(this,db!!.moneyLogDao().getBudgetLogs())
         binding.rcvList.addItemDecoration(DividerItemDecoration(this,LinearLayoutManager.VERTICAL))
         buttonEvent()
     }

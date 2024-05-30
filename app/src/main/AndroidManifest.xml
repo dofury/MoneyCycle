@@ -4,13 +4,10 @@
     package="com.dofury.moneycycle">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.gms.permission.ca-app-pub-5800467535204514~5224977721"/>
 
     <application
-        android:name="com.dofury.moneycycle.MyApplication"
-        android:requestLegacyExternalStorage="true"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,7 +16,7 @@
         android:roundIcon="@mipmap/ic_main"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyCycle"
-        tools:targetApi="31">
+        tools:targetApi="34">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/admob_app_id"/>
@@ -33,27 +30,27 @@
         </activity>
         <activity
             android:name=".activity.LogActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".activity.LogSearchActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".activity.LogSearchResultActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".activity.InitActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".activity.BudgetPlusActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
     </application>
 </manifest>

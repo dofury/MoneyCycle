@@ -1,39 +1,41 @@
 package com.dofury.moneycycle.fragment
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.LogSearchActivity
 import com.dofury.moneycycle.adapter.ListAdapter
 import com.dofury.moneycycle.databinding.FragmentListBinding
-import com.dofury.moneycycle.dto.MoneyLog
+import com.dofury.moneycycle.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-
-object ListFragment : Fragment() {
+@AndroidEntryPoint
+class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
     private lateinit var date: LocalDateTime
-    lateinit var moneyLogList: MutableList<MoneyLog>
+    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: ListAdapter
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         startInit()
 
         init()
         binding.rcvList.layoutManager = createLayoutManager()
+        adapter = ListAdapter(requireContext(),viewModel)
+        binding.rcvList.adapter =
+            viewModel.moneyLogList.value?.let { adapter }
         binding.rcvList.addItemDecoration(DividerItemDecoration(context,LinearLayoutManager.VERTICAL))
         return binding.root
     }
@@ -44,33 +46,32 @@ object ListFragment : Fragment() {
         return manager
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun startInit(){
         val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월")
         date = LocalDateTime.now()
         binding.tvDate.text=date.format(formatter)
         dateEvent(formatter)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun init(){
-        moneyLogList = MyApplication.db.getDateLog(date)
-        binding.rcvList.adapter = ListAdapter(moneyLogList)
+        viewModel.moneyLogList.observe(viewLifecycleOwner) {
+            adapter.updateLog()
+        }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun dateEvent(formatter: DateTimeFormatter){
         binding.ibLeft.setOnClickListener {
             date = date.plusMonths(-1)
             binding.tvDate.text = date.format(formatter)
-            init()
+            viewModel.moneyLogListDateLoad(date)
         }
         binding.ibRight.setOnClickListener {
             date = date.plusMonths(1)
             binding.tvDate.text = date.format(formatter)
-            init()
+            viewModel.moneyLogListDateLoad(date)
         }
         binding.ibSearch.setOnClickListener{
-            val intent = Intent(mainActivity,LogSearchActivity::class.java)
+            val intent = Intent(context,LogSearchActivity::class.java)
             startActivity(intent)
         }
     }

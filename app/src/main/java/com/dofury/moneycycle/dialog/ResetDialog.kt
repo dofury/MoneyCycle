@@ -1,6 +1,7 @@
 package com.dofury.moneycycle.dialog
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Build
 import android.view.View
 import android.view.WindowManager
@@ -8,17 +9,17 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.R
+import com.dofury.moneycycle.activity.MainActivity
 import com.dofury.moneycycle.databinding.DialogYesNoBinding
-import com.dofury.moneycycle.fragment.mainActivity
 import com.google.android.material.snackbar.Snackbar
 
-class ResetDialog(private val context: AppCompatActivity) {
+class ResetDialog(private val context: Context) {
     private val dialog = Dialog(context)
-
+    private lateinit var mainActivity: MainActivity
     private lateinit var binding: DialogYesNoBinding
-    @RequiresApi(Build.VERSION_CODES.O)
     fun show(){
-        binding =DialogYesNoBinding.inflate(context.layoutInflater)
+        mainActivity = context as MainActivity
+        binding =DialogYesNoBinding.inflate(mainActivity.layoutInflater)
 
         dialog.setContentView(binding.root)
 
@@ -40,7 +41,7 @@ class ResetDialog(private val context: AppCompatActivity) {
         })
         binding.btnYes.setOnClickListener(View.OnClickListener {
 
-            MyApplication.dataReset()
+            MyApplication.dataReset(context)
 
             Snackbar.make(binding.root,"초기화 되었습니다", Snackbar.LENGTH_SHORT).show()
 

@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.databinding.FragmentCategoryInBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CategoryInFragment : Fragment() {
     private lateinit var binding: FragmentCategoryInBinding
     private lateinit var activity: LogActivity
@@ -18,7 +20,6 @@ class CategoryInFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +30,6 @@ class CategoryInFragment : Fragment() {
         buttonEvent()
         return binding.root
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent() {
         binding.btnPrev.setOnClickListener(View.OnClickListener {//
             activity.setFragment("numPad_fragment", NumPadFragment())

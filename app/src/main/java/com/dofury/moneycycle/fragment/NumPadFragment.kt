@@ -9,7 +9,8 @@ import com.dofury.moneycycle.R
 import com.dofury.moneycycle.activity.LogActivity
 import com.dofury.moneycycle.databinding.FragmentPadBinding
 import com.google.android.material.snackbar.Snackbar
-
+import dagger.hilt.android.AndroidEntryPoint
+@AndroidEntryPoint
 class NumPadFragment : Fragment() {
     private lateinit var binding: FragmentPadBinding
     private lateinit var activity: LogActivity

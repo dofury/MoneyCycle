@@ -1,10 +1,8 @@
 package com.dofury.moneycycle.activity
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,35 +10,36 @@ import com.dofury.moneycycle.*
 import com.dofury.moneycycle.databinding.ActivityLogBinding
 import com.dofury.moneycycle.dialog.LogSetDialog
 import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.dto.MoneyLogList
 import com.dofury.moneycycle.fragment.CategoryInFragment
 import com.dofury.moneycycle.fragment.CategoryOutFragment
-import com.dofury.moneycycle.fragment.HomeFragment
 import com.dofury.moneycycle.fragment.NumPadFragment
 import com.dofury.moneycycle.util.DataUtil
+import com.dofury.moneycycle.viewmodel.LogViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 private const val TAG_NUM = "numPad_fragment"
 private const val TAG_CATEGORY_IN = "category_in_fragment"
 private const val TAG_CATEGORY_OUT = "category_out_fragment"
-
+@AndroidEntryPoint
 class LogActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLogBinding
     lateinit var moneyLog: MoneyLog
     private var tag = TAG_NUM
     private var moneyBuffer: String = ""
+    private val viewModel: LogViewModel by viewModels()
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        moneyLog = MoneyLog(0, 0, false, "", "", "",true,false)
+        moneyLog = MoneyLog(0, false, "", "", "",true,false)
         setFragment(TAG_NUM, NumPadFragment())
         buttonEvent()
     }
@@ -138,14 +137,13 @@ class LogActivity : AppCompatActivity() {
             binding.tvNumber.text = if(moneyBuffer!="") DataUtil.parseMoney(moneyBuffer.toLong())else "0"
         }
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun setCategory(category : String) {
         moneyLog.category = category
         val dialog = LogSetDialog(this)
         this.layoutInflater
         dialog.show(moneyLog)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+    @OptIn(DelicateCoroutinesApi::class)
     fun submitLog(){
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -167,21 +165,9 @@ class LogActivity : AppCompatActivity() {
 
         MyApplication.prefs.setString("money",money.toString())//자산 돈 반영
 
-        MyApplication.db.addLog(moneyLog)//db 추가
-        MoneyLogList.list = MyApplication.db.allLogs//db에서 다시 불러오기
-
-        DataUtil.updateValue()//자산, 예산 최신화
-
-        HomeFragment().init()
+        viewModel.insertMoneyLog(moneyLog)
 
         finish()
 
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun logToMain(){//실험
-        submitLog()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 }

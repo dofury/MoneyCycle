@@ -1,10 +1,8 @@
 package com.dofury.moneycycle.adapter
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dofury.moneycycle.ListViewHolder
@@ -16,7 +14,7 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.util.DataUtil
 import java.text.SimpleDateFormat
 
-class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<MoneyLog>) :
+class BudgetPlusAdapter(val activity: BudgetPlusActivity, val list: List<MoneyLog>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
         return list.size
@@ -25,7 +23,6 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ListViewHolder(
         ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
         binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.blue))
@@ -36,7 +33,6 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent(holder: ListViewHolder, position: Int){
         holder.itemView.setOnClickListener(View.OnClickListener {
             val dialog = BudgetPlusDialog(activity)
@@ -44,7 +40,6 @@ class BudgetPlusAdapter(val activity: BudgetPlusActivity,val list: MutableList<M
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun parseDate(date: String): String {
         val beforeDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date)
         val formatter = SimpleDateFormat("yyyy년 MM월 dd일 a hh:mm")

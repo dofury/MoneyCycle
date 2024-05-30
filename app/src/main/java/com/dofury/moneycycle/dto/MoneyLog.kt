@@ -1,9 +1,19 @@
 package com.dofury.moneycycle.dto
 
-data class MoneyLog(var uid: Int, var charge: Long, var sign: Boolean, var category: String, var date: String,
-                    var memo: String, var budget: Boolean, var server: Boolean){
-    constructor() : this (0,0,false,"","","",false,false)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class MoneyLog(var charge: Long,
+                     var sign: Boolean,
+                     var category: String,
+                     var date: String,
+                     var memo: String,
+                     var isBudget: Boolean,
+                     var isServer: Boolean){
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+    constructor() : this (0,false,"","","",false,false)
     override fun toString(): String {
-        return "$uid,$charge,$sign,$category,$date,$memo,$budget,$server"
+        return "$id,$charge,$sign,$category,$date,$memo,$isBudget,$isServer"
     }
 }

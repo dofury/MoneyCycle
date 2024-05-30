@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +15,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.dofury.moneycycle.MyApplication
 import com.dofury.moneycycle.activity.BudgetPlusActivity
-import com.dofury.moneycycle.activity.LoginActivity
+import com.dofury.moneycycle.activity.MainActivity
 import com.dofury.moneycycle.databinding.FragmentSettingBinding
 import com.dofury.moneycycle.dialog.InputDialog
 import com.dofury.moneycycle.dialog.ResetDialog
@@ -23,26 +26,47 @@ import com.dofury.moneycycle.dto.MoneyLog
 import com.dofury.moneycycle.dto.User
 import com.dofury.moneycycle.util.DataUtil
 import com.dofury.moneycycle.util.FileHelper
+import com.dofury.moneycycle.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-
-object SettingFragment : Fragment() {
-    private lateinit var binding: FragmentSettingBinding
+@AndroidEntryPoint
+class SettingFragment : Fragment() {
     private val firebaseAuth = FirebaseAuth.getInstance()
     private var isInit = false
+    private lateinit var binding: FragmentSettingBinding
+    private lateinit var viewModel: MainViewModel
 
-    var user = User()
-    @RequiresApi(Build.VERSION_CODES.O)
+
+    private var user = User()
+    @OptIn(DelicateCoroutinesApi::class)
     private val createFileActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == AppCompatActivity.RESULT_OK) {
             result.data?.data?.also { uri ->
-                FileHelper.writeCSV(mainActivity,MyApplication.db.allLogs,uri)
+                GlobalScope.launch(Dispatchers.IO) {
+                    val moneyLogs = MyApplication.db.moneyLogDao().getAll()
+                    FileHelper(requireContext()).writeCSV(context as MainActivity, moneyLogs, uri){
+                        val handler = Handler(Looper.getMainLooper())//main thread
+                        handler.postDelayed(Runnable {
+                            Toast.makeText(context as MainActivity,"저장 성공",Toast.LENGTH_SHORT).show()
+                        },0)
+
+                    }
+                }
+
             }
+        }
+        else{
+            Toast.makeText(context as MainActivity,"저장 실패",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -53,11 +77,13 @@ object SettingFragment : Fragment() {
 
             try {
                 uri?.let {
-                    FileHelper.readCSV(mainActivity,it)
+                    FileHelper(requireContext()).readCSV(context as MainActivity,viewModel,it){
+                        Toast.makeText(context as MainActivity,"불러오기 성공",Toast.LENGTH_SHORT).show()
+                    }
                 }
 
             } catch (e: SecurityException) {
-                Toast.makeText(mainActivity,"오류가 발생했습니다",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context as MainActivity,"불러오기 실패",Toast.LENGTH_SHORT).show()
                 e.printStackTrace()
             }
         }
@@ -66,16 +92,17 @@ object SettingFragment : Fragment() {
     }
 
     fun init(){
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
         isInit = true
         binding.tvBackupDate.text = MyApplication.prefs.getString("backup_date","없음")
         userInit()
     }
 
-    fun userInit(){
+    private fun userInit(){
         if(isInit){
             binding.tvNickname.text = user.nickname
             binding.tvEmail.text = user.email
-            if(!user.nickname.isNullOrBlank()){
+            if(user.nickname.isNotBlank()){
                 binding.cardUser.visibility = View.VISIBLE
                 binding.cardLoginCheck.visibility = View.GONE
             }else{
@@ -86,11 +113,11 @@ object SettingFragment : Fragment() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         binding = FragmentSettingBinding.inflate(layoutInflater)
         init()
         buttonEvent()
@@ -98,18 +125,17 @@ object SettingFragment : Fragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun buttonEvent(){
         binding.clGoal.setOnClickListener {
-            val dialog = InputDialog(mainActivity)
+            val dialog = InputDialog(context as MainActivity)
             dialog.show("goal")
         }
         binding.clBudgetCharge.setOnClickListener {
-            val dialog = InputDialog(mainActivity)
+            val dialog = InputDialog(context as MainActivity)
             dialog.show("budget")
         }
         binding.clBudgetCycle.setOnClickListener {
-            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as MainActivity,"미구현",Toast.LENGTH_SHORT).show()
             //val dialog = InputDialog(mainActivity)
             //dialog.show("budget_cycle")
         }
@@ -118,7 +144,7 @@ object SettingFragment : Fragment() {
             startActivity(intent)
         }
         binding.clReset.setOnClickListener{
-            val dialog = ResetDialog(mainActivity)
+            val dialog = ResetDialog(context as MainActivity)
             dialog.show()
         }
 
@@ -126,10 +152,9 @@ object SettingFragment : Fragment() {
             val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "moneyLogs.csv")
+                putExtra(Intent.EXTRA_TITLE, "moneyLog.csv")
             }
             createFileActivityResultLauncher.launch(intent)
-            Toast.makeText(mainActivity,"저장 완료",Toast.LENGTH_SHORT).show()
         }
 
         binding.btnCsvLoad.setOnClickListener {
@@ -143,7 +168,7 @@ object SettingFragment : Fragment() {
         binding.cardLoginCheck.setOnClickListener {
             //val intent = Intent(context, LoginActivity::class.java)
             //startActivity(intent)
-            Toast.makeText(mainActivity,"미구현",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context as MainActivity,"미구현",Toast.LENGTH_SHORT).show()
         }
         binding.btnBackupSave.setOnClickListener {
             firebaseSave()
@@ -154,7 +179,6 @@ object SettingFragment : Fragment() {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun firebaseSave(){
         val firebaseAuth = FirebaseAuth.getInstance()
         val databaseReference = FirebaseDatabase.getInstance().getReference("MoneyCycle")
@@ -177,7 +201,7 @@ object SettingFragment : Fragment() {
         // 데이터 베이스 삽입
         databaseReference.child("UserLogs").child(firebaseAuth.uid!!).get().addOnCompleteListener {
             val logs:MutableList<MoneyLog> = DataUtil.jsonToLog(it.result.value.toString())!!
-            MyApplication.db.allAddLog(logs)
+            viewModel.addCSVLog(logs,requireActivity())
             Snackbar.make(binding.root,"복구 완료",Snackbar.LENGTH_SHORT).show()
         }
 

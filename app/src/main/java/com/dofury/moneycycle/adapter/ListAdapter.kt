@@ -1,34 +1,37 @@
 package com.dofury.moneycycle.adapter
 
-import android.os.Build
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Insert
 import com.dofury.moneycycle.ListViewHolder
 import com.dofury.moneycycle.R
 import com.dofury.moneycycle.databinding.ListItemBinding
 import com.dofury.moneycycle.dialog.LogPageDialog
-import com.dofury.moneycycle.dto.MoneyLog
-import com.dofury.moneycycle.fragment.mainActivity
 import com.dofury.moneycycle.util.DataUtil
-import java.text.SimpleDateFormat
+import com.dofury.moneycycle.viewmodel.MainViewModel
+import javax.inject.Inject
 
-open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+class ListAdapter
+    @Inject
+    constructor(private val context: Context,private val viewModel: MainViewModel):
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), LogPageDialog.LogPageDialogListener {
+
+    private var moneyLogList = viewModel.moneyLogList.value
     override fun getItemCount(): Int {
-        return moneyLogList.size
+        return moneyLogList!!.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = ListViewHolder(
         ListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as ListViewHolder).biding//뷰에 데이터 출력
-        if(moneyLogList[position].sign){//지출,수입 검사하여 색칠
+        if(moneyLogList?.get(position)!!.sign){//지출,수입 검사하여 색칠
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context,
                 R.color.blue
             ))
@@ -37,22 +40,21 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
             binding.itemMoney.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
             binding.itemSign.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
         }
-        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList[position].charge)
-        binding.itemDate.text = DataUtil.parseDate(moneyLogList[position].date)
-        binding.itemType.text = moneyLogList[position].category
+        binding.itemMoney.text = DataUtil.parseMoney(moneyLogList!![position].charge)
+        binding.itemDate.text = DataUtil.parseDate(moneyLogList!![position].date)
+        binding.itemType.text = moneyLogList!![position].category
         parseCategoryImage(binding,position)
         buttonEvent(holder,position)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun buttonEvent(holder: ListViewHolder, position: Int){
-        holder.itemView.setOnClickListener(View.OnClickListener {
-            val dialog = LogPageDialog(mainActivity)
-            dialog.show(moneyLogList,this,position)
-        })
+        holder.itemView.setOnClickListener {
+            val dialog = LogPageDialog(context, viewModel.moneyLogList.value!!, this)
+            dialog.show(position)
+        }
     }
 
     private fun parseCategoryImage(binding: ListItemBinding,position: Int){
-        when(moneyLogList[position].category){
+        when(moneyLogList?.get(position)!!.category){
 
             binding.root.context.getString(R.string.house) ->
                 binding.civCategory.setImageResource(R.drawable.house_icon)
@@ -84,4 +86,19 @@ open class ListAdapter(private val moneyLogList: MutableList<MoneyLog>) :
                 binding.civCategory.setImageResource(R.drawable.refund_icon)
         }
     }
+
+    fun updateLog(){
+        moneyLogList = viewModel.moneyLogList.value
+        notifyDataSetChanged()
+    }
+    override fun onLogUpdated(position: Int) {
+        viewModel.moneyLogListUpdate(moneyLogList!![position])
+        this.notifyItemChanged(position)
+    }
+
+    override fun onLogDeleted(position: Int) {
+        viewModel.moneyLogListDelete(moneyLogList!![position])
+        this.notifyItemRemoved(position)
+    }
+
 }

@@ -18,7 +18,6 @@ class InputDialog(private val context: AppCompatActivity) {
     private val dialog = Dialog(context)
 
     private lateinit var binding: DialogInputBinding
-    @RequiresApi(Build.VERSION_CODES.O)
     fun show(tag: String){
         binding =DialogInputBinding.inflate(context.layoutInflater)
 
@@ -34,7 +33,6 @@ class InputDialog(private val context: AppCompatActivity) {
         dialog.setCancelable(true)
         dialog.show()
     }
-    @RequiresApi(Build.VERSION_CODES.O)
     fun buttonEvent(tag: String){
 
         binding.btnNo.setOnClickListener(View.OnClickListener {
